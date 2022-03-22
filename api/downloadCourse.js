@@ -98,13 +98,16 @@ const downloadCourse = async ({
                 // create new container
                 const multibar = new cliProgress.MultiBar({
                     clearOnComplete: false,
-                    hideCursor: true
+                    hideCursor     : true
 
                 }, cliProgress.Presets.shades_grey);
 
                 await Promise
                     .map(courses,
-                        async ({ dest, vimeoUrl }) => await downloadVideo(vimeoUrl, dest, ms, multibar), { concurrency: 10 })
+                        async ({
+                            dest,
+                            vimeoUrl
+                        }) => await downloadVideo(vimeoUrl, dest, ms, multibar), { concurrency: 10 })
                 multibar.stop();
             }
             return courses;
@@ -123,10 +126,15 @@ const downloadCourse = async ({
                     })
                     .value();
 
-                return await Promise.map(groupedCourses, async ({
-                    courseName,
-                    images
-                }) => await imgs2pdf(images, courseName, downDir))
+                return await Promise
+                    .map(groupedCourses, async ({
+                            courseName,
+                            images
+                        }) => await imgs2pdf(
+                            images,
+                            path.join(process.cwd(), downDir, courseName, 'screens'),
+                            path.join(process.cwd(), downDir, courseName, 'screens', `${courseName}.pdf`))
+                    )
             }
         })
         .catch(console.error)

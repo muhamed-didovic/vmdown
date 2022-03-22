@@ -64,16 +64,18 @@ const convert = (imgs, dest) => new Promise((resolve, reject) => {
     doc.end()
 })
 
-module.exports = async (images, courseName, saveDir) => {
-    const savePath = path.join(process.cwd(), saveDir, courseName, 'screens');
-    await fs.ensureDir(savePath)
+module.exports = async (images, sourcePath, savePath) => {
+    //const savePath = path.join(process.cwd(), saveDir, courseName, 'screens');
+    // console.log('savePath', savePath);
+    // await fs.ensureDir(savePath)
     return Promise
         .resolve()
-        .then(async () =>  await folderContents(savePath))
+        .then(async () =>  await folderContents(sourcePath))
         .then(async (imgs) => {
-            //console.log('--imgs', imgs);
-            return await convert(imgs, path.join(savePath, `${courseName}.pdf`))
+            // console.log('--imgs', imgs);
+            return await convert(imgs, path.resolve(savePath))
         })
+        //.catch(console.error)
 
 }//();
 
