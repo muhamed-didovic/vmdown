@@ -1,6 +1,5 @@
 const fs = require('fs');
 const Path = require('path');
-const ProgressBar = require('progress')
 const fileSize = require('./fileSize')
 const Axios = require('axios')
 
@@ -10,14 +9,15 @@ const getFilesizeInBytes = filename => {
     return fs.existsSync(p) ? fs.statSync(p)["size"] : 0;
 };
 
-const downloadVideo = async (url, dest, ms) => {
+const downloadVideo = async (url, dest, ms, multibar) => {
     // console.log('URL', url);
     const remoteFileSize = await fileSize(url);
-    ms.add(url, { text: `Checking if video is downloaded: ${dest.split('/').pop()}` });
-    if (remoteFileSize == getFilesizeInBytes(`${dest}`)) {
-        ms.succeed(url, { text: `Video exists: ${remoteFileSize}, ${getFilesizeInBytes(`${dest}`)} dest: ${dest}` });//
+    //ms.add(url, { text: `Checking if video is downloaded: ${dest.split('/').pop()}` });
+    /*if (remoteFileSize == getFilesizeInBytes(`${dest}`)) {
+        //ms.succeed(url, { text: `Video exists: ${remoteFileSize}, ${getFilesizeInBytes(`${dest}`)} dest: ${dest}` });
+        console.log(`Video exists: ${remoteFileSize}, ${getFilesizeInBytes(`${dest}`)} dest: ${dest}`);
         return Promise.resolve();
-    }
+    }*/
 
     const { data, headers } = await Axios({
         url,
@@ -26,28 +26,26 @@ const downloadVideo = async (url, dest, ms) => {
     })
     const totalLength = headers['content-length']
 
-    /*const progressBar = new ProgressBar('-> downloading [:bar] :percent :etas', {
-        width         : 40,
-        complete      : '=',
-        incomplete    : ' ',
-        renderThrottle: 1,
-        total         : parseInt(totalLength)
-    })*/
+
+    const m = multibar.create(totalLength, 0, {file: dest});
+    //const b2 = multibar.create(1000, 0);
 
     const writer = fs.createWriteStream(
         Path.resolve(__dirname, dest)
     )
-
+    let len = 0;
     data.on('data', (chunk) => {
         // console.log('chunk', chunk);
-        ms.update(url, {text : `chunk length: ${chunk.length}`})
+        //ms.update(url, {text : `chunk length: ${chunk.length}`})
         //progressBar.tick(chunk.length)
+        m.update(len += chunk.length);//, {filename: "helloworld.txt"}
     })
     data.pipe(writer)
 
     return new Promise((resolve, reject) => {
         writer.on('finish', () => {
-            ms.succeed(url, { text: `Video download url: ${url}` });//
+            //ms.succeed(url, { text: `Video download url: ${url}` });//
+            m.stop()
             return resolve();
         })
         writer.on('error', reject)

@@ -1,6 +1,6 @@
 {
     "name": "vmdown",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -32,6 +32,7 @@
         "axios": "^0.26.1",
         "bluebird": "^3.7.2",
         "chrome-finder": "^1.0.7",
+        "cli-progress": "^3.10.0",
         "dreidels": "^0.5.2",
         "filenamify": "^4.3.0",
         "fs-extra": "^10.0.1",

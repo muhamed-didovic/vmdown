@@ -38,7 +38,7 @@ module.exports = browser => async (pageUrl, saveDir, videoFormat, quality, markd
                 "https://www.vuemastery.com/courses/",
                 ""
             );
-            console.log('url:', courseName);
+            // console.log('url:', courseName);
             if (courseName.includes('/')) {
                 try {
                     courseName = courseName.split("/")[0];
@@ -68,16 +68,22 @@ module.exports = browser => async (pageUrl, saveDir, videoFormat, quality, markd
                 () => Array.from(document.body.querySelectorAll('h1.title'),
                     txt => txt.textContent)[0]
             );
-            title = filenamify(title);
+
             const allTitles = await page.evaluate(
                 () => Array.from(document.body.querySelectorAll('h4.list-item-title'),
                     txt => txt.textContent)
             );
-            const allTitlesWithoutNumbers = allTitles.map(t => {
+            /*const allTitlesWithoutNumbers = allTitles.map(t => {
                 return t.split(". ")[1];
             });
-            const newIndex = allTitlesWithoutNumbers.indexOf(title);
 
+            const newTitle = allTitlesWithoutNumbers.indexOf(title) >= 0
+                ? allTitles[allTitlesWithoutNumbers.indexOf(title)]
+                : allTitlesWithoutNumbers.filter(t => t.includes(title))[0] ;*/
+            //title = filenamify(title);
+
+            const newTitle = allTitles.filter(t => t.includes(title))[0]
+            //console.log('newTitle', newTitle);
             //create markdown
             if (markdown) {
                 let markdown = await page.evaluate(
@@ -85,7 +91,7 @@ module.exports = browser => async (pageUrl, saveDir, videoFormat, quality, markd
                         txt => txt.outerHTML)[0]
                 );
                 await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'markdown'))
-                fs.writeFileSync(path.join(process.cwd(), saveDir, courseName, 'markdown', `${allTitles[newIndex]}.md`), nhm.translate(markdown), 'utf8')
+                fs.writeFileSync(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
             }
 
             if (images) {
@@ -94,7 +100,7 @@ module.exports = browser => async (pageUrl, saveDir, videoFormat, quality, markd
                 await delay(5e3) //5e3
                 await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'screens'))
                 await $sec.screenshot({
-                    path          : path.join(process.cwd(), saveDir, courseName, 'screens', `${allTitles[newIndex]}.png`),
+                    path          : path.join(process.cwd(), saveDir, courseName, 'screens', `${newTitle}.png`),
                     type          : 'png',
                     omitBackground: true,
                     delay         : '500ms'
@@ -128,10 +134,11 @@ module.exports = browser => async (pageUrl, saveDir, videoFormat, quality, markd
             return {
                 pageUrl,
                 courseName,
-                dest    : path.join(process.cwd(), saveDir, courseName, `${allTitles[newIndex]}${videoFormat}`),
-                imgPath : path.join(process.cwd(), saveDir, courseName, 'screens', `${allTitles[newIndex]}.png`),
+                dest    : path.join(process.cwd(), saveDir, courseName, `${newTitle}${videoFormat}`),
+                imgPath : path.join(process.cwd(), saveDir, courseName, 'screens', `${newTitle}.png`),
                 vimeoUrl: selectedVideo.url
             };
         })
+    //console.log('{ ...options }', { ...options });
     return { ...options }
 }
