@@ -33,7 +33,7 @@ module.exports = browser => async (pageUrl, saveDir, videoFormat, quality, markd
     const options = await Promise
         .resolve()
         .then(async () => {
-            await delay(2e3)
+            await delay(10e3)
             let courseName = pageUrl.replace(
                 "https://www.vuemastery.com/courses/",
                 ""
@@ -43,8 +43,7 @@ module.exports = browser => async (pageUrl, saveDir, videoFormat, quality, markd
                 try {
                     courseName = courseName.split("/")[0];
                 } catch (e) {
-                    console.log('-------courseName url', courseName, '---end');
-                    console.log('-------courseName errror', e);
+                    console.log('Issue with course name:', courseName, e);
                     return;
                 }
             }
@@ -118,8 +117,7 @@ module.exports = browser => async (pageUrl, saveDir, videoFormat, quality, markd
                 newString = content.split(`progressive":[`)[1];
                 finString = newString.split(']},"lang":"en","sentry":')[0];
             } catch (e) {
-                console.log('----finString error', e);
-                console.log('----finString url', content);
+                console.error('Issue with getting vimeo data', content, e);
                 return;
             }
             finString = newString.split(']},"lang":"en","sentry":')[0];
