@@ -1,6 +1,6 @@
 {
     "name": "vmdown",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -29,13 +29,12 @@
         "VueMastery"
     ],
     "dependencies": {
-        "axios": "^0.19.2",
+        "axios": "^0.26.1",
         "bluebird": "^3.7.2",
         "chrome-finder": "^1.0.7",
-        "dotenv": "^8.2.0",
         "dreidels": "^0.5.2",
         "filenamify": "^4.3.0",
-        "fs-extra": "^8.1.0",
+        "fs-extra": "^10.0.1",
         "fuse.js": "^6.5.3",
         "get-puppeteer-browser": "^1.1.1",
         "image-size": "^1.0.1",
@@ -47,7 +46,7 @@
         "pdfkit": "^0.13.0",
         "progress": "^2.0.3",
         "prompts": "^2.4.2",
-        "puppeteer": "^2.1.1",
+        "puppeteer": "^13.5.1",
         "puppeteer-core": "^13.5.1",
         "remote-file-size": "^3.0.5",
         "tempy": "^1.0.1",
