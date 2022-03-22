@@ -1,0 +1,34 @@
+# What is Pinia?
+
+Welcome! My name is Ben Hong, I’m a Vue Core Team member and I’m excited to be your guide in this course to helping you transition from Vuex to Pinia!
+
+In this lesson, we’ll be covering the basics:
+
+* What is Pinia?
+* What’s going on with Vuex?
+
+In addition, this course is designed with the assumption that you have prior knowledge or experience with Vuex. If you’d like to learn more about Vuex, be sure to check out our Vuex course which I’ll link below.
+
+With that said, let’s start by level setting with the first question you might have: What is Pinia?
+
+## What is Pinia?
+
+At its core, Pinia is a new state management library for the Vue ecosystem written by Eduardo, who you might better know as posva who wrote Vue Router! Like Vuex, Pinia is built to help you manage reactive data and state across your components in your application. However, unlike other libraries, this an official library supposed by the team!
+
+## What happened to Vuex?
+
+Nothing at all! It’s still one of the official recommendations for the ecosystem. So if you’re using it in your app, rest easy knowing that you’re in safe hands. If anything, you should see Pinia as an alternative to Vuex should you decide to change your state management library in the future.
+
+## What will you learn in this course?
+
+This course is designed for those who are already familiar with Vuex and its primary patterns. Equipped with this knowledge, you will learn:
+
+* How to transition from Vuex to Pinia
+* What the difference is between Vuex and Pinia
+* Why Pinia is a good option to consider for future apps
+
+## Let’s Revue
+
+Pinia is a brand new state management library that introduces a new take on how one could manage state within their application. That said, those on Vuex have no need to panic, since those libraries are still supported. This is just an alternative you should be aware of!
+
+With that said, in the next lesson, we’ll be talking about why one might consider transitioning from Vuex to Pinia. See you then!
