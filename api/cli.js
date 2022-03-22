@@ -203,8 +203,8 @@ module.exports = async () => {
         return ({ ...options })//file, filePath,
     }
 
-    const searchOrDownload = flags.file || await askOrExit({
-        type   : 'confirm',
+    const searchOrDownload = await askOrExit({
+        type   : input.length === 0 ? 'confirm' : null,
         message: 'Choose "Y" if you want to search for a course otherwise choose "N" if you have a link for download',
         initial: true
     })
@@ -218,7 +218,7 @@ module.exports = async () => {
         }))
     } else {
         input.push(await askOrExit({
-            type   : 'autocomplete',
+            type   : input.length === 0 ? 'autocomplete' : null,
             message: 'Search for a course',
             choices: uniqBy(require('../json/sitemap.json').map(item => ({
                 title: item.replace('https://www.vuemastery.com/courses/', '').split('/').shift(),
