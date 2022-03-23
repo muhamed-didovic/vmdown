@@ -1,9 +1,9 @@
 const url = require('url')
 const path = require("path");
 const fs = require("fs-extra");
-const filenamify = require("filenamify");
 const delay = require("./delay");
 
+// const filenamify = require("filenamify");
 // const tempy = require('tempy')
 // const normalizePathname = require('./normalizePathname')
 

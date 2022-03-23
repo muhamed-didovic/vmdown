@@ -20,7 +20,7 @@ Options
     --markdown, -m      Save each lesson's description into md file (default: true)
     --images, -i        Save each lesson's description into image (default: true)
     --pdf               Put all images into pdf (default: true)
-    --extension, -x     Choose video format (default: mp4)
+    --extension, -x     Choose video format (default: .mp4)
     --quality, -q       Choose quality from: 1080p / 720p / 540p / 360p / 240p (default: 1080p)
     --directory, -d     Directory to save (default: ./videos)
     --concurrency, -c

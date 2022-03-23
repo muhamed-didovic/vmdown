@@ -1,17 +1,18 @@
 {
     "name": "vmdown",
-    "version": "0.6.0",
+    "version": "0.6.1",
     "description": "Downloader and scraper for vuemastery.com",
     "main": "index.js",
     "scripts": {
-        "test": "ava"
+        "test": "ava --timeout=2m"
     },
     "bin": {
         "vmdown": "index.js"
     },
     "directories": {
         "api": "api",
-        "json": "json"
+        "json": "json",
+        "test": "test"
     },
     "files": [
         "api",
