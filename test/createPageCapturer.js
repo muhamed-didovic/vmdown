@@ -1,5 +1,5 @@
 const test = require('ava')
-const fs = require('fs')
+const fs = require('fs-extra')
 
 const createPageCapturer = require('../api/createPageCapturer')
 const path = require('path')
@@ -29,7 +29,7 @@ const noop = () => {}
 test.after.always(() => {
     if (browser) browser.close()
     imgs.forEach(imgPath => fs.unlink(imgPath, noop))
-    fs.rmSync(path.join(__dirname, 'intro-to-vue-js'), { recursive: true, force: true });
+    fs.removeSync(path.join(__dirname, 'intro-to-vue-js'));//, { recursive: true, force: true }
 })
 
 test('capturePage', async t => {
