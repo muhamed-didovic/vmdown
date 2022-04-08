@@ -30,19 +30,6 @@ const getBrowser = createBrowserGetter(puppeteer, {
     // ],
 })
 
-/*{
-      file: false,
-      filePath: undefined,
-      email: 'muhamed_didovic@hotmail.com',
-      password: 'jd9uq6zD9LC2xVy',
-      downDir: './videos',
-      videos: true,
-      markdown: true,
-      images: true,
-      concurrency: 10,
-      extension: undefined,
-      quality: undefined
-    }*/
 const downloadCourse = async ({
     email,
     password,
@@ -99,15 +86,9 @@ const downloadCourse = async ({
                 const multibar = new cliProgress.MultiBar({
                     clearOnComplete: false,
                     hideCursor     : true
-
                 }, cliProgress.Presets.shades_grey);
 
-                await Promise
-                    .map(courses,
-                        async ({
-                            dest,
-                            vimeoUrl
-                        }) => await downloadVideo(vimeoUrl, dest, ms, multibar), { concurrency: 10 })
+                await Promise.map(courses, async ({ dest, vimeoUrl }) => await downloadVideo(vimeoUrl, dest, ms, multibar), { concurrency: 10 })
                 multibar.stop();
             }
             return courses;

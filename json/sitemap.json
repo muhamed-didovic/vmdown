@@ -250,6 +250,7 @@
   "https://www.vuemastery.com/courses/querying-with-graphql/manual-cache-updates-and-optimistic-responses",
   "https://www.vuemastery.com/courses/querying-with-graphql/real-time-updates-with-subscriptions",
   "https://www.vuemastery.com/courses/querying-with-graphql/setting-up-local-state-with-apollo-client",
+  "https://www.vuemastery.com/courses/querying-with-graphql/modifying-local-state-with-apollo-client",
   "https://www.vuemastery.com/courses/validating-vue3-forms/why-vee-validate",
   "https://www.vuemastery.com/courses/validating-vue3-forms/validating-setting-up",
   "https://www.vuemastery.com/courses/validating-vue3-forms/validating-at-form-level",
@@ -267,5 +268,7 @@
   "https://www.vuemastery.com/courses/typescript-friendly-vue3/props-with-compiler-macros",
   "https://www.vuemastery.com/courses/typescript-friendly-vue3/type-safe-emit",
   "https://www.vuemastery.com/courses/typescript-friendly-vue3/vue-vs-react-framework-philosophy",
-  "https://www.vuemastery.com/courses/from-vuex-to-pinia/what-is-pinia"
+  "https://www.vuemastery.com/courses/from-vuex-to-pinia/what-is-pinia",
+  "https://www.vuemastery.com/courses/from-vuex-to-pinia/why-migrate-from-vuex",
+  "https://www.vuemastery.com/courses/from-vuex-to-pinia/background-and-setup"
 ]
