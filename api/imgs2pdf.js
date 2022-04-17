@@ -3,9 +3,9 @@ const fs = require('fs-extra')
 const imgSize = require('image-size')
 const path = require("path");
 
-const Bluebird = require('bluebird');
+/*const Bluebird = require('bluebird');
 Bluebird.config({ longStackTraces: true });
-global.Promise = Bluebird
+global.Promise = Bluebird*/
 
 /*const folderContents = async (folder) => {
     //const options = [];
@@ -33,21 +33,59 @@ global.Promise = Bluebird
 }*/
 
 const folderContents = async (folder) => {
-    const options = [];
-    await fs.readdir(folder, (err, files) => {
-        //handling error
-        if (err) {
-            return console.log('Unable to scan directory: ' + err);
-        }
-        //listing all files using forEach
-        files.forEach(function (file) {
-            if (file.includes('.png')) {
-                options.push(path.join(folder, file));
+    const files = await fs.readdir(folder)
+    // console.log('files', files);
+    if (!files.length) {
+        return console.log('No images found');
+    } else {
+        console.log('found some images', files.length);
+    }
+
+    return files
+        .filter(file => file.includes('.png'))
+        .map(file => {
+            return path.join(folder, file)
+        });
+    /*const options = [];
+    return Promise
+        .resolve()
+        .then(async () => {
+            const files = await fs.readdir(folder)
+            console.log('files', files);
+            if (!files.length) {
+                return console.log('No images found');
+            } else {
+                console.log('found some images', files);
             }
 
-        });
-    });
-    return options;
+            return files
+                .filter(file => file.includes('.png'))
+                .map(file => {
+                    return path.join(folder, file)
+            });
+            //return files;
+
+            /!*await fs.readdir(folder, (err, files) => {
+                //handling error
+                if (err) {
+                    return console.log('Unable to scan directory: ' + err);
+                }
+
+                //listing all files using forEach
+                files.forEach(function (file) {
+                    if (file.includes('.png')) {
+                        options.push(path.join(folder, file));
+                    }
+                });
+                return files;
+            });*!/
+        })
+        .then((f) => {
+            return f;
+            // return options;
+        })*/
+
+
 }
 const convert = (imgs, dest) => new Promise((resolve, reject) => {
     const doc = new PDFDocument({ autoFirstPage: false })
@@ -70,12 +108,12 @@ module.exports = async (images, sourcePath, savePath) => {
     // await fs.ensureDir(savePath)
     return Promise
         .resolve()
-        .then(async () =>  await folderContents(sourcePath))
+        .then(async () => await folderContents(sourcePath))
         .then(async (imgs) => {
             // console.log('--imgs', imgs);
             return await convert(imgs, path.resolve(savePath))
         })
-        //.catch(console.error)
+    //.catch(console.error)
 
 }//();
 

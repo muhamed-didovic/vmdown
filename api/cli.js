@@ -23,6 +23,7 @@ Options
     --extension, -x     Choose video format (default: .mp4)
     --quality, -q       Choose quality from: 1080p / 720p / 540p / 360p / 240p (default: 1080p)
     --directory, -d     Directory to save (default: ./videos)
+    --framework, -f     Framework to use between nightmare and puppeteer (default: puppeteer)
     --concurrency, -c
 
 Examples
@@ -44,6 +45,7 @@ Examples
         extension  : { type: 'string', alias: 'x', default: '.mp4' },
         quality    : { type: 'string', alias: 'q', default: '1080p' },
         concurrency: { type: 'number', alias: 'c', default: 10 },
+        framework  : { type: 'string', alias: 'f', default: 'p' },
         file       : { type: 'boolean', alias: 'f' }
 
     }
@@ -176,7 +178,25 @@ async function commonFlags(flags) {
             initial: 0
         })
 
-    return { email, password, downDir, videos, markdown, images, concurrency, extension, quality, pdf };
+    const framework = ['n', 'p'].includes(flags.framework)
+        ? flags.framework
+        : await askOrExit({
+            type   : 'select',
+            message: 'Which framework do you want to use?',
+            choices: [
+                {
+                    title: 'Nightmare',
+                    value: 'n',
+                },
+                {
+                    title: 'Puppeteer',
+                    value: 'p',
+                }
+            ],
+            initial: 0
+        })
+
+    return { email, password, downDir, videos, markdown, images, concurrency, extension, quality, pdf, framework };
 }
 
 module.exports = async () => {

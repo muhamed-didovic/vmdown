@@ -1,7 +1,7 @@
 const test = require('ava')
 const fs = require('fs-extra')
 
-const createPageCapturer = require('../api/createPageCapturer')
+const createPageCapturer = require('../api/puppeteer/createPageCapturer')
 const path = require('path')
 
 const createBrowserGetter = require('get-puppeteer-browser')

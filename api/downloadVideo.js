@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Path = require('path');
-const fileSize = require('./fileSize')
+const remote = require('promisify-remote-file-size')
 const Axios = require('axios')
 
 const getFilesizeInBytes = filename => {
@@ -10,7 +10,7 @@ const getFilesizeInBytes = filename => {
 
 const downloadVideo = async (url, dest, ms, multibar) => {
     // console.log('URL', url);
-    const remoteFileSize = await fileSize(url);
+    const remoteFileSize = await remote(url);
     if (remoteFileSize == getFilesizeInBytes(`${dest}`)) {
         console.log(`Video exists: ${remoteFileSize}, ${getFilesizeInBytes(`${dest}`)} dest: ${dest}`);
         return Promise.resolve();

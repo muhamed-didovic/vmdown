@@ -1,7 +1,7 @@
 const url = require('url')
 const path = require("path");
 const fs = require("fs-extra");
-const delay = require("./delay");
+const delay = require("../delay");
 
 // const filenamify = require("filenamify");
 // const tempy = require('tempy')
@@ -50,8 +50,7 @@ module.exports = browser => async (pageUrl, saveDir, videoFormat, quality, markd
 
             //check if source is locked
             let locked = await page.evaluate(
-                () => Array.from(document.body.querySelectorAll('.locked-action'),
-                    txt => txt.textContent)[0]
+                () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
             );
             if (locked) {
                 return;
@@ -65,8 +64,7 @@ module.exports = browser => async (pageUrl, saveDir, videoFormat, quality, markd
             }
 
             let title = await page.evaluate(
-                () => Array.from(document.body.querySelectorAll('h1.title'),
-                    txt => txt.textContent)[0]
+                () => Array.from(document.body.querySelectorAll('h1.title'), txt => txt.textContent)[0]
             );
 
             const allTitles = await page.evaluate(
@@ -123,6 +121,7 @@ module.exports = browser => async (pageUrl, saveDir, videoFormat, quality, markd
                 newString = content.split(`progressive":[`)[1];
                 finString = newString.split(']},"lang":"en","sentry":')[0];
             } catch (e) {
+                console.error('Issue with error source:', iframeSrc);
                 console.error('Issue with getting vimeo data', content, e);
                 return;
             }

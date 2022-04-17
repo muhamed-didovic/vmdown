@@ -4,10 +4,10 @@ const path = require("path");
 const cliProgress = require('cli-progress');
 
 const createPageCapturer = require("./createPageCapturer");
-const auth = require("./vueMasteryAuth");
-const imgs2pdf = require('./imgs2pdf.js');
-const downloadVideo = require("./downloadVideo");
-const getInnerText = require("./getInnerText");
+const auth = require("../vueMasteryAuth");
+const imgs2pdf = require('../imgs2pdf.js');
+const downloadVideo = require("../downloadVideo");
+const getInnerText = require("../getInnerText");
 
 const createBrowserGetter = require('get-puppeteer-browser')
 const puppeteer = require('puppeteer-core')
@@ -17,7 +17,7 @@ const findChrome = require('chrome-finder')
 const Spinnies = require('dreidels');
 const ms = new Spinnies();
 
-const sitemap = require("../json/sitemap.json");
+const sitemap = require("../../json/sitemap.json");
 
 const getBrowser = createBrowserGetter(puppeteer, {
     executablePath: findChrome(),
@@ -30,7 +30,7 @@ const getBrowser = createBrowserGetter(puppeteer, {
     // ],
 })
 
-const downloadCourse = async ({
+const scraper = async ({
     email,
     password,
     downDir,
@@ -67,10 +67,10 @@ const downloadCourse = async ({
 
     let cnt = 0;
     const capturePage = createPageCapturer(browser)
-    ms.add('capture', { text: `Start Capturing...` });
+    ms.add('capture', { text: `Start Puppeteer Capturing...` });
     await Promise
         .map(courses, async (link) => {
-            ms.update('capture', { text: `Capturing... ${++cnt} of ${courses.length} ${link}` });
+            ms.update('capture', { text: `Puppeteer Capturing... ${++cnt} of ${courses.length} ${link}` });
             return await capturePage(link, downDir, extension, quality, markdown, images, ms)
         }, {
             concurrency: 10
@@ -125,4 +125,4 @@ const downloadCourse = async ({
         })
 }
 
-module.exports = downloadCourse;
+module.exports = scraper;
