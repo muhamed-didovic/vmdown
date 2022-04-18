@@ -304,10 +304,11 @@ const scraper = async ({
         }, {
             concurrency: 1
         })
-        .then(courses => {
+        .then(async courses => {
+            await fs.writeFile(`./json/test.json`, JSON.stringify(courses, null, 2), 'utf8')
             ms.succeed('capture', { text: `Capturing done for total lessons: ${cnt}...` });
             // console.log('1courses', courses);
-            return courses.filter(c => !!c.vimeoUrl)
+            return courses.filter(c => !!c?.vimeoUrl)
         })
         .then(async courses => {
             if (videos) {

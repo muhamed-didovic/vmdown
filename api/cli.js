@@ -45,8 +45,7 @@ Examples
         extension  : { type: 'string', alias: 'x', default: '.mp4' },
         quality    : { type: 'string', alias: 'q', default: '1080p' },
         concurrency: { type: 'number', alias: 'c', default: 10 },
-        framework  : { type: 'string', alias: 'f', default: 'p' },
-        file       : { type: 'boolean', alias: 'f' }
+        framework  : { type: 'string', alias: 'f', default: 'p' }
 
     }
 })
