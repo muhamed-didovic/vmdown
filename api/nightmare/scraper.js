@@ -305,7 +305,7 @@ const scraper = async ({
             concurrency: 1
         })
         .then(async courses => {
-            await fs.writeFile(`./json/test.json`, JSON.stringify(courses, null, 2), 'utf8')
+            //await fs.writeFile(`./json/test.json`, JSON.stringify(courses, null, 2), 'utf8')
             ms.succeed('capture', { text: `Capturing done for total lessons: ${cnt}...` });
             // console.log('1courses', courses);
             return courses.filter(c => !!c?.vimeoUrl)
