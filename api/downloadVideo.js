@@ -22,7 +22,7 @@ const downloadVideo = async (url, dest, ms, multibar) => {
         responseType: 'stream'
     })
     const totalLength = headers['content-length']
-    const m = multibar.create(totalLength, 0, { file: dest });
+    const m = multibar.create(totalLength, 0, { filename: dest.split('/').pop() });
 
     const writer = fs.createWriteStream(
         Path.resolve(__dirname, dest)

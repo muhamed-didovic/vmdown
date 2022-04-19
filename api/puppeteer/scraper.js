@@ -85,8 +85,9 @@ const scraper = async ({
                 // create new container
                 const multibar = new cliProgress.MultiBar({
                     clearOnComplete: false,
-                    hideCursor     : true
-                }, cliProgress.Presets.shades_grey);
+                    hideCursor     : true,
+                    format         : '[{bar}] {percentage}% | ETA: {eta}s | Speed: {speed} | FileName: {filename} Found:{l}/{r}'
+                });
 
                 await Promise.map(courses, async ({ dest, vimeoUrl }) => await downloadVideo(vimeoUrl, dest, ms, multibar), { concurrency: 10 })
                 multibar.stop();

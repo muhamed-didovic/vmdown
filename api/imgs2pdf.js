@@ -38,7 +38,7 @@ const folderContents = async (folder) => {
     if (!files.length) {
         return console.log('No images found');
     } else {
-        console.log('found some images', files.length);
+        console.log(`found some images: ${files.length} in folder: ${folder}`);
     }
 
     return files
@@ -46,45 +46,6 @@ const folderContents = async (folder) => {
         .map(file => {
             return path.join(folder, file)
         });
-    /*const options = [];
-    return Promise
-        .resolve()
-        .then(async () => {
-            const files = await fs.readdir(folder)
-            console.log('files', files);
-            if (!files.length) {
-                return console.log('No images found');
-            } else {
-                console.log('found some images', files);
-            }
-
-            return files
-                .filter(file => file.includes('.png'))
-                .map(file => {
-                    return path.join(folder, file)
-            });
-            //return files;
-
-            /!*await fs.readdir(folder, (err, files) => {
-                //handling error
-                if (err) {
-                    return console.log('Unable to scan directory: ' + err);
-                }
-
-                //listing all files using forEach
-                files.forEach(function (file) {
-                    if (file.includes('.png')) {
-                        options.push(path.join(folder, file));
-                    }
-                });
-                return files;
-            });*!/
-        })
-        .then((f) => {
-            return f;
-            // return options;
-        })*/
-
 
 }
 const convert = (imgs, dest) => new Promise((resolve, reject) => {
@@ -111,6 +72,10 @@ module.exports = async (images, sourcePath, savePath) => {
         .then(async () => await folderContents(sourcePath))
         .then(async (imgs) => {
             // console.log('--imgs', imgs);
+            if (!imgs.length) {
+                console.log('No images found for PDF!!!');
+                return Promise.resolve()
+            }
             return await convert(imgs, path.resolve(savePath))
         })
     //.catch(console.error)
