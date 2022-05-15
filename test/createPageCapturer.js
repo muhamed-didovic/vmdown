@@ -18,9 +18,9 @@ let browser
 let capturePage
 
 const imgs = []
-const m = async link => {
+const m = async (link, quality = '1080p') => {
     if (!capturePage) capturePage = createPageCapturer(browser = await getBrowser())
-    const result = await capturePage(link, "./test", ".mp4", "1080p", true, true, ms)
+    const result = await capturePage(link, "./test", ".mp4", quality, true, true)
     imgs.push(result.imgPath)
     return result
 }
@@ -33,7 +33,7 @@ test.after.always(() => {
 })
 
 test('capturePage', async t => {
-    const res1 = await m('https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance')
+    const res1 = await m('https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance', '720p')
     const res2 = await m("https://www.vuemastery.com/courses/intro-to-vue-js/attribute-binding");
     const res3 = await m("https://www.vuemastery.com/courses/intro-to-vue-js/conditional-rendering");
     /*{

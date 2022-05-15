@@ -71,7 +71,7 @@ const scraper = async ({
     await Promise
         .map(courses, async (link) => {
             ms.update('capture', { text: `Puppeteer Capturing... ${++cnt} of ${courses.length} ${link}` });
-            return await capturePage(link, downDir, extension, quality, markdown, images, ms)
+            return await capturePage(link, downDir, extension, quality, markdown, images)
         }, {
             concurrency: 10
         })

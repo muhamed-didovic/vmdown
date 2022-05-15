@@ -3,21 +3,17 @@ const path = require("path");
 const fs = require("fs-extra");
 const delay = require("../delay");
 
-// const filenamify = require("filenamify");
-// const tempy = require('tempy')
-// const normalizePathname = require('./normalizePathname')
-
 const Bluebird = require('bluebird')
 Bluebird.config({ longStackTraces: true });
 global.Promise = Bluebird
 
-const { NodeHtmlMarkdown, NodeHtmlMarkdownOptions } = require('node-html-markdown');
+const { NodeHtmlMarkdown } = require('node-html-markdown');
 // const TurndownService = require('turndown')
 
 /**
  * @param {import('puppeteer-core').Browser} browser
  */
-module.exports = browser => async (pageUrl, saveDir, videoFormat, quality, markdown, images, ms) => {
+module.exports = browser => async (pageUrl, saveDir, videoFormat, quality, markdown, images) => {
     const nhm = new NodeHtmlMarkdown();
     // const turndownService = new TurndownService()
 
@@ -129,7 +125,6 @@ module.exports = browser => async (pageUrl, saveDir, videoFormat, quality, markd
 
             let videos = await eval(`[${finString}]`)
             let selectedVideo = await videos.find(vid => vid.quality === quality);
-
             return {
                 pageUrl,
                 courseName,
