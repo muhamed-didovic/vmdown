@@ -218,6 +218,8 @@
   "https://www.vuemastery.com/courses/real-world-testing/setup-&amp;-testing-like-a-user",
   "https://www.vuemastery.com/courses/real-world-testing/mocking-vuex-stores",
   "https://www.vuemastery.com/courses/real-world-testing/mocking-vuex-stores-part-2",
+  "https://www.vuemastery.com/courses/real-world-testing/mocking-the-network-with-mock-service-worker-part-1",
+  "https://www.vuemastery.com/courses/real-world-testing/mocking-the-network-with-mock-service-worker-part-2",
   "https://www.vuemastery.com/courses/vuex-fundamentals/vuex4-intro-to-vuex",
   "https://www.vuemastery.com/courses/vuex-fundamentals/global-state",
   "https://www.vuemastery.com/courses/vuex-fundamentals/updating-state",
@@ -271,5 +273,10 @@
   "https://www.vuemastery.com/courses/from-vuex-to-pinia/what-is-pinia",
   "https://www.vuemastery.com/courses/from-vuex-to-pinia/why-migrate-from-vuex",
   "https://www.vuemastery.com/courses/from-vuex-to-pinia/background-and-setup",
-  "https://www.vuemastery.com/courses/from-vuex-to-pinia/defining-a-store"
+  "https://www.vuemastery.com/courses/from-vuex-to-pinia/defining-a-store",
+  "https://www.vuemastery.com/courses/from-vuex-to-pinia/managing-state",
+  "https://www.vuemastery.com/courses/from-vuex-to-pinia/managing-getters",
+  "https://www.vuemastery.com/courses/from-vuex-to-pinia/changing-state-with-actions",
+  "https://www.vuemastery.com/courses/from-vuex-to-pinia/pinia-next-steps",
+  "https://www.vuemastery.com/courses/pinia-qa/pinia-qa"
 ]
