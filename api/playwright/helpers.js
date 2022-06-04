@@ -46,6 +46,11 @@ const isLogged = async page => {
 
 const auth = async (page, email, password) => {
 
+    if (!email || !password) {
+        console.log('No Credentials');
+        return
+    }
+
     const logged = await isLogged(page)
     if (logged) {
         return;
@@ -93,6 +98,7 @@ async function retry(fn, retriesLeft = 5, interval = 1000, exponential = false) 
     } catch (error) {
         if (retriesLeft) {
             console.log('....retrying left (' + retriesLeft + ')');
+            //console.error('e:', error);
             await new Promise(r => setTimeout(r, interval));
             return retry(fn, retriesLeft - 1, exponential ? interval*2 : interval, exponential);
         } else {

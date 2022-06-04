@@ -45,23 +45,22 @@ const scraper = async ({
 
     //go to homepage
     await retry(async () => {//return
-        await page.goto("https://www.vuemastery.com", { waitUntil: 'networkidle' })// wait until page load
+        await page.goto("https://www.vuemastery.com", { waitUntil: 'networkidle', timeout: 30e3 })// wait until page load
         await delay(1e3)
-    }, 6, 1e3, true)
+        await auth(page, email, password);//const a =
 
-    await auth(page, email, password);//const a =
-    // console.log('aaaaa', a);
+    }, 6, 1e3, true)
 
     ms.add('capture', { text: `Start playwright Capturing...` });
     let cnt = 0;
     await Promise
         .map(courses, async (link) => {//.slice(0, 10)
-            /*try {
-                ms.update('capture', { text: `Playwright Capturing... ${++cnt} of ${courses.length} ${he.decode(link)}` });
-                return await createPageCapturer(context, link, downDir, extension, quality, markdown, images, email, password)
-            } catch (e) {
-                console.error('Issueeeee', e);
-            }*/
+            //check is logged and if not logs user
+            await auth(page, email, password);
+
+            //check is logged user
+            await page.waitForSelector('#__layout > div > div > div > header > div > nav > div.navbar-secondary > a', { timeout: 15e3 })
+
             ms.update('capture', { text: `Playwright Capturing... ${++cnt} of ${courses.length} ${he.decode(link)}` });
             return await createPageCapturer(context, link, downDir, extension, quality, markdown, images, email, password)
 

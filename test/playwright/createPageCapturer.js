@@ -1,40 +1,29 @@
 const test = require('ava')
 const fs = require('fs-extra')
 
-const createPageCapturer = require('../../api/puppeteer/createPageCapturer')
-const { withBrowser, withPage } = require("../../api/puppeteer/helpers");
+const createPageCapturer = require('../../api/playwright/createPageCapturer')
 const path = require('path')
 
-const createBrowserGetter = require('get-puppeteer-browser')
-const puppeteer = require('puppeteer-core')
-// const puppeteer = require("puppeteer");
-const findChrome = require('chrome-finder')
+const playwright = require("playwright");
 
+const getBrowser = playwright.chromium.launch({
+    headless: true, // Set to false while development
+    //args: ['--start-maximized'],
+    // devtools: true
+});
 
-
-//const getBrowser = createBrowserGetter(puppeteer, { executablePath: findChrome(), headless: true, slowMo: 0 })
-const getBrowser = createBrowserGetter(puppeteer, {
-    executablePath: findChrome(),
-    headless      : true, // Set to false while development
-    debounce      : 500,
-    slowMo: 0,
-
-    defaultViewport: null,
-    args           : [
-        '--no-sandbox',
-        '--start-maximized', // Start in maximized state
-    ],
-})
 let browser
+let context
+let capturePage
 
 const imgs = []
 const scrape = async (link, quality = '1080p') => {
-    if (!browser) {
-        browser = await getBrowser()
+    if (!capturePage) {
+        browser = await getBrowser;
+        context = await browser.newContext();
     }
-    const page = await browser.newPage()
-    const result = await createPageCapturer(browser, page, link, "./test", ".mp4", '1080p', true, true)
-    // const result = await capturePage(link, "./test", ".mp4", quality, true, true)
+    //const result = await capturePage(link, "./test", ".mp4", quality, true, true)
+    const result = await createPageCapturer(context, link, "./test", ".mp4", quality, true, true)
     imgs.push(result.imgPath)
     return result
 }
@@ -43,7 +32,7 @@ const noop = () => {}
 test.after.always(() => {
     if (browser) browser.close()
     imgs.forEach(imgPath => fs.unlink(imgPath, noop))
-    fs.removeSync(path.join(__dirname, '..', 'intro-to-vue-js'));//, { recursive: true, force: true }
+    fs.removeSync(path.join(__dirname, 'intro-to-vue-js'));//, { recursive: true, force: true }
 })
 
 test('capturePage', async t => {
@@ -53,8 +42,8 @@ test('capturePage', async t => {
     /*{
         pageUrl: 'https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance',
         courseName: 'intro-to-vue-js',
-        dest: '../projects/vmdown/test/intro-to-vue-js/1. The Vue Instance.mp4',
-        imgPath: '../projects/vmdown/test/intro-to-vue-js/screens/1. The Vue Instance.png',
+        dest: '/Users/muhameddidovic/projects/vmdown/test/intro-to-vue-js/1. The Vue Instance.mp4',
+        imgPath: '/Users/muhameddidovic/projects/vmdown/test/intro-to-vue-js/screens/1. The Vue Instance.png',
         vimeoUrl: 'https://vod-progressive.akamaized.net/exp=1648034110~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1741%2F10%2F258707456%2F949450685.mp4~hmac=fa8d11293f72a56f4ea09e215dbcb216e8e64c6d531aebdbd927e7987c17f9a7/vimeo-prod-skyfire-std-us/01/1741/10/258707456/949450685.mp4'
     }*/
     t.true(fs.existsSync(res1.imgPath))

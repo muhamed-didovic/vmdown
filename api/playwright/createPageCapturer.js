@@ -36,7 +36,7 @@ const isLocked = async page => {
     }
 };
 
-const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, quality, markdown, images, email, password) => {//(page, context) =>
+const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, quality, markdown, images) => {//(page, context) =>
     let page;
     try {
         const nhm = new NodeHtmlMarkdown();
@@ -48,10 +48,10 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
             await delay(1e3)
 
             //check is logged and if not logs user
-            await auth(page, email, password);
+            // await auth(page, email, password);
 
             //check is logged user
-            await page.waitForSelector('#__layout > div > div > div > header > div > nav > div.navbar-secondary > a', { timeout: 15e3 })
+            //await page.waitForSelector('#__layout > div > div > div > header > div > nav > div.navbar-secondary > a', { timeout: 15e3 })
         }, 6, 10e3, true)
 
         let courseName = getCourseName(pageUrl);
