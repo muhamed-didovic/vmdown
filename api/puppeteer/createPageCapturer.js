@@ -5,7 +5,7 @@ const he = require('he')
 const delay = require("../delay");
 
 const { NodeHtmlMarkdown } = require('node-html-markdown');
-const { retry } = require("../playwright/helpers");
+const { retry } = require("../puppeteer/helpers");
 
 module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, markdown, images) => {//browser =>
     const nhm = new NodeHtmlMarkdown();
