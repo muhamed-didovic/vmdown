@@ -23,7 +23,7 @@ Options
     --extension, -x     Choose video format (default: .mp4)
     --quality, -q       Choose quality from: 1080p / 720p / 540p / 360p / 240p (default: 1080p)
     --directory, -d     Directory to save (default: ./videos)
-    --framework, -f     Framework to use between nightmare and puppeteer (default: puppeteer)
+    --framework, -f     Framework to use between nightmare, puppeteer and playwright (default: puppeteer)
     --concurrency, -c
 
 Examples
@@ -31,6 +31,7 @@ Examples
     $ vmdown -a
     $ vmdown [url] [-e user@gmail.com] [-p password] [-d dirname] [-v true/false] [-m true/false] [-i true/false] [--pdf true/false] [-c number]
 `, {
+    hardRejection: false,
     flags: {
         help       : { alias: 'h' },
         version    : { alias: 'v' },
@@ -53,7 +54,7 @@ Examples
 
 // const errorHandler = err => (console.log('\u001B[1K'), logger.fail(String(err)), process.exit(1))
 // const errorHandler = err => (console.error(err), logger.fail(String(err)), process.exit(1))
-const errorHandler = err => console.error('err:', err)
+// const errorHandler = err => console.error('err:', err)
 
 const askOrExit = question => prompts({ name: 'value', ...question }, { onCancel: () => process.exit(0) }).then(r => r.value);
 
@@ -177,19 +178,23 @@ async function commonFlags(flags) {
             initial: 0
         })
 
-    const framework = ['n', 'p'].includes(flags.framework)
+    const framework = ['n', 'p', 'pw'].includes(flags.framework)
         ? flags.framework
         : await askOrExit({
             type   : 'select',
             message: 'Which framework do you want to use?',
             choices: [
                 {
+                    title: 'Puppeteer',
+                    value: 'p',
+                },
+                {
                     title: 'Nightmare',
                     value: 'n',
                 },
                 {
-                    title: 'Puppeteer',
-                    value: 'p',
+                    title: 'Playwright',
+                    value: 'pw',
                 }
             ],
             initial: 0

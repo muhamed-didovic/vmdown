@@ -3,3 +3,5 @@ node_modules
 #package-lock.json
 .idea
 /videos/**/*.mp4
+/videos/**/*.png
+/videos/**/*.pdf
