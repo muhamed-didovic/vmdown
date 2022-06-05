@@ -7,31 +7,31 @@ const Spinnies = require('dreidels');
 const login = async (n, email, password) => {
     const ms = new Spinnies();
     ms.add('login', { text: `Checking authentication...` });
-    await n.goto('https://www.vuemastery.com/')
-        .wait('button[data-test="loginBtn"]')
-        .click('button[data-test="loginBtn"]')
-        // .wait('button[class="button inverted"]')
-        // .click('button[class="button inverted"]')
-        // .wait('button[class="button link"]')
-        // .click('button[class="button link"]')
-        .wait('form > div:nth-child(3) > input')
-        .type('form > div:nth-child(3) > input', email)
-        .type('form > div.form-group.-inline > input', password)
-        .click('form > div.form-actions > button')
-        .wait('#__layout > div > div > div > header > div > nav > div.navbar-secondary > a')
-        .evaluate(() => document.querySelector('#__layout > div > div > div > header > div > nav > div.navbar-secondary > button').innerText)
-        .then((text) => {
-            console.log('text', text);
-            if (text !== 'Sign Out') {
-                ms.fail('login', { text: "Cannot login. Check your user credentials. \n WARNING: Just free videos will be downloaded" });
-                throw new Error('Auth failed')
-            }
-            ms.succeed('login', { text: "User successfully logged in." });
-        })
+    return await retry(async () => {//return
+        return await n
+            .goto('https://www.vuemastery.com/')
+            .wait('button[data-test="loginBtn"]')
+            .click('button[data-test="loginBtn"]')
+            .wait('form > div:nth-child(3) > input')
+            .type('form > div:nth-child(3) > input', email)
+            .type('form > div.form-group.-inline > input', password)
+            .click('form > div.form-actions > button')
+            .wait('#__layout > div > div > div > header > div > nav > div.navbar-secondary > a')
+            .evaluate(() => document.querySelector('#__layout > div > div > div > header > div > nav > div.navbar-secondary > button').innerText)
+            .then((text) => {
+                console.log('text', text);
+                if (text !== 'Sign Out') {
+                    ms.fail('login', { text: "Cannot login. Check your user credentials. \n WARNING: Just free videos will be downloaded" });
+                    throw new Error('Auth failed')
+                }
+                ms.succeed('login', { text: "User successfully logged in." });
+            })
+    }, 6, 1e3, true)
+
 };
 const makeScreenshots = async (n, saveDir, courseName, newTitle, ms) => {
     const name = (Math.random() + 1).toString(36).substring(7)
-    ms.add(name, { text: `Start screenshot...` });
+    // ms.add(name, { text: `Start screenshot...` });
     await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 's'))
     await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'nightmare-screenshots'))
 
@@ -63,7 +63,7 @@ const makeScreenshots = async (n, saveDir, courseName, newTitle, ms) => {
             /*let sheet = window.document.styleSheets[0];
             sheet.insertRule('#firstHeading:before { content: none }', sheet.cssRules.length);*/
             const dimensions = document.querySelector('.relative');
-            console.log('dimensions', dimensions.scrollWidth, dimensions.scrollHeight);
+            // console.log('dimensions', dimensions.scrollWidth, dimensions.scrollHeight);
             return {
                 width : dimensions.scrollWidth,
                 height: dimensions.scrollHeight //+ 100//+ 600
@@ -71,7 +71,7 @@ const makeScreenshots = async (n, saveDir, courseName, newTitle, ms) => {
         });
     //console.log('dimensions', dimensions);
     const height = dimensions.height;
-    ms.succeed(name, { text: `Capturing height: ${height}` });
+    // ms.succeed(name, { text: `Capturing height: ${height}` });
     // ms.update(name, { text: `Capturing height: ${height}` });
 
     /* await n
@@ -102,7 +102,7 @@ const makeScreenshots = async (n, saveDir, courseName, newTitle, ms) => {
         // what size of the window to set
         let remainder = Math.min(pageheight, height - offset);
 
-        ms.update(name, { text: `scroll to ${offset} of ${height} Resizing to 1595x${remainder + viewportMagicNumber}` });
+        // ms.update(name, { text: `scroll to ${offset} of ${height} Resizing to 1595x${remainder + viewportMagicNumber}` });
 
         await n
             .viewport(1595, remainder + viewportMagicNumber)
@@ -140,8 +140,8 @@ const makeScreenshots = async (n, saveDir, courseName, newTitle, ms) => {
 
     });*/
     //ms.succeed(name, { text: `Screenshots done for ${newTitle}...` });
-    console.log(`Screenshots done for ${newTitle}...`);
-    ms.remove(name)
+    // console.log(`Screenshots done for ${newTitle}...`);
+    // ms.remove(name)
 
 };
 const extractVimeoUrl = async (iframeSrc, n, quality) => {
@@ -192,6 +192,7 @@ async function retry(fn, retriesLeft = 5, interval = 1000, exponential = false) 
     } catch (error) {
         if (retriesLeft) {
             console.log('....retrying left (' + retriesLeft + ')');
+            console.error('e:', error);
             await new Promise(r => setTimeout(r, interval));
             return retry(fn, retriesLeft - 1, exponential ? interval*2 : interval, exponential);
         } else {

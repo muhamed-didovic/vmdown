@@ -62,7 +62,7 @@ const scraper = async ({
             await page.waitForSelector('#__layout > div > div > div > header > div > nav > div.navbar-secondary > a', { timeout: 15e3 })
 
             ms.update('capture', { text: `Playwright Capturing... ${++cnt} of ${courses.length} ${he.decode(link)}` });
-            return await createPageCapturer(context, link, downDir, extension, quality, markdown, images, email, password)
+            return await createPageCapturer(context, link, downDir, extension, quality, markdown, images)
 
         }, {
             concurrency: 3
