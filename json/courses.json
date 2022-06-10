@@ -3,371 +3,532 @@
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance",
     "courseName": "intro-to-vue-js",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/1. The Vue Instance.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/screens/1. The Vue Instance.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650303970~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1741%2F10%2F258707456%2F949450685.mp4~hmac=a5f65ef7c5a377c6979192b11c1e0bf35841de9e4c96cb189efa5017dc3785ef/vimeo-prod-skyfire-std-us/01/1741/10/258707456/949450685.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/nightmare-screenshots/1. The Vue Instance.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344283~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1741%2F10%2F258707456%2F3282848817.mp4~hmac=4895bc354ec818612a8b2ac7f1f1b6a5db3fb363d80f6bcddf602dccf78ef93b/vimeo-prod-skyfire-std-us/01/1741/10/258707456/3282848817.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-js/attribute-binding",
     "courseName": "intro-to-vue-js",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/2. Attribute Binding.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/screens/2. Attribute Binding.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650303965~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1774%2F10%2F258874670%2F950257930.mp4~hmac=ca839f6cf2946c7ba5fc8a2ac8444db59bc27cdadab52d518fe8fde6d1ec7679/vimeo-prod-skyfire-std-us/01/1774/10/258874670/950257930.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/nightmare-screenshots/2. Attribute Binding.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344300~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1774%2F10%2F258874670%2F950257930.mp4~hmac=ca304ccaf3637e04f4452bc7f8c68abfb2fe106c3ca220dfa90e74efa70b3b7b/vimeo-prod-skyfire-std-us/01/1774/10/258874670/950257930.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-js/conditional-rendering",
     "courseName": "intro-to-vue-js",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/3. Conditional Rendering.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/screens/3. Conditional Rendering.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650303972~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F173%2F12%2F300867455%2F1149752567.mp4~hmac=5ff5834d2013e8ab1213808093f0c2aecd75510f209f111b961f0bd7ce94929e/vimeo-prod-skyfire-std-us/01/173/12/300867455/1149752567.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/nightmare-screenshots/3. Conditional Rendering.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344318~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F173%2F12%2F300867455%2F1149752567.mp4~hmac=e3dbfa8f2ab48a15aca6b17ecc68e158f9b7749dc695495d2706dc664057b4fe/vimeo-prod-skyfire-std-us/01/173/12/300867455/1149752567.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-js/list-rendering",
     "courseName": "intro-to-vue-js",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/4. List Rendering.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/screens/4. List Rendering.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650303969~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1777%2F10%2F258889657%2F950334286.mp4~hmac=cc16e344b3c0981d5c7808ae5149ed1eb00bb9cb562375b155d84f7aca1dab27/vimeo-prod-skyfire-std-us/01/1777/10/258889657/950334286.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/nightmare-screenshots/4. List Rendering.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344336~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1777%2F10%2F258889657%2F950334286.mp4~hmac=fe6e5ee6d2add18002e686ef863b7567b84ec7eae83ad4729d43c29c8e3e1d0d/vimeo-prod-skyfire-std-us/01/1777/10/258889657/950334286.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-js/event-handling",
     "courseName": "intro-to-vue-js",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/5. Event Handling.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/screens/5. Event Handling.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650303976~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1842%2F10%2F259211539%2F951895212.mp4~hmac=99f5ec0d197ce362558a7cbc83e446a25a9e196a9900ec1f39c87f34e72dc7ac/vimeo-prod-skyfire-std-us/01/1842/10/259211539/951895212.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/nightmare-screenshots/5. Event Handling.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344355~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1842%2F10%2F259211539%2F951895212.mp4~hmac=5089673c43e29cd8adc77e2caf0a0bfe7bb3de6f4c89f518855e8d6600e5b9b5/vimeo-prod-skyfire-std-us/01/1842/10/259211539/951895212.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-js/class-&-style-binding",
+    "courseName": "intro-to-vue-js",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/6. Class & Style Binding.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/nightmare-screenshots/6. Class & Style Binding.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344373~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1846%2F10%2F259233921%2F952007456.mp4~hmac=1153d21ccd8187d2e680d554ac7d207cbe81b9e5c0c3de8f5fcbeafa9d829ecc/vimeo-prod-skyfire-std-us/01/1846/10/259233921/952007456.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-js/vue-computed-properties",
     "courseName": "intro-to-vue-js",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/7. Computed Properties.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/screens/7. Computed Properties.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650303978~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1987%2F10%2F259937361%2F1190645823.mp4~hmac=f9961433eb760b22b4efd14aea2014e0060535315be887df81b2dacafdfaccd9/vimeo-prod-skyfire-std-us/01/1987/10/259937361/1190645823.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/nightmare-screenshots/7. Computed Properties.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344393~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1987%2F10%2F259937361%2F1190645823.mp4~hmac=7cc2ede5cc7036b69ea7299906a0e61ef80c4feda1fbe3dc2e2540a3ef344316/vimeo-prod-skyfire-std-us/01/1987/10/259937361/1190645823.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-js/components",
     "courseName": "intro-to-vue-js",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/8. Components.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/screens/8. Components.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650303984~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2610%2F10%2F263051367%2F970225443.mp4~hmac=1e93a4746e766cc387154c5549ce765950de36e8fa83d969598f1fd3285e200f/vimeo-prod-skyfire-std-us/01/2610/10/263051367/970225443.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/nightmare-screenshots/8. Components.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344414~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2610%2F10%2F263051367%2F970225443.mp4~hmac=e70d817a8aa7f12d343078218bca847b5dc515d2647a7dce7f56c6d53f7bd830/vimeo-prod-skyfire-std-us/01/2610/10/263051367/970225443.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-js/communicating-events",
     "courseName": "intro-to-vue-js",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/9. Communicating Events.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/screens/9. Communicating Events.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650303974~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2782%2F10%2F263911367%2F975279238.mp4~hmac=e0649b0f74cbe1ac60311705a01202f724dd166cdca50c4ee1fbd7d75a1dbaf4/vimeo-prod-skyfire-std-us/01/2782/10/263911367/975279238.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/nightmare-screenshots/9. Communicating Events.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344433~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2782%2F10%2F263911367%2F975279238.mp4~hmac=0d812ab0586bcbfa4ddc88a6105c5ed00f49923213e3f95dae23c1faa458ae5a/vimeo-prod-skyfire-std-us/01/2782/10/263911367/975279238.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-js/forms",
     "courseName": "intro-to-vue-js",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/10. Forms & v-model.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/screens/10. Forms & v-model.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650303981~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2938%2F10%2F264692706%2F982436515.mp4~hmac=a1bb98f870b08fa39aa95f8605799a460b00a22d781b5f6e18701776841a2f24/vimeo-prod-skyfire-std-us/01/2938/10/264692706/982436515.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/nightmare-screenshots/10. Forms & v-model.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344464~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2938%2F10%2F264692706%2F982436515.mp4~hmac=eeb2ce2a4d794ad1ad3701868e4569c17f6047047adf4dc5be137bf9ed00fc80/vimeo-prod-skyfire-std-us/01/2938/10/264692706/982436515.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-js/tabs",
+    "courseName": "intro-to-vue-js",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/11. Tabs.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-js/nightmare-screenshots/11. Tabs.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344487~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3459%2F10%2F267299472%2F993043590.mp4~hmac=bbe4fba6fedfd60f9f12e3fbad3cbacdbb2ae6f5555598e649cb145f854803e2/vimeo-prod-skyfire-std-us/01/3459/10/267299472/993043590.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/advanced-components/the-introduction",
     "courseName": "advanced-components",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/advanced-components/1. Introduction.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/advanced-components/screens/1. Introduction.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304530~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2717%2F10%2F263589430%2F974935847.mp4~hmac=5116337d4bcf3d0f09b92c1b59db525ea1f4efedf18e679a7c1899c269b4c91f/vimeo-prod-skyfire-std-us/01/2717/10/263589430/974935847.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/advanced-components/nightmare-screenshots/1. Introduction.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344509~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2717%2F10%2F263589430%2F974935847.mp4~hmac=43001b5b666f3f293266f31c091c3034a88afbcbae2823548d26a38a41e24439/vimeo-prod-skyfire-std-us/01/2717/10/263589430/974935847.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/advanced-components/evan-you-on-proxies",
     "courseName": "advanced-components",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/advanced-components/3. Evan You on Proxies.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/advanced-components/screens/3. Evan You on Proxies.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304526~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F257%2F11%2F276288371%2F1032300715.mp4~hmac=ada09d93c27c066b1e017a2f224c7d051dde4171424529779e31737a5a951b7d/vimeo-prod-skyfire-std-us/01/257/11/276288371/1032300715.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/advanced-components/nightmare-screenshots/3. Evan You on Proxies.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344546~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F257%2F11%2F276288371%2F1032300715.mp4~hmac=a834b0d65bbaf766599442e3cd7fad558787d626656018e0465b23cfab320b65/vimeo-prod-skyfire-std-us/01/257/11/276288371/1032300715.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/real-world-vue-js/real-world-intro",
     "courseName": "real-world-vue-js",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/real-world-vue-js/1. Intro to Real World Vue.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/real-world-vue-js/screens/1. Intro to Real World Vue.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304522~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4473%2F11%2F297369661%2F1133413973.mp4~hmac=bd317a68fb3f1447ef66326fe23c3e96c974a4b9075547f68980d835d49d5d64/vimeo-prod-skyfire-std-us/01/4473/11/297369661/1133413973.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/real-world-vue-js/nightmare-screenshots/1. Intro to Real World Vue.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344609~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4473%2F11%2F297369661%2F1133413973.mp4~hmac=8062b9e0ffa92ea40b15a52b03c25030e430202e8dd034f189f50679e5b7b36c/vimeo-prod-skyfire-std-us/01/4473/11/297369661/1133413973.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/real-world-vue-js/vue-cli",
     "courseName": "real-world-vue-js",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/real-world-vue-js/2. Vue CLI 3 - Creating our Project.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/real-world-vue-js/screens/2. Vue CLI 3 - Creating our Project.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304519~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F472%2F11%2F277360353%2F1050687530.mp4~hmac=594a80c712efa56d77e7700d3b7b8632884c4e52fd068169ea77e5b9bc2a8079/vimeo-prod-skyfire-std-us/01/472/11/277360353/1050687530.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/real-world-vue-js/nightmare-screenshots/2. Vue CLI 3 - Creating our Project.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344649~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F472%2F11%2F277360353%2F1050687530.mp4~hmac=b0051991bdeea0558d61e27a94272fa2c8e4d3a5551f021fcd480696ad2446d1/vimeo-prod-skyfire-std-us/01/472/11/277360353/1050687530.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/scaling-vue-with-nuxt-js/why-use-nuxt",
     "courseName": "scaling-vue-with-nuxt-js",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/scaling-vue-with-nuxt-js/1. Why Use Nuxt.js?.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/scaling-vue-with-nuxt-js/screens/1. Why Use Nuxt.js?.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304510~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2351%2F12%2F311756540%2F1278864147.mp4~hmac=a6f2bdfaaa49197b55ea0f47127651f7fa8ba0e0ec6eff92203742f1fd9c9cc2/vimeo-prod-skyfire-std-us/01/2351/12/311756540/1278864147.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/scaling-vue-with-nuxt-js/nightmare-screenshots/1. Why Use Nuxt.js?.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344721~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2351%2F12%2F311756540%2F1278864147.mp4~hmac=555e038241808f1bf901f8f77976672ed7b1a884d2b3f1caa4ff06412c0f60fa/vimeo-prod-skyfire-std-us/01/2351/12/311756540/1278864147.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/mastering-vuex/intro-to-vuex",
     "courseName": "mastering-vuex",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/mastering-vuex/1. Intro to Vuex.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/mastering-vuex/screens/1. Intro to Vuex.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304498~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4503%2F11%2F297516469%2F1145512740.mp4~hmac=9f50edc1f5083b1b39e427814e691aa6d7e9e5452fb9e827744615bb9bca0341/vimeo-prod-skyfire-std-us/01/4503/11/297516469/1145512740.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/mastering-vuex/nightmare-screenshots/1. Intro to Vuex.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344801~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4503%2F11%2F297516469%2F1145512740.mp4~hmac=be1addaf022b1a3f46f4c6354ca3a6df0b7652e26b5961106726036d4b18e4d6/vimeo-prod-skyfire-std-us/01/4503/11/297516469/1145512740.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/mastering-vuex/mastering-vuex-orientation",
+    "courseName": "mastering-vuex",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/mastering-vuex/2. Mastering Vuex Orientation.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/mastering-vuex/nightmare-screenshots/2. Mastering Vuex Orientation.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344824~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4858%2F11%2F299290718%2F1142370023.mp4~hmac=048f3b5e0d66356b9529acc8ccc3b39e5d00596c64f5ef4f9872c5b6ebc1a30b/vimeo-prod-skyfire-std-us/01/4858/11/299290718/1142370023.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/next-level-vue/next-level-vue-orientation",
     "courseName": "next-level-vue",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/next-level-vue/1. Next-Level Vue: Orientation.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/next-level-vue/screens/1. Next-Level Vue: Orientation.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304469~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4943%2F11%2F299718108%2F1144257138.mp4~hmac=256475fbd62253f19f2b5ceb38af0a27804c69a4b18dbc5b14375c111bc891f5/vimeo-prod-skyfire-std-us/01/4943/11/299718108/1144257138.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/next-level-vue/nightmare-screenshots/1. Next-Level Vue: Orientation.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344865~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4943%2F11%2F299718108%2F1144257138.mp4~hmac=9b50f08a731ae2a70c642f5d7d303d9fa9f318cbaa8f9f5d1e76bbf380265562/vimeo-prod-skyfire-std-us/01/4943/11/299718108/1144257138.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/next-level-vue/progress-bar-axios-interceptors",
+    "courseName": "next-level-vue",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/next-level-vue/2. Progress Bar: Axios Interceptors.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/next-level-vue/nightmare-screenshots/2. Progress Bar: Axios Interceptors.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344888~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4523%2F11%2F297619886%2F1134362063.mp4~hmac=6c26dbb5e3857863fa34b333e5b01e3c38d652bdc7e6417cad61d710692ae7d1/vimeo-prod-skyfire-std-us/01/4523/11/297619886/1134362063.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/next-level-vue/mixins",
     "courseName": "next-level-vue",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/next-level-vue/12. Mixins.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/next-level-vue/screens/12. Mixins.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304446~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2464%2F12%2F312320460%2F1206861746.mp4~hmac=74355b36526358e5691ba706320cf721caa2bdd57b3e58c59733781e17b0a091/vimeo-prod-skyfire-std-us/01/2464/12/312320460/1206861746.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/next-level-vue/nightmare-screenshots/12. Mixins.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344939~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2464%2F12%2F312320460%2F1206861746.mp4~hmac=3baef042bdb64cf738226110493b5106226005522daf679d2a740ffc546d2839/vimeo-prod-skyfire-std-us/01/2464/12/312320460/1206861746.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/token-based-authentication/intro-to-authentication",
     "courseName": "token-based-authentication",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/token-based-authentication/1. Intro to Authentication.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/token-based-authentication/screens/1. Intro to Authentication.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304433~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4508%2F12%2F322541550%2F1255564199.mp4~hmac=6335965201d328f87d06cbafd6b45f768a8a000f3abff1eb14a2f9b482231f4b/vimeo-prod-skyfire-std-us/01/4508/12/322541550/1255564199.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/token-based-authentication/nightmare-screenshots/1. Intro to Authentication.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344960~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4508%2F12%2F322541550%2F1255564199.mp4~hmac=9e273c6ef8a19f484567a5d4b4ca8139de773324d77187359322ae702be16e30/vimeo-prod-skyfire-std-us/01/4508/12/322541550/1255564199.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/token-based-authentication/project-structure",
+    "courseName": "token-based-authentication",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/token-based-authentication/2. Project Structure.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/token-based-authentication/nightmare-screenshots/2. Project Structure.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654344981~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F511%2F13%2F327559707%2F3286676196.mp4~hmac=78838ca68989ea848e1164d6bd545e8882d1953130ac627ba4ac85fc0807b465/vimeo-prod-skyfire-std-us/01/511/13/327559707/3286676196.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/watch-us-build-trello-clone/tour-of-the-app",
     "courseName": "watch-us-build-trello-clone",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/watch-us-build-trello-clone/1. Tour of the App.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/watch-us-build-trello-clone/screens/1. Tour of the App.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304423~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F568%2F13%2F327844370%2F1294625779.mp4~hmac=f1b186474c3a80c1a053adfd8c338b475982b33e7d7b594c093b6c8c201c74f0/vimeo-prod-skyfire-std-us/01/568/13/327844370/1294625779.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/watch-us-build-trello-clone/nightmare-screenshots/1. Tour of the App.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345016~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F568%2F13%2F327844370%2F1294625779.mp4~hmac=ef2b36dd2cd7885266e58ba8f740e97ee26cbde8602ec2df3825d1aae13b7b65/vimeo-prod-skyfire-std-us/01/568/13/327844370/1294625779.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/watch-us-build-trello-clone/building-our-board",
+    "courseName": "watch-us-build-trello-clone",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/watch-us-build-trello-clone/2. Building our Board.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/watch-us-build-trello-clone/nightmare-screenshots/2. Building our Board.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345338~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F842%2F13%2F329214344%2F1296041372.mp4~hmac=455283bf55cc1d3bb4fc96a23be120b02e5ce54ee5e970a51719b74c45f66d93/vimeo-prod-skyfire-std-us/01/842/13/329214344/1296041372.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/beautify-with-vuetify/getting-started-with-vuetify",
     "courseName": "beautify-with-vuetify",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/beautify-with-vuetify/1. Getting Started with Vuetify.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/beautify-with-vuetify/screens/1. Getting Started with Vuetify.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304413~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4206%2F13%2F346032810%2F1433848577.mp4~hmac=eb6931edac9bb0bcfba0f83c1d8a31c502ae73cf17cb66b4cf5746edf44a02bf/vimeo-prod-skyfire-std-us/01/4206/13/346032810/1433848577.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/beautify-with-vuetify/nightmare-screenshots/1. Getting Started with Vuetify.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345091~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4206%2F13%2F346032810%2F1433848577.mp4~hmac=b4d7f1ea061df481dad35a5cebbcafd3b518fc793bc5e9a3f45d93d9d71e33dd/vimeo-prod-skyfire-std-us/01/4206/13/346032810/1433848577.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/beautify-with-vuetify/components-part-1",
+    "courseName": "beautify-with-vuetify",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/beautify-with-vuetify/2. Components (Pt. 1).mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/beautify-with-vuetify/nightmare-screenshots/2. Components (Pt. 1).png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345119~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F100%2F14%2F350501837%2F1421039629.mp4~hmac=b77e12f594691ce942030e5e06bcff8fc9131484a515ee64b61559d14236a401/vimeo-prod-skyfire-std-us/01/100/14/350501837/1421039629.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/animating-vue/why-animate",
     "courseName": "animating-vue",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/animating-vue/1. Why Animate.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/animating-vue/screens/1. Why Animate.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304384~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F261%2F14%2F351308397%2F1424558267.mp4~hmac=10d43ddd57d61cd919465c151fea01dae0d5c3500325681ed329949348ca9ae5/vimeo-prod-skyfire-std-us/01/261/14/351308397/1424558267.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/animating-vue/nightmare-screenshots/1. Why Animate.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345161~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F261%2F14%2F351308397%2F1424558267.mp4~hmac=1d7b04fa68fdff73c766d556e8e6f2db69a841300f293f4e644006ffb7539f3e/vimeo-prod-skyfire-std-us/01/261/14/351308397/1424558267.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/animating-vue/transitions",
+    "courseName": "animating-vue",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/animating-vue/2. Transitions.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/animating-vue/nightmare-screenshots/2. Transitions.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345180~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F781%2F14%2F353909159%2F1438866696.mp4~hmac=459bfba2115a43724a75aa936152337e690b6432476e475f7465da3d567879b2/vimeo-prod-skyfire-std-us/01/781/14/353909159/1438866696.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/vue-3-essentials/why-the-composition-api",
     "courseName": "vue-3-essentials",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/vue-3-essentials/1. Why the Composition API.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue-3-essentials/screens/1. Why the Composition API.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304366~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2822%2F14%2F364111799%2F1948072422.mp4~hmac=2979aa2e9172d0d1e56bbde3c8407cc0b3f625a2e2027a884f01b1c3085d904e/vimeo-prod-skyfire-std-us/01/2822/14/364111799/1948072422.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue-3-essentials/nightmare-screenshots/1. Why the Composition API.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345228~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2822%2F14%2F364111799%2F1948072422.mp4~hmac=7559b7fb9476c3e4f7d9fda0dff563d1dc7b7966d67d4a4c5eee82910419bbd5/vimeo-prod-skyfire-std-us/01/2822/14/364111799/1948072422.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/vue-3-essentials/setup-and-reactive-references",
+    "courseName": "vue-3-essentials",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/vue-3-essentials/2. Setup & Reactive References.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue-3-essentials/nightmare-screenshots/2. Setup & Reactive References.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345245~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2828%2F14%2F364140610%2F1948098428.mp4~hmac=cd02ca9a8836d1d339588a0ef1745447020f85cbd9b574eb8cf04184771537ec/vimeo-prod-skyfire-std-us/01/2828/14/364140610/1948098428.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/vue-3-essentials/lifecycle-hooks",
     "courseName": "vue-3-essentials",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/vue-3-essentials/7. Lifecycle Hooks.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue-3-essentials/screens/7. Lifecycle Hooks.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304344~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4550%2F14%2F372753110%2F1948142103.mp4~hmac=d63c088fb4cf2feac5313b699a1f9b4e7dd4f97622788205839b2ec5511a4757/vimeo-prod-skyfire-std-us/01/4550/14/372753110/1948142103.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue-3-essentials/nightmare-screenshots/7. Lifecycle Hooks.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345285~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4550%2F14%2F372753110%2F1948142103.mp4~hmac=a0f96438d40a079cf2152c21d1d62a0ef4e3bee16fa922f15a8df2bedb910b85/vimeo-prod-skyfire-std-us/01/4550/14/372753110/1948142103.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/vue-3-essentials/teleport",
     "courseName": "vue-3-essentials",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/vue-3-essentials/11. Teleport.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue-3-essentials/screens/11. Teleport.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304324~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4991%2F16%2F424955491%2F1948206019.mp4~hmac=2dea0cb9f1b9ad34bdaab60dab9ab0e9c567697419affd446de7d12861df53ac/vimeo-prod-skyfire-std-us/01/4991/16/424955491/1948206019.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue-3-essentials/nightmare-screenshots/11. Teleport.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345338~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4991%2F16%2F424955491%2F1948206019.mp4~hmac=098578273d8fa0a34a281c9e20acacfc2b705c23ca8f60a55946800385ca5770/vimeo-prod-skyfire-std-us/01/4991/16/424955491/1948206019.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/unit-testing/what-to-test",
     "courseName": "unit-testing",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/unit-testing/1. What to test.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/unit-testing/screens/1. What to test.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304305~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2142%2F15%2F385713441%2F1624464312.mp4~hmac=959e55f3dba8790762306a64c0ad2bd01137fb48c3a8c3205f748d0639f68740/vimeo-prod-skyfire-std-us/01/2142/15/385713441/1624464312.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/unit-testing/nightmare-screenshots/1. What to test.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345360~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2142%2F15%2F385713441%2F1624464312.mp4~hmac=92ace53105ffe83efaabdd4bd6dd62ba6f65de80b60f2e6a3747e93ced6d91b6/vimeo-prod-skyfire-std-us/01/2142/15/385713441/1624464312.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/unit-testing/writing-a-unit-test-with-jest",
+    "courseName": "unit-testing",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/unit-testing/2. Writing a Unit Test with Jest.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/unit-testing/nightmare-screenshots/2. Writing a Unit Test with Jest.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345390~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2437%2F15%2F387189765%2F1713064298.mp4~hmac=bbffc23e3cd17d11bdff68f92b74ab43e3223a7a777ddec1c1a92b3940afe8d9/vimeo-prod-skyfire-std-us/01/2437/15/387189765/1713064298.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/vue-3-reactivity/vue3-reactivity",
     "courseName": "vue-3-reactivity",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/vue-3-reactivity/1. Vue 3 Reactivity.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue-3-reactivity/screens/1. Vue 3 Reactivity.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304279~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2750%2F15%2F388752844%2F1642945194.mp4~hmac=96ee66382f6aac30b349891fbd6383702d357f0971595b5ac1a5ade6dfbee9b0/vimeo-prod-skyfire-std-us/01/2750/15/388752844/1642945194.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue-3-reactivity/nightmare-screenshots/1. Vue 3 Reactivity.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345441~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2750%2F15%2F388752844%2F1642945194.mp4~hmac=06f9ac0570a718855c84b088324bc62df463543fd80a83e3d50c92938e33e645/vimeo-prod-skyfire-std-us/01/2750/15/388752844/1642945194.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/vue-3-reactivity/proxy-and-reflect",
+    "courseName": "vue-3-reactivity",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/vue-3-reactivity/2. Proxy and Reflect.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue-3-reactivity/nightmare-screenshots/2. Proxy and Reflect.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345468~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2751%2F15%2F388759486%2F1880760667.mp4~hmac=b6c907277c2420ba8aa1210c9df731b3f20708f2ecebb48324021d7595185347/vimeo-prod-skyfire-std-us/01/2751/15/388759486/1880760667.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/component-design-patterns/introduction",
     "courseName": "component-design-patterns",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/component-design-patterns/1. Introduction.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/component-design-patterns/screens/1. Introduction.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304264~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3945%2F15%2F394725602%2F1941177413.mp4~hmac=98fe366616f5726c0b2cd6da81faaef0f11efe0d2c10455b415e0bcf5369270b/vimeo-prod-skyfire-std-us/01/3945/15/394725602/1941177413.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/component-design-patterns/nightmare-screenshots/1. Introduction.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345509~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3945%2F15%2F394725602%2F1941177413.mp4~hmac=ccca317866c90dab02b4b060a966dc36b48b22449d12a74eccd4bbf42fda98c0/vimeo-prod-skyfire-std-us/01/3945/15/394725602/1941177413.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/component-design-patterns/props-fundamentals",
+    "courseName": "component-design-patterns",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/component-design-patterns/2. Props: Fundamentals.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/component-design-patterns/nightmare-screenshots/2. Props: Fundamentals.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345527~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3899%2F15%2F394498766%2F1941183141.mp4~hmac=68a461ebe79c4c00af0083afcbec48b35ba7857178bdf975010e58fdb7eca62c/vimeo-prod-skyfire-std-us/01/3899/15/394498766/1941183141.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/build-a-gmail-clone-with-vue3/tour-the-project",
     "courseName": "build-a-gmail-clone-with-vue3",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/build-a-gmail-clone-with-vue3/1. Tour the Project.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/build-a-gmail-clone-with-vue3/screens/1. Tour the Project.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304247~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3537%2F16%2F417686205%2F1801072520.mp4~hmac=57e69e438e6076e7bfb455ab2ccf8ec2b50ddce9a7a0deb5095728f88354d1f6/vimeo-prod-skyfire-std-us/01/3537/16/417686205/1801072520.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/build-a-gmail-clone-with-vue3/nightmare-screenshots/1. Tour the Project.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345621~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3537%2F16%2F417686205%2F1801072520.mp4~hmac=9d599bb994d61dd65c50c183b5d6b20d9bed63bccc1b0c9a8ef8e8f1ccad2e69/vimeo-prod-skyfire-std-us/01/3537/16/417686205/1801072520.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/vue3-forms/forms-introduction",
     "courseName": "vue3-forms",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/vue3-forms/1. Introduction.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue3-forms/screens/1. Introduction.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304227~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1472%2F18%2F457363869%2F2035753544.mp4~hmac=335190ca84a3cc665bd7cea0563a99ede95172ce42910446eb0aa5f6247032b7/vimeo-prod-skyfire-std-us/01/1472/18/457363869/2035753544.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue3-forms/nightmare-screenshots/1. Introduction.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345759~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1472%2F18%2F457363869%2F2035753544.mp4~hmac=93a00c6aae59860f40152c9ace027a728ab0b3bb4c241bca6ab5f4f0c002dfa0/vimeo-prod-skyfire-std-us/01/1472/18/457363869/2035753544.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/vue3-forms/base-input",
+    "courseName": "vue3-forms",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/vue3-forms/2. Base Input.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue3-forms/nightmare-screenshots/2. Base Input.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345781~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1683%2F18%2F458419816%2F2289198858.mp4~hmac=4cf6bb958aa9a8d0cb0be2c0d082d492e53058414064bf0860b76546cfec4203/vimeo-prod-skyfire-std-us/01/1683/18/458419816/2289198858.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/vue3-deep-dive-with-evan-you/vue3-overview",
     "courseName": "vue3-deep-dive-with-evan-you",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/vue3-deep-dive-with-evan-you/1. Vue 3 Overview.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue3-deep-dive-with-evan-you/screens/1. Vue 3 Overview.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304214~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2664%2F16%2F413320671%2F1777181747.mp4~hmac=baff06f1bb0ea7fde80947900b354fac96ea23cd0017d0310898f8d4da912346/vimeo-prod-skyfire-std-us/01/2664/16/413320671/1777181747.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue3-deep-dive-with-evan-you/nightmare-screenshots/1. Vue 3 Overview.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345843~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2664%2F16%2F413320671%2F1777181747.mp4~hmac=05b78b565dd5e81c08b9e49814c6211b35e8a8f9ebf0607f622ca671dc2eb98a/vimeo-prod-skyfire-std-us/01/2664/16/413320671/1777181747.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/vue3-deep-dive-with-evan-you/virtual-dom-and-render-functions",
+    "courseName": "vue3-deep-dive-with-evan-you",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/vue3-deep-dive-with-evan-you/2. Virtual DOM & Render Functions.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue3-deep-dive-with-evan-you/nightmare-screenshots/2. Virtual DOM & Render Functions.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345863~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2634%2F16%2F413172106%2F1777206318.mp4~hmac=649f1fbb566290d855c8ff76294e971e0eb3267b7586bca15d58df1707a4a458/vimeo-prod-skyfire-std-us/01/2634/16/413172106/1777206318.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-3/intro-to-vue3",
     "courseName": "intro-to-vue-3",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/1. Intro to Vue 3.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/screens/1. Intro to Vue 3.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304205~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F887%2F17%2F429439600%2F2480100373.mp4~hmac=35a71ad36c7b6a24ed4fe77e67c786efec34e1bfb0abccffa46ca0d870c7da5a/vimeo-prod-skyfire-std-us/01/887/17/429439600/2480100373.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/nightmare-screenshots/1. Intro to Vue 3.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345953~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F887%2F17%2F429439600%2F2480100373.mp4~hmac=10312063dfadae85183de81eb70dc3bf2d05972cc050995d1d44a2c63df39a7c/vimeo-prod-skyfire-std-us/01/887/17/429439600/2480100373.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-3/creating-the-vue-app-vue3",
     "courseName": "intro-to-vue-3",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/2. Creating the Vue App.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/screens/2. Creating the Vue App.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304196~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1102%2F17%2F430513164%2F3063417051.mp4~hmac=40768aa36a228d3353db8d9ea342065a8410b6eb904913a25a2df688168f2b70/vimeo-prod-skyfire-std-us/01/1102/17/430513164/3063417051.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/nightmare-screenshots/2. Creating the Vue App.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654345988~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1102%2F17%2F430513164%2F3063417051.mp4~hmac=ad267032f2aa70c966240f9cfd39ffe1a5fec1ee0f46d65caa83822c74eed673/vimeo-prod-skyfire-std-us/01/1102/17/430513164/3063417051.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-3/attribute-binding-vue3",
     "courseName": "intro-to-vue-3",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/3. Attribute Binding.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/screens/3. Attribute Binding.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304188~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1178%2F17%2F430892048%2F2480124053.mp4~hmac=709421ffa2349098946a972d74afbfd50ba9a396110e4e2f751e0fb34ce56a7b/vimeo-prod-skyfire-std-us/01/1178/17/430892048/2480124053.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/nightmare-screenshots/3. Attribute Binding.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346022~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1178%2F17%2F430892048%2F2480124053.mp4~hmac=8879ace882baeb65813faf5934f43a8cf69bb5fd90c853ff561b8412187c12c3/vimeo-prod-skyfire-std-us/01/1178/17/430892048/2480124053.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-3/conditional-rendering-vue3",
     "courseName": "intro-to-vue-3",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/4. Conditional Rendering.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/screens/4. Conditional Rendering.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304182~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1451%2F17%2F432257268%2F2480138915.mp4~hmac=a64aa2b14770556a4e82ba251ab2040bcdbde99ee2582186c382c341ccfde84a/vimeo-prod-skyfire-std-us/01/1451/17/432257268/2480138915.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/nightmare-screenshots/4. Conditional Rendering.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346047~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1451%2F17%2F432257268%2F2480138915.mp4~hmac=75ad84740c6b1d4e7dcf5750082ccf1e887a94846677e8092cac50ec5a10996f/vimeo-prod-skyfire-std-us/01/1451/17/432257268/2480138915.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-3/list-rendering-vue3",
     "courseName": "intro-to-vue-3",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/5. List Rendering.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/screens/5. List Rendering.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304176~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2249%2F17%2F436245555%2F2480149254.mp4~hmac=96654c9f4592b49b90ec35193e4ba1e04265d020acbd4dfbe034b1972cda04c9/vimeo-prod-skyfire-std-us/01/2249/17/436245555/2480149254.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/nightmare-screenshots/5. List Rendering.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346067~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2249%2F17%2F436245555%2F2480149254.mp4~hmac=651fa62693c00c8d29a8a9e3e7fd7b3b58de4c15ae9c6ea669db8e386b089374/vimeo-prod-skyfire-std-us/01/2249/17/436245555/2480149254.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-3/event-handling-vue3",
     "courseName": "intro-to-vue-3",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/6. Event Handling.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/screens/6. Event Handling.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304166~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2314%2F17%2F436573740%2F2480158938.mp4~hmac=ba09b007b2d605656a2e62a453bd4196fe5a68a8331daff0ccdd5b2ef8378f6a/vimeo-prod-skyfire-std-us/01/2314/17/436573740/2480158938.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/nightmare-screenshots/6. Event Handling.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346089~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2314%2F17%2F436573740%2F2480158938.mp4~hmac=47f0b6a30d123a84d864f96498c720fce98defe7f99786d02081fc4157d0a89c/vimeo-prod-skyfire-std-us/01/2314/17/436573740/2480158938.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-3/class-and-style-binding-vue3",
     "courseName": "intro-to-vue-3",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/7. Class & Style Binding.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/screens/7. Class & Style Binding.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304171~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2496%2F17%2F437484985%2F2480168221.mp4~hmac=e9ef47b255b8b1ce0a09d8bc0137156c65c8b32304970da2c9f68211b962156a/vimeo-prod-skyfire-std-us/01/2496/17/437484985/2480168221.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/nightmare-screenshots/7. Class & Style Binding.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346111~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2496%2F17%2F437484985%2F2480168221.mp4~hmac=ed674f8cdff6a19e6d0d7b0905699c0ced67a87da4709a51b5b227879eb7b120/vimeo-prod-skyfire-std-us/01/2496/17/437484985/2480168221.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-3/computed-properties-vue3",
     "courseName": "intro-to-vue-3",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/8. Computed Properties.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/screens/8. Computed Properties.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304162~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3031%2F17%2F440157813%2F2480175851.mp4~hmac=df9e827f40101c700a5d63e2d27a911c07f561b425eed8c00392e6316514dbd7/vimeo-prod-skyfire-std-us/01/3031/17/440157813/2480175851.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/nightmare-screenshots/8. Computed Properties.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346131~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3031%2F17%2F440157813%2F2480175851.mp4~hmac=0ce54090a4c36b0d78a7ed61c3a22a65253a1a397d05755cbcd30eb605f83d93/vimeo-prod-skyfire-std-us/01/3031/17/440157813/2480175851.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-3/components-and-props-vue3",
     "courseName": "intro-to-vue-3",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/9. Components & Props.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/screens/9. Components & Props.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304148~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3102%2F17%2F440514041%2F2480182311.mp4~hmac=1cc355b19d0cfa7a3046c5fa27e3021da74c1dc760167859c340f744032a8517/vimeo-prod-skyfire-std-us/01/3102/17/440514041/2480182311.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/nightmare-screenshots/9. Components & Props.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346157~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3102%2F17%2F440514041%2F3311174944.mp4~hmac=f16992a45e652647b45b68af2a938548ad7077e3d761fd412eb4eefa74632c0c/vimeo-prod-skyfire-std-us/01/3102/17/440514041/3311174944.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-3/communicating-events-vue3",
     "courseName": "intro-to-vue-3",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/10. Communicating Events.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/screens/10. Communicating Events.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304159~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3233%2F17%2F441165140%2F2480191213.mp4~hmac=52450a6cf2c9041c7a91844782a0810ec685ee2ab6a51a1c2ac0ed6904943071/vimeo-prod-skyfire-std-us/01/3233/17/441165140/2480191213.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/nightmare-screenshots/10. Communicating Events.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346174~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3233%2F17%2F441165140%2F2480191213.mp4~hmac=d5e8dfb33de89a52341d11af51182747358e96f324ffd0ea316427f1e650e914/vimeo-prod-skyfire-std-us/01/3233/17/441165140/2480191213.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/intro-to-vue-3/forms-and-v-model-vue3",
     "courseName": "intro-to-vue-3",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/11. Forms & v-model.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/screens/11. Forms & v-model.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304153~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3497%2F17%2F442485891%2F2480197645.mp4~hmac=9c630e695e10d99b4506676ad032da0327923e4dcb49082df381ed5f59103679/vimeo-prod-skyfire-std-us/01/3497/17/442485891/2480197645.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/intro-to-vue-3/nightmare-screenshots/11. Forms & v-model.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346204~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3497%2F17%2F442485891%2F2480197645.mp4~hmac=6f5d53c501402af88ecb5911bd76ff2e3a0cb7acbfc5b8e619708932da79f20f/vimeo-prod-skyfire-std-us/01/3497/17/442485891/2480197645.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/from-vue2-to-vue3/from-vue-2-to-vue-3",
     "courseName": "from-vue2-to-vue3",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/from-vue2-to-vue3/1. From Vue 2 to Vue 3.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/from-vue2-to-vue3/screens/1. From Vue 2 to Vue 3.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304137~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4843%2F16%2F424215562%2F2054135681.mp4~hmac=3e04b01af33d6be885947e7767af6dc276b67e4e50ec25411a9c8ef0f34ee8d3/vimeo-prod-skyfire-std-us/01/4843/16/424215562/2054135681.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/from-vue2-to-vue3/nightmare-screenshots/1. From Vue 2 to Vue 3.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346224~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4843%2F16%2F424215562%2F2054135681.mp4~hmac=26645518579458c3b189c7edd9566f69b3c206a5a3482348eb74995e38c86f7a/vimeo-prod-skyfire-std-us/01/4843/16/424215562/2054135681.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/from-vue2-to-vue3/the-new-vmodel",
+    "courseName": "from-vue2-to-vue3",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/from-vue2-to-vue3/2. The new v-model.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/from-vue2-to-vue3/nightmare-screenshots/2. The new v-model.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346241~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F67%2F17%2F425339512%2F1946445764.mp4~hmac=09a7c0cc7827f1d346834c90dfc906fdd75aa0a3ab7a14c370980902e4ced8e8/vimeo-prod-skyfire-std-us/01/67/17/425339512/1946445764.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/real-world-vue3/rwv3-orientation",
     "courseName": "real-world-vue3",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/real-world-vue3/1. Orientation.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/real-world-vue3/screens/1. Orientation.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304128~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2570%2F18%2F462853296%2F2548060091.mp4~hmac=806ad0d491c57855dabae74fa0fbb35682288cf22142c811745ebe7355d101f0/vimeo-prod-skyfire-std-us/01/2570/18/462853296/2548060091.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/real-world-vue3/nightmare-screenshots/1. Orientation.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346277~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2570%2F18%2F462853296%2F2548060091.mp4~hmac=2fdbb1d595b4591f4b15cf2a70b4f4d7cee46bb5c60d1631737ab4931399d6e9/vimeo-prod-skyfire-std-us/01/2570/18/462853296/2548060091.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/real-world-vue3/vue-cli-creating-the-project",
+    "courseName": "real-world-vue3",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/real-world-vue3/2. Vue CLI - Creating the Project.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/real-world-vue3/nightmare-screenshots/2. Vue CLI - Creating the Project.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346308~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2575%2F18%2F462876299%2F2548470706.mp4~hmac=cd46539dcb4e59a1b953b0efe2b498aaca78d2ce37981e1092a06fb77a4e6365/vimeo-prod-skyfire-std-us/01/2575/18/462876299/2548470706.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/vue3-typescript/why-vue-&-typescript",
+    "courseName": "vue3-typescript",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/vue3-typescript/1. Why Vue & TypeScript.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue3-typescript/nightmare-screenshots/1. Why Vue & TypeScript.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346360~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3496%2F18%2F467481375%2F2076488587.mp4~hmac=b6bc2082c73a72dd9413a21f320369681df83000df70d98302defa2ff156264f/vimeo-prod-skyfire-std-us/01/3496/18/467481375/2076488587.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/vue3-typescript/setting-up-vue3-&-typescript",
+    "courseName": "vue3-typescript",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/vue3-typescript/2. Setting Up Vue 3 & TypeScript.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vue3-typescript/nightmare-screenshots/2. Setting Up Vue 3 & TypeScript.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346377~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4732%2F18%2F473662632%2F2119567475.mp4~hmac=3117fe1bc4304812bc8ad8da7f5d1a1752130d74f8cea957850c6ebc8ec293d8/vimeo-prod-skyfire-std-us/01/4732/18/473662632/2119567475.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/touring-vue-router/vue-router-introduction",
     "courseName": "touring-vue-router",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/touring-vue-router/1. Introduction.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/touring-vue-router/screens/1. Introduction.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304089~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4239%2F18%2F471197070%2F2099509756.mp4~hmac=0102723489021d2e2447ca44db7aef95dce2e6d773cb8a37bce7460ca3484246/vimeo-prod-skyfire-std-us/01/4239/18/471197070/2099509756.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/touring-vue-router/nightmare-screenshots/1. Introduction.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346436~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4239%2F18%2F471197070%2F2099509756.mp4~hmac=25515398091acec57e8347871c7af6a05333897132cc82f7597beeaff078dcf1/vimeo-prod-skyfire-std-us/01/4239/18/471197070/2099509756.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/touring-vue-router/receiving-url-parameters",
+    "courseName": "touring-vue-router",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/touring-vue-router/2. Receiving URL Parameters.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/touring-vue-router/nightmare-screenshots/2. Receiving URL Parameters.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346453~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4310%2F18%2F471553156%2F2582538976.mp4~hmac=e916bf51b5319c41958aae6a4d08447417c2d0aec39e702e0ae0ec9a6c6a2001/vimeo-prod-skyfire-std-us/01/4310/18/471553156/2582538976.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/real-world-testing/getting-started",
     "courseName": "real-world-testing",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/real-world-testing/1. Getting Started.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/real-world-testing/screens/1. Getting Started.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304070~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1098%2F21%2F530491857%2F2553710316.mp4~hmac=79a0198256b4d621e44f0c7bb7c8c2e8139e17b7a86f60f12fbc6e7a693ffe1d/vimeo-prod-skyfire-std-us/01/1098/21/530491857/2553710316.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/real-world-testing/nightmare-screenshots/1. Getting Started.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346521~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1098%2F21%2F530491857%2F2553710316.mp4~hmac=92daa0c1585f52f9e0101f5081d9808966183ebf9e32fe31ea0e5118ecc81204/vimeo-prod-skyfire-std-us/01/1098/21/530491857/2553710316.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/vuex-fundamentals/vuex4-intro-to-vuex",
     "courseName": "vuex-fundamentals",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/vuex-fundamentals/1. Intro to Vuex.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vuex-fundamentals/screens/1. Intro to Vuex.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304067~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3178%2F20%2F515894346%2F2519755417.mp4~hmac=9b836e15f83d92b0ebe13f8021fcfd8f51840f1ee35f204288e0afd91c4e4515/vimeo-prod-skyfire-std-us/01/3178/20/515894346/2519755417.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/vuex-fundamentals/nightmare-screenshots/1. Intro to Vuex.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346559~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3178%2F20%2F515894346%2F2519755417.mp4~hmac=7a4942ff92aa40ba84857c0c535da6b24142f0309a54d91a2e1e0cbc5ef70d40/vimeo-prod-skyfire-std-us/01/3178/20/515894346/2519755417.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/unit-testing-vue-3/what-to-test-vue-3",
     "courseName": "unit-testing-vue-3",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/unit-testing-vue-3/1. What to test.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/unit-testing-vue-3/screens/1. What to test.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304057~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2097%2F20%2F510489703%2F2354250780.mp4~hmac=7843441fcde04e46d21ef26ce43c3fb9de2baabbef737cb8b4e3b3f0560703a0/vimeo-prod-skyfire-std-us/01/2097/20/510489703/2354250780.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/unit-testing-vue-3/nightmare-screenshots/1. What to test.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346606~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2097%2F20%2F510489703%2F2354250780.mp4~hmac=df24c409a76b74bf9bcd95e9e12c6a76fa4cc7e3e49abaa78e65783945f0c7e9/vimeo-prod-skyfire-std-us/01/2097/20/510489703/2354250780.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/unit-testing-vue-3/writing-a-unit-test-with-jest-vue-3",
+    "courseName": "unit-testing-vue-3",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/unit-testing-vue-3/2. Writing a Unit Test with Jest.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/unit-testing-vue-3/nightmare-screenshots/2. Writing a Unit Test with Jest.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346626~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2820%2F20%2F514104358%2F2381167489.mp4~hmac=060414f1f6f4e4f5995c3ed7d8adb8ebb5e175d7ab57a42e99b51825abc79e33/vimeo-prod-skyfire-std-us/01/2820/20/514104358/2381167489.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/progressive-web-apps-vue-3/what-are-progressive-web-apps",
     "courseName": "progressive-web-apps-vue-3",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/progressive-web-apps-vue-3/1. What are progressive web apps?.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/progressive-web-apps-vue-3/screens/1. What are progressive web apps?.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304044~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F443%2F22%2F552216563%2F2617743884.mp4~hmac=575e67addde4a1c54ddcbda29957fe71f4538243cddcc83be14a8a3c3504980d/vimeo-prod-skyfire-std-us/01/443/22/552216563/2617743884.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/progressive-web-apps-vue-3/nightmare-screenshots/1. What are progressive web apps?.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346660~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F443%2F22%2F552216563%2F2617743884.mp4~hmac=70b6ad32191b3a39a4b91d5696c0c60f8cc84b1366527c12e4f25ca88cf7298e/vimeo-prod-skyfire-std-us/01/443/22/552216563/2617743884.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/progressive-web-apps-vue-3/overview-and-setup",
+    "courseName": "progressive-web-apps-vue-3",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/progressive-web-apps-vue-3/2. Overview and Setup.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/progressive-web-apps-vue-3/nightmare-screenshots/2. Overview and Setup.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346677~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2581%2F22%2F562907909%2F2687753959.mp4~hmac=021c43ffb1f691ebe3f01d0a696b50f755b54b34d437f4b2c558df7b7193565f/vimeo-prod-skyfire-std-us/01/2581/22/562907909/2687753959.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/querying-with-graphql/intro-to-graphql",
     "courseName": "querying-with-graphql",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/querying-with-graphql/1. Intro to GraphQL.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/querying-with-graphql/screens/1. Intro to GraphQL.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304036~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4244%2F25%2F646223150%2F2964012387.mp4~hmac=9b1bd2117c07582dc3782dc825c3f4bfac5335fbb0258eb48558b679e62dcb35/vimeo-prod-skyfire-std-us/01/4244/25/646223150/2964012387.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/querying-with-graphql/nightmare-screenshots/1. Intro to GraphQL.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346735~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4244%2F25%2F646223150%2F2964012387.mp4~hmac=ef59035a987cff59c1c1b53b2da9a68dc0e71bd4ad81e3b572a326ea7fbfa887/vimeo-prod-skyfire-std-us/01/4244/25/646223150/2964012387.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/validating-vue3-forms/why-vee-validate",
     "courseName": "validating-vue3-forms",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/validating-vue3-forms/1. Why Vee-Validate?.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/validating-vue3-forms/screens/1. Why Vee-Validate?.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304016~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3521%2F22%2F567608456%2F2683624126.mp4~hmac=1166e9d585f44b9b6875e367c32dd6aba6185d6b32d8d8acfb4dce27eb07389b/vimeo-prod-skyfire-std-us/01/3521/22/567608456/2683624126.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/validating-vue3-forms/nightmare-screenshots/1. Why Vee-Validate?.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346805~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F3521%2F22%2F567608456%2F2683624126.mp4~hmac=22be8b947216ec4a35e8a2f4cb7581a468402f283838865fb21a183449bc5d95/vimeo-prod-skyfire-std-us/01/3521/22/567608456/2683624126.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/validating-vue3-forms/validating-setting-up",
+    "courseName": "validating-vue3-forms",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/validating-vue3-forms/2. Setting Up.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/validating-vue3-forms/nightmare-screenshots/2. Setting Up.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346830~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F562%2F23%2F577814885%2F2900908293.mp4~hmac=a65a08ad03ae983410135a13d851e27d62b4013e61a28cc68c374067f3ed3ca4/vimeo-prod-skyfire-std-us/01/562/23/577814885/2900908293.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/lightning-fast-builds-with-vite/intro-to-vite",
     "courseName": "lightning-fast-builds-with-vite",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/lightning-fast-builds-with-vite/1. Intro to Vite.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/lightning-fast-builds-with-vite/screens/1. Intro to Vite.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304010~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4059%2F22%2F570298143%2F2743713923.mp4~hmac=c2f59e50b8fe8c58d4c174aa77b3804b1c289682f5d0c2e7158fd58216a2b43e/vimeo-prod-skyfire-std-us/01/4059/22/570298143/2743713923.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/lightning-fast-builds-with-vite/nightmare-screenshots/1. Intro to Vite.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346874~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4059%2F22%2F570298143%2F2743713923.mp4~hmac=428b19d2a7997ea4cf78022a7a26eddc1b57abfddda09764f476050fb98aa097/vimeo-prod-skyfire-std-us/01/4059/22/570298143/2743713923.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/typescript-friendly-vue3/introduction-to-the-script-setup-syntax",
     "courseName": "typescript-friendly-vue3",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/typescript-friendly-vue3/1. Introduction to the Script Setup Syntax.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/typescript-friendly-vue3/screens/1. Introduction to the Script Setup Syntax.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650304003~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4770%2F25%2F648852984%2F2988635992.mp4~hmac=f33b2f472de1a977b4c95e6cacd8e23a0e3c70cf4577f2393fe8fa9184c460d1/vimeo-prod-skyfire-std-us/01/4770/25/648852984/2988635992.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/typescript-friendly-vue3/nightmare-screenshots/1. Introduction to the Script Setup Syntax.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346914~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4770%2F25%2F648852984%2F2988635992.mp4~hmac=48b7275f597bf4d98e65cb29ab494a0084d7d962d9fbf24325a7e5e02952e2de/vimeo-prod-skyfire-std-us/01/4770/25/648852984/2988635992.mp4"
+  },
+  {
+    "pageUrl": "https://www.vuemastery.com/courses/typescript-friendly-vue3/reactive-variables-with-type-inference",
+    "courseName": "typescript-friendly-vue3",
+    "dest": "/Users/muhameddidovic/projects/vmdown/videos/typescript-friendly-vue3/2. Reactive Variables with Type Inference.mp4",
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/typescript-friendly-vue3/nightmare-screenshots/2. Reactive Variables with Type Inference.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346934~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F271%2F26%2F651359954%2F2990732691.mp4~hmac=3898a8a69e3d619a343d794854eac36852729a36acae1fa85f8168b1858aaa3b/vimeo-prod-skyfire-std-us/01/271/26/651359954/2990732691.mp4"
   },
   {
     "pageUrl": "https://www.vuemastery.com/courses/from-vuex-to-pinia/what-is-pinia",
     "courseName": "from-vuex-to-pinia",
     "dest": "/Users/muhameddidovic/projects/vmdown/videos/from-vuex-to-pinia/1. What is Pinia?.mp4",
-    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/from-vuex-to-pinia/screens/1. What is Pinia?.png",
-    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1650303991~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F677%2F27%2F678386029%2F3180609568.mp4~hmac=75d75f9758287fee5c8f4179db0d8b3b0fc3995202009091d5f5fe97039c72d2/vimeo-prod-skyfire-std-us/01/677/27/678386029/3180609568.mp4"
+    "imgPath": "/Users/muhameddidovic/projects/vmdown/videos/from-vuex-to-pinia/nightmare-screenshots/1. What is Pinia?.png",
+    "vimeoUrl": "https://vod-progressive.akamaized.net/exp=1654346965~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F677%2F27%2F678386029%2F3180609568.mp4~hmac=35ac35636706183ed2490b2690e644327c3e58f95a352f0473c8e8f1549a8a35/vimeo-prod-skyfire-std-us/01/677/27/678386029/3180609568.mp4"
   }
 ]

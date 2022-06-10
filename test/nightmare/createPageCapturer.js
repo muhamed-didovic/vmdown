@@ -21,6 +21,7 @@ const scrape = async (link, quality = '1080p', saveDir = './test/nightmare') => 
             //minHeight             : 4000,
             enableLargerThanScreen: true,
             width                 : 1595,
+            waitTimeout           : 60e3
             // maxHeight: 16384,
             // minHeight:7425,
             /*maxWidth              : 1595,
@@ -36,7 +37,8 @@ const scrape = async (link, quality = '1080p', saveDir = './test/nightmare') => 
     return result
 }
 
-const noop = () => {}
+const noop = () => {
+}
 test.after.always(() => {
     if (browser) browser.end()
     imgs.forEach(imgPath => fs.unlink(imgPath, noop))
@@ -53,7 +55,7 @@ test('capturePage nightmare', async t => {
     t.true(fs.existsSync(res1.imgPath))
     t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'markdown', '1. The Vue Instance.md')))
     t.is(res1.pageUrl, 'https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance')
-    t.is(res1.courseName,  'intro-to-vue-js')
+    t.is(res1.courseName, 'intro-to-vue-js')
     t.truthy(res1.vimeoUrl)
     fs.copyFileSync(res1.imgPath, path.join(__dirname, '..', 'snapshot/capture1.png'))
 

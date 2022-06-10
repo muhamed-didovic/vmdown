@@ -43,6 +43,7 @@ const scraper = async ({
         //minHeight             : 4000,
         enableLargerThanScreen: true,
         width                 : 1595,
+        waitTimeout           : 60e3
         // maxHeight: 16384,
         // minHeight:7425,
         /*maxWidth              : 1595,
