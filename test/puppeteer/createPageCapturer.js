@@ -44,7 +44,7 @@ test.after.always(() => {
     fs.removeSync(path.join(__dirname, 'intro-to-vue-js'));//, { recursive: true, force: true }
 })
 
-test.skip('capturePage puppeteer', async t => {
+test('capturePage puppeteer', async t => {
     const res1 = await scrape('https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance', '720p')
     const res2 = await scrape("https://www.vuemastery.com/courses/intro-to-vue-js/attribute-binding");
     const res3 = await scrape("https://www.vuemastery.com/courses/intro-to-vue-js/conditional-rendering");

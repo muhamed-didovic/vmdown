@@ -50,7 +50,7 @@ test.after.always(() => {
 })
 
 
-test('capturePage nightmare', async t => {
+test.skip('capturePage nightmare', async t => {
     const res1 = await scrape('https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance', '720p')
     // console.log('nightmare', res1);
     const res2 = await scrape("https://www.vuemastery.com/courses/intro-to-vue-js/attribute-binding");
