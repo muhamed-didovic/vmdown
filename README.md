@@ -30,7 +30,7 @@ Options
     --extension, -x     Choose video format (default: mp4)
     --quality, -q       Choose quality from: 1080p / 720p / 540p / 360p / 240p (default: 1080p)
     --directory, -d     Directory to save (default: ./videos)
-    --framework, -f     Framework to use between nightmare, puppeteer and playwright (default: puppeteer)
+    --framework, -f     Framework to use between nightmare, puppeteer, puppeteer-cluster and playwright (default: puppeteer) (Options available: 'p', 'n', 'pc', 'pw')
     --concurrency, -c
 
 Examples

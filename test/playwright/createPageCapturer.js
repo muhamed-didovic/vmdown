@@ -32,10 +32,10 @@ const noop = () => {}
 test.after.always(() => {
     if (browser) browser.close()
     imgs.forEach(imgPath => fs.unlink(imgPath, noop))
-    fs.removeSync(path.join(__dirname, 'playwright', 'intro-to-vue-js'));//, { recursive: true, force: true }
+    fs.removeSync(path.join(__dirname, 'intro-to-vue-js'));//, { recursive: true, force: true }
 })
 
-test('capturePage playwright', async t => {
+test.skip('capturePage playwright', async t => {
     const res1 = await scrape('https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance', '720p')
     const res2 = await scrape("https://www.vuemastery.com/courses/intro-to-vue-js/attribute-binding");
     const res3 = await scrape("https://www.vuemastery.com/courses/intro-to-vue-js/conditional-rendering");

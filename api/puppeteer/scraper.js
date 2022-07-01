@@ -65,7 +65,6 @@ const scraper = async ({
 
         let cnt = 0;
         ms.add('capture', { text: `Start Puppeteer Capturing...` });
-
         await Promise
             .map(courses, async (link) => {
                 return await withPage(browser)(async (page) => {

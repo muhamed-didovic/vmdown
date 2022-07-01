@@ -1,6 +1,5 @@
 const createBrowserGetter = require("get-puppeteer-browser");
 const puppeteer = require("puppeteer-core");
-
 const findChrome = require("chrome-finder");
 const auth = async (page, email, password) => {
     await page.click('button[class="button inverted"]');

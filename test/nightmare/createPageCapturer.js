@@ -7,6 +7,10 @@ const Nightmare = require("nightmare");
 const Spinnies = require('dreidels');
 const ms = new Spinnies();
 
+const Bluebird = require('bluebird');
+Bluebird.config({ longStackTraces: true });
+global.Promise = Bluebird;
+
 let browser
 let capturePage
 
@@ -42,7 +46,7 @@ const noop = () => {
 test.after.always(() => {
     if (browser) browser.end()
     imgs.forEach(imgPath => fs.unlink(imgPath, noop))
-    fs.removeSync(path.join(__dirname, 'nightmare', 'intro-to-vue-js'));//, { recursive: true, force: true }
+    fs.removeSync(path.join(__dirname,  'intro-to-vue-js'),  { recursive: true, force: true });//, { recursive: true, force: true }
 })
 
 

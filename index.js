@@ -1,12 +1,13 @@
 const playwright = require("./api/playwright/scraper");
 const puppeteerScraper = require("./api/puppeteer/scraper");
+const puppeteerCluster = require("./api/puppeteer-cluster/scraper");
 const nightmareScraper = require("./api/nightmare/scraper");
 
 const cli = require("./api/cli.js");
 
-const Bluebird = require('bluebird');
+/*const Bluebird = require('bluebird');
 Bluebird.config({ longStackTraces: true });
-global.Promise = Bluebird;
+global.Promise = Bluebird;*/
 
 process.on('unhandledRejection', error => {
     //TypeError: Cannot read properties of null (reading 'session')
@@ -25,7 +26,8 @@ process.on('unhandledRejection', error => {
         const map = {
             'n' : nightmareScraper,
             'p' : puppeteerScraper,
-            'pw': playwright
+            'pw': playwright,
+            'pc': puppeteerCluster
         }
         const scrape = map[options.framework] || map.p;
         await scrape({...options})
