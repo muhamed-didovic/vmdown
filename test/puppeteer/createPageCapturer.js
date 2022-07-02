@@ -2,8 +2,11 @@ const test = require('ava')
 const fs = require('fs-extra')
 
 const createPageCapturer = require('../../api/puppeteer/createPageCapturer')
-const { withBrowser, withPage } = require("../../api/puppeteer/helpers");
 const path = require('path')
+
+const Bluebird = require('bluebird');
+Bluebird.config({ longStackTraces: true });
+global.Promise = Bluebird;
 
 const createBrowserGetter = require('get-puppeteer-browser')
 const puppeteer = require('puppeteer-core')
@@ -24,13 +27,13 @@ const getBrowser = createBrowserGetter(puppeteer, {
     ],
 })
 let browser
-
-const imgs = []
+// const imgs = []
 const scrape = async (link, quality = '1080p', saveDir = './test/puppeteer') => {
     if (!browser) {
         browser = await getBrowser()
     }
     const page = await browser.newPage()
+    page.setDefaultTimeout(61e3)
     const result = await createPageCapturer(browser, page, link, saveDir, ".mp4", '1080p', true, true)
     // const result = await capturePage(link, "./test", ".mp4", quality, true, true)
     // imgs.push(result.imgPath)

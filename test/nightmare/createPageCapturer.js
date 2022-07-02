@@ -6,10 +6,7 @@ const createPageCapturer = require('../../api/nightmare/createPageCapturer')
 const Nightmare = require("nightmare");
 const Spinnies = require('dreidels');
 const ms = new Spinnies();
-/*
-const Bluebird = require('bluebird');
-Bluebird.config({ longStackTraces: true });
-global.Promise = Bluebird;*/
+
 
 const scrape = async (link, quality = '1080p', saveDir = './test/nightmare') => {
     if (!browser) {
