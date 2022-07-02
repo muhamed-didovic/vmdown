@@ -34,6 +34,7 @@ const clusterLanuchOptions = {
     skipduplicateurls: true, // do not crawl duplicate URLs
     // monitor: true, // displays the performance consumption
     puppeteerOptions: launchOptions,
+    timeout         : 120e3,
 };
 const path = require('path')
 let cluster;

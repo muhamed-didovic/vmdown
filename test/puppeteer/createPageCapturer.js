@@ -33,14 +33,14 @@ const scrape = async (link, quality = '1080p', saveDir = './test/puppeteer') => 
     const page = await browser.newPage()
     const result = await createPageCapturer(browser, page, link, saveDir, ".mp4", '1080p', true, true)
     // const result = await capturePage(link, "./test", ".mp4", quality, true, true)
-    imgs.push(result.imgPath)
+    // imgs.push(result.imgPath)
     return result
 }
 
 const noop = () => {}
 test.after.always(() => {
     if (browser) browser.close()
-    imgs.forEach(imgPath => fs.unlink(imgPath, noop))
+    // imgs.forEach(imgPath => fs.unlink(imgPath, noop))
     fs.removeSync(path.join(__dirname, 'intro-to-vue-js'));//, { recursive: true, force: true }
 })
 

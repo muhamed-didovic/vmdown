@@ -6,10 +6,10 @@ const createPageCapturer = require('../../api/nightmare/createPageCapturer')
 const Nightmare = require("nightmare");
 const Spinnies = require('dreidels');
 const ms = new Spinnies();
-
+/*
 const Bluebird = require('bluebird');
 Bluebird.config({ longStackTraces: true });
-global.Promise = Bluebird;
+global.Promise = Bluebird;*/
 
 const scrape = async (link, quality = '1080p', saveDir = './test/nightmare') => {
     if (!browser) {
@@ -33,7 +33,7 @@ const scrape = async (link, quality = '1080p', saveDir = './test/nightmare') => 
     }
     //const result = await capturePage(link, "./test", ".mp4", quality, true, true)
     const result = await createPageCapturer(browser, link, saveDir, ".mp4", quality, true, true, ms)
-    imgs.push(result.imgPath)
+    // imgs.push(result.imgPath)
     return result
 }
 
@@ -44,7 +44,7 @@ const noop = () => {}
 
 test.after.always(() => {
     if (browser) browser.end()
-    imgs.forEach(imgPath => fs.unlink(imgPath, noop))
+    // imgs.forEach(imgPath => fs.unlink(imgPath, noop))
     fs.removeSync(path.join(__dirname,  'intro-to-vue-js'),  { recursive: true, force: true });//, { recursive: true, force: true }
 })
 
