@@ -191,7 +191,7 @@ async function retry(fn, retriesLeft = 5, interval = 1000, exponential = false) 
         return val;
     } catch (error) {
         if (retriesLeft) {
-            console.log('....retrying left (' + retriesLeft + ')');
+            console.log('.... nightmatr retrying left (' + retriesLeft + ')');
             console.error('e:', error);
             await new Promise(r => setTimeout(r, interval));
             return retry(fn, retriesLeft - 1, exponential ? interval*2 : interval, exponential);

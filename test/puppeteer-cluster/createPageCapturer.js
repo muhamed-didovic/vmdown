@@ -36,25 +36,12 @@ const clusterLanuchOptions = {
     puppeteerOptions: launchOptions,
 };
 const path = require('path')
-
-const Bluebird = require('bluebird');
-Bluebird.config({ longStackTraces: true });
-global.Promise = Bluebird;
-
 let cluster;
-
 const imgs = []
-/*const scrape = async (link, quality = '1080p', saveDir = './test/puppeteer') => {
-    const page = await browser.newPage()
-    const result = await createPageCapturer(browser, page, link, saveDir, ".mp4", '1080p', true, true)
-    // const result = await capturePage(link, "./test", ".mp4", quality, true, true)
-    imgs.push(result.imgPath)
-    return result
-}*/
-
 const noop = () => {}
+
 test.after.always(() => {
-    imgs.forEach(imgPath => fs.unlink(imgPath, noop))
+    // imgs.forEach(imgPath => fs.unlink(imgPath, noop))
     fs.removeSync(path.join(__dirname, 'intro-to-vue-js'),  { recursive: true, force: true });//, { recursive: true, force: true }
 })
 
@@ -68,20 +55,14 @@ test('capturePage puppeteer', async t => {
     const res2  = await cluster.execute({ link: 'https://www.vuemastery.com/courses/intro-to-vue-js/attribute-binding', downDir: './test/puppeteer-cluster', extension: ".mp4", quality: '1080p', markdown: true, images: true });
     const res3  = await cluster.execute({ link: 'https://www.vuemastery.com/courses/intro-to-vue-js/conditional-rendering', downDir: './test/puppeteer-cluster', extension: ".mp4", quality: '1080p', markdown: true, images: true });
 
-    imgs.push(res1.imgPath)
-    imgs.push(res2.imgPath)
-    imgs.push(res3.imgPath)
-// console.log('res1', res1);
     await cluster.idle();
     await cluster.close();
 
-    /*{
-        pageUrl: 'https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance',
-        courseName: 'intro-to-vue-js',
-        dest: '../projects/vmdown/test/intro-to-vue-js/1. The Vue Instance.mp4',
-        imgPath: '../projects/vmdown/test/intro-to-vue-js/screens/1. The Vue Instance.png',
-        vimeoUrl: 'https://vod-progressive.akamaized.net/exp=1648034110~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1741%2F10%2F258707456%2F949450685.mp4~hmac=fa8d11293f72a56f4ea09e215dbcb216e8e64c6d531aebdbd927e7987c17f9a7/vimeo-prod-skyfire-std-us/01/1741/10/258707456/949450685.mp4'
-    }*/
+    // imgs.push(res1.imgPath)
+    // imgs.push(res2.imgPath)
+    // imgs.push(res3.imgPath)
+
+
     t.true(fs.existsSync(res1.imgPath))
     t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'markdown', '1. The Vue Instance.md')))
     t.is(res1.pageUrl, 'https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance')

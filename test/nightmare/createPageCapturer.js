@@ -11,10 +11,6 @@ const Bluebird = require('bluebird');
 Bluebird.config({ longStackTraces: true });
 global.Promise = Bluebird;
 
-let browser
-let capturePage
-
-const imgs = []
 const scrape = async (link, quality = '1080p', saveDir = './test/nightmare') => {
     if (!browser) {
         browser = Nightmare({
@@ -41,8 +37,11 @@ const scrape = async (link, quality = '1080p', saveDir = './test/nightmare') => 
     return result
 }
 
-const noop = () => {
-}
+let browser
+let capturePage
+const imgs = []
+const noop = () => {}
+
 test.after.always(() => {
     if (browser) browser.end()
     imgs.forEach(imgPath => fs.unlink(imgPath, noop))
@@ -50,7 +49,7 @@ test.after.always(() => {
 })
 
 
-test.skip('capturePage nightmare', async t => {
+test('capturePage nightmare', async t => {
     const res1 = await scrape('https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance', '720p')
     // console.log('nightmare', res1);
     const res2 = await scrape("https://www.vuemastery.com/courses/intro-to-vue-js/attribute-binding");
