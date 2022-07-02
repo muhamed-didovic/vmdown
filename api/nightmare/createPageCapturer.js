@@ -51,7 +51,7 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
             }
         })
         .then(async ({ title, allTitles, md = null, iframeSrc }) => {
-            // console.log(`vimeoUrl ${title} ${iframeSrc}`.blue);
+            console.log(`vimeoUrl ${title} ${iframeSrc}`.blue);
             //get course name
             let courseName = pageUrl.replace("https://www.vuemastery.com/courses/", "");
             if (courseName.includes('/')) {
