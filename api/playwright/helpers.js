@@ -28,7 +28,6 @@ const isLogged = async page => {
                     return false;
                 }
             })(),
-
         ])
 
         // console.log('text', { notLogged, logged });
