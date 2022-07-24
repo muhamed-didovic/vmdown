@@ -6,7 +6,7 @@ const colors = require('colors');
 // const delay = require("../delay");
 
 const { NodeHtmlMarkdown } = require('node-html-markdown');
-const { makeScreenshots, extractVimeoUrl } = require("./helpers");
+const { makeScreenshots, extractVimeoUrl, vimeoRequest } = require("./helpers");
 
 module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, images, ms) => {
     const nhm = new NodeHtmlMarkdown();
@@ -72,13 +72,13 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
                     //create markdown
                     if (markdown) {
                         await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'markdown'))
-                        await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle}.md`), nhm.translate(md), 'utf8')
+                        await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle.replace('/', '\u2215')}.md`), nhm.translate(md), 'utf8')
                     }
                 })(),
                 (async () => {
                     //create image of course info
                     if (images) {
-                        await makeScreenshots(n, saveDir, courseName, newTitle, ms)
+                        await makeScreenshots(n, saveDir, courseName, newTitle.replace('/', '\u2215'), ms)
                         //remove smaller images
                         await fs.remove(path.join(process.cwd(), saveDir, courseName, 's'))
                     }
@@ -95,13 +95,14 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
                 })(),*/
             ])
 
-            let selectedVideo = await extractVimeoUrl(iframeSrc, n, quality);
+            let selectedVideo = await extractVimeoUrl(iframeSrc, n, quality, pageUrl);
+            // const selectedVideo = await vimeoRequest(pageUrl, iframeSrc, n)
 
             return {
                 pageUrl,
                 courseName,
-                dest    : path.join(process.cwd(), saveDir, courseName, `${newTitle}${videoFormat}`),
-                imgPath : path.join(process.cwd(), saveDir, courseName, 'nightmare-screenshots', `${newTitle}.png`),
+                dest    : path.join(process.cwd(), saveDir, courseName, `${newTitle.replace('/', '\u2215')}${videoFormat}`),
+                imgPath : path.join(process.cwd(), saveDir, courseName, 'nightmare-screenshots', `${newTitle.replace('/', '\u2215')}.png`),
                 vimeoUrl: selectedVideo.url
             };
 

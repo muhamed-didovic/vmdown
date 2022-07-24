@@ -38,7 +38,10 @@ const downloadVideo = async (url, dest, ms, multibar) => {
             m.stop()
             return resolve();
         })
-        writer.on('error', reject)
+        writer.on('error', (error) => {
+            m.stop()
+            return reject(error);
+        })
     })
 }
 
