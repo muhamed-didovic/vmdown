@@ -9,7 +9,7 @@ const DEST = buildPath('fixtures/bundle/screens/bundle.pdf')
 
 test.after.always(() => fs.unlink(DEST, () => {}))
 
-test.skip('imgs2pdf', async t => {
+test('imgs2pdf', async t => {
     t.false(fs.existsSync(DEST))
     await imgs2pdf(IMGS, SOURCE, DEST)
     t.true(fs.existsSync(DEST))
