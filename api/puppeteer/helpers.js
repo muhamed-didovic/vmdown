@@ -12,38 +12,38 @@ const delay = require("../delay")
 const withBrowser = async (fn) => {
     //const browser = await puppeteer.launch({/* ... */});
     const getBrowser = createBrowserGetter(puppeteer, {
-        executablePath: findChrome(),
-        headless      : true, // Set to false while development
+        /*executablePath: findChrome(),
+        headless      : false, // Set to false while development
         debounce      : 500,
 
         defaultViewport: null,
         args           : [
             '--no-sandbox',
             '--start-maximized', // Start in maximized state
-        ],
+        ],*/
 
-        /* headless         : false, //run false for dev
-         Ignorehttpserrors: true, // ignore certificate error
-         waitUntil        : 'networkidle2',
-         defaultViewport  : {
-             width : 1920,
-             height: 1080
-         },
-         timeout          : 60e3,
-         args             : [
-             '--disable-gpu',
-             '--disable-dev-shm-usage',
-             '--disable-web-security',
-             '-- Disable XSS auditor', // close XSS auditor
-             '--no-zygote',
-             '--no-sandbox',
-             '--disable-setuid-sandbox',
-             '-- allow running secure content', // allow unsafe content
-             '--disable-webgl',
-             '--disable-popup-blocking',
-             //'--proxy-server= http://127.0.0.1:8080 '// configure agent
-         ],
-         executablePath   : findChrome(),*/
+        headless         : false, //run false for dev
+        Ignorehttpserrors: true, // ignore certificate error
+        waitUntil        : 'networkidle2',
+        defaultViewport  : {
+            width : 1920,
+            height: 1080
+        },
+        timeout          : 60e3,
+        args             : [
+            '--disable-gpu',
+            '--disable-dev-shm-usage',
+            '--disable-web-security',
+            '-- Disable XSS auditor', // close XSS auditor
+            '--no-zygote',
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '-- allow running secure content', // allow unsafe content
+            '--disable-webgl',
+            '--disable-popup-blocking',
+            //'--proxy-server= http://127.0.0.1:8080 '// configure agent
+        ],
+        executablePath   : findChrome(),
     })
     const browser = await getBrowser();
     try {
@@ -88,7 +88,7 @@ const isLogged = async page => {
                     let text = await page.evaluate(
                         () => Array.from(document.body.querySelectorAll('button[data-test="loginBtn"]'), txt => txt.textContent)[0]
                     );
-                    console.log(' login tesxt', text);
+                    // console.log(' login tesxt', text);
                     return text;// === 'Login'
                 } catch (e) {
                     // console.log('1111', e);
@@ -104,7 +104,7 @@ const isLogged = async page => {
                     let text = await page.evaluate(
                         () => Array.from(document.body.querySelectorAll('button[data-test="signOut"]'), txt => txt.textContent)[0]
                     );
-                    console.log('logout tsest text:', text);
+                    // console.log('logout tsest text:', text);
                     return text;// === 'Sign Out'
                 } catch (e) {
                     // console.log('22222', e);
@@ -131,7 +131,6 @@ const auth = async (page, email, password) => {
     if (logged === 'Sign Out') {
         return;
     }
-    console.log('prolazimo');
 
     const r = await page.evaluate(() => {
         const login = Array.from(document.body.querySelectorAll('button[data-test="loginBtn"]'), txt => txt.textContent)[0]
@@ -141,7 +140,7 @@ const auth = async (page, email, password) => {
             logout
         }
     })
-    console.log('r', r);
+    // console.log('r', r);
     if (r?.logout) {
         return;
     }

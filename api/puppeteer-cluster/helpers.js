@@ -23,7 +23,7 @@ const isLogged = async page => {
                     let text = await page.evaluate(
                         () => Array.from(document.body.querySelectorAll('button[data-test="loginBtn"]'), txt => txt.textContent)[0]
                     );
-                    console.log(' login tesxt', text);
+                    // console.log(' login tesxt', text);
                     return text;// === 'Login'
                 } catch (e) {
                     // console.log('1111', e);
@@ -39,7 +39,7 @@ const isLogged = async page => {
                     let text = await page.evaluate(
                         () => Array.from(document.body.querySelectorAll('button[data-test="signOut"]'), txt => txt.textContent)[0]
                     );
-                    console.log('logout tsest text:', text);
+                    // console.log('logout tsest text:', text);
                     return text;// === 'Sign Out'
                 } catch (e) {
                     // console.log('22222', e);
@@ -66,7 +66,6 @@ const auth = async (page, email, password) => {
     // if (logged === 'Sign Out') {
     //     return;
     // }
-    console.log('prolazimo');
     // await delay(10e3)
     await page.click('button[class="button inverted"]');
     await page.click('button[class="button link"]');

@@ -99,14 +99,14 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                     delay         : '500ms'
                 })
                 await delay(1e3) //5e3
-                return Promise.resolve();
+                //return Promise.resolve();
             }
 
             if (markdown) {
                 //wait for iframe
-                await retry(async () => {//return
+               /* await retry(async () => {//return
                     await page.waitForSelector('.video-wrapper iframe[src]')
-                }, 6, 1e3, true)
+                }, 6, 1e3, true)*/
                 let markdown = await page.evaluate(
                     () => Array.from(document.body.querySelectorAll('#lessonContent'),
                         txt => txt.outerHTML)[0]
@@ -114,7 +114,7 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                 await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'markdown'))
                 await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
                 await delay(1e3) //5e3
-                return Promise.resolve();
+                //return Promise.resolve();
             }
 
             await retry(async () => {//return
@@ -125,7 +125,7 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                 () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
             );
             const selectedVideo = await vimeoRequest(pageUrl, iframeSrc)
-
+            console.log('CV', selectedVideo);
             /*const [, , selectedVideo] = await Promise.all([
                 (async () => {
                     if (images) {

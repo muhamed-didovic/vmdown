@@ -15,7 +15,7 @@ const findChrome = require('chrome-finder')
 
 //const getBrowser = createBrowserGetter(puppeteer, { executablePath: findChrome(), headless: true, slowMo: 0 })
 const getBrowser = createBrowserGetter(puppeteer, {
-    executablePath: findChrome(),
+   /* executablePath: findChrome(),
     headless      : true, // Set to false while development
     debounce      : 500,
     slowMo: 0,
@@ -24,7 +24,29 @@ const getBrowser = createBrowserGetter(puppeteer, {
     args           : [
         '--no-sandbox',
         '--start-maximized', // Start in maximized state
+    ],*/
+    headless         : true, //run false for dev
+    Ignorehttpserrors: true, // ignore certificate error
+    waitUntil        : 'networkidle2',
+    defaultViewport  : {
+        width : 1920,
+        height: 1080
+    },
+    timeout          : 60e3,
+    args             : [
+        '--disable-gpu',
+        '--disable-dev-shm-usage',
+        '--disable-web-security',
+        '-- Disable XSS auditor', // close XSS auditor
+        '--no-zygote',
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '-- allow running secure content', // allow unsafe content
+        '--disable-webgl',
+        '--disable-popup-blocking',
+        //'--proxy-server= http://127.0.0.1:8080 '// configure agent
     ],
+    executablePath   : findChrome(),
 })
 let browser
 // const imgs = []
