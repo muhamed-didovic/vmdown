@@ -5,6 +5,11 @@ const { NodeHtmlMarkdown } = require("node-html-markdown");
 const he = require("he");
 const fs = require("fs-extra");
 const path = require("path");
+const { orderBy } = require("lodash");
+
+const req = require('requestretry');
+const j = req.jar();
+const request = req.defaults({ jar: j, retryDelay: 500, fullResponse: true });
 
 const isLogged = async page => {
     try {
@@ -124,7 +129,7 @@ const extractVimeoUrl = async (page, newTitle, pageUrl, quality) => {
     //await delay(5e3)
     //wait for iframe
     await retry(async () => {//return
-        await page.waitForSelector('.video-wrapper iframe[src]', {timeout: 23e3})
+        await page.waitForSelector('.video-wrapper iframe[src]', { timeout: 23e3 })
     }, 6, 1e3, true)
 
     const iframeSrc = await page.evaluate(
@@ -171,11 +176,15 @@ const getPageData = async (data, page) => {
     //await page.goto(url);
     // await page.setViewport({ width: 1920, height: 1080 });
 
-    const options = await Promise
+    return await Promise
         .resolve()
         .then(async () => {
             //await delay(10e3)
-            await page.goto(pageUrl, { timeout: 61e3 })//waitUntil: 'networkidle0',
+            await page.goto(pageUrl, { waitUntil: 'networkidle0', timeout: 61e3 })//waitUntil: 'networkidle0',
+
+            await retry(async () => {//return
+                await page.waitForSelector('.video-wrapper iframe[src]')
+            }, 6, 1e3, true)
 
             //await auth(page, email, password);
             //check is logged user
@@ -240,7 +249,9 @@ const getPageData = async (data, page) => {
 
             const newTitle = allTitles.filter(t => t.includes(title))[0]
 
-            await Promise.all([
+
+            //const [,, selectedVideo] =
+            /*await Promise.all([
                 (async () => {
                     if (images) {
                         const $sec = await page.$('#lessonContent')
@@ -253,43 +264,169 @@ const getPageData = async (data, page) => {
                             omitBackground: true,
                             delay         : '500ms'
                         })
+                        await delay(2e3)
+                        return Promise.resolve();
                     }
                 })(),
                 (async () => {
                     //create markdown
                     if (markdown) {
                         //wait for iframe
-                        await retry(async () => {//return
+                        /!*await retry(async () => {//return
                             await page.waitForSelector('.video-wrapper iframe[src]')
-                        }, 6, 1e3, true)
+                        }, 6, 1e3, true)*!/
                         let markdown = await page.evaluate(
                             () => Array.from(document.body.querySelectorAll('#lessonContent'),
                                 txt => txt.outerHTML)[0]
                         );
                         await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'markdown'))
                         await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
+                        return Promise.resolve();
                     }
                 })(),
-                /*(async () => {
-                    await extractVimeoUrl(newTitle, pageUrl, page);
-                })(),*/
-            ])
-            let selectedVideo = await extractVimeoUrl(page, newTitle, pageUrl, quality);
+                /!*(async () => {
+                    //await extractVimeoUrl(newTitle, pageUrl, page);
+                   /!* await retry(async () => {//return
+                        await page.waitForSelector('.video-wrapper iframe[src]')
+                    }, 6, 1e3, true)*!/
+
+                    const iframeSrc = await page.evaluate(
+                        () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
+                    );
+                    const selectedVideo = await vimeoRequest(pageUrl, iframeSrc)
+                    return selectedVideo;
+                })(),*!/
+            ])*/
+            //let selectedVideo = await extractVimeoUrl(page, newTitle, pageUrl, quality);
+
+            const r = await page.evaluate(() => {
+                const markdown = Array.from(document.body.querySelectorAll('#lessonContent'), txt => txt.outerHTML)[0]
+                const iframeSrc = Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
+                return {
+                    markdown,
+                    iframeSrc
+                }
+            })
+
+            if (markdown) {
+                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'markdown'))
+                await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle.replace('/', '\u2215')}.md`), nhm.translate(r.markdown), 'utf8')
+            }
+
+            /*const iframeSrc = await page.evaluate(
+                () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
+            );*/
+            const selectedVideo = await vimeoRequest(pageUrl, r.iframeSrc)
+
+            if (images) {
+                const $sec = await page.$('#lessonContent')
+                if (!$sec) throw new Error(`Parsing failed!`)
+                await delay(2e3) //5e3
+                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'puppeteer-cluster-screenshots'))
+                // await page.bringToFront();
+                await $sec.screenshot({
+                    path          : path.join(process.cwd(), saveDir, courseName, 'puppeteer-cluster-screenshots', `${newTitle}.png`),
+                    type          : 'png',
+                    omitBackground: true,
+                    delay         : '1000ms'
+                })
+               /* await page.screenshot({
+                    path    : path.join(process.cwd(), saveDir, courseName, 'puppeteer-cluster-screenshots', `${newTitle}.png`),
+                    fullPage: true
+                });*/
+                //await page.bringToFront()
+                await delay(5e3)
+            }
+
+            //await page.close();
+
             return {
                 pageUrl,
                 courseName,
-                dest    : path.join(process.cwd(), saveDir, courseName, `${newTitle}${videoFormat}`),
-                imgPath : path.join(process.cwd(), saveDir, courseName, 'puppeteer-cluster-screenshots', `${newTitle}.png`),
+                dest    : path.join(process.cwd(), saveDir, courseName, `${newTitle.replace('/', '\u2215')}${videoFormat}`),
+                imgPath : path.join(process.cwd(), saveDir, courseName, 'puppeteer-cluster-screenshots', `${newTitle.replace('/', '\u2215')}.png`),
                 vimeoUrl: selectedVideo.url
             };
         })
 
     // console.log('options:', { options });
-    return { ...options }
+    //return { ...options }
+};
+
+const findVideoUrl = (str, pageUrl) => {
+    const regex = /(?:config = )(?:\{)(.*(\n.*?)*)(?:\"\})/gm;
+    let res = regex.exec(str);
+    if (res !== null) {
+        if (typeof res[0] !== "undefined") {
+            let config = res[0].replace('config = ', '');
+            config = JSON.parse(config);
+            let progressive = config.request.files.progressive;
+
+            //let videoURL = progressive.find(vid => vid.quality === quality + 'p')?.url;
+
+            let video = orderBy(progressive, ['height'], ['desc'])[0];
+            console.log('url', pageUrl, video.quality);
+            /*if (!videoURL) {
+                console.log('-----no 1080p video', progressive);
+                //can't find 1080p quality let's see if there is 720p video
+                videoURL = progressive.find(vid => vid.quality === '720p')?.url;
+            }*/
+            /*for (let item of progressive) {
+                videoURL = item.url;
+                if (quality + 'p' === item.quality) {
+                    //console.log('item 1440', item);
+                    break;
+                } else {
+                    //console.log('-----no item', item);
+                }
+
+            }*/
+            // console.log('videoURL', videoURL);
+            return video.url;
+        }
+    }
+    return null;
+}
+const vimeoRequest = async (pageUrl, url) => {
+    try {
+        const { body, attempts } = await request({
+            url,
+            maxAttempts: 50,
+            headers    : {
+                'Referer'   : "https://www.vuemastery.com/",
+                'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36'
+            }
+        })
+
+        const v = findVideoUrl(body, pageUrl)
+        // console.log('attempts', attempts);
+        const { headers, attempts: a } = await request({
+            url         : v,
+            json        : true,
+            maxAttempts : 50,
+            method      : "HEAD",
+            fullResponse: true, // (default) To resolve the promise with the full response or just the body
+            'headers'   : {
+                'Referer': "https://www.vuemastery.com/"
+            }
+        })
+
+        return {
+            url : v,
+            size: headers['content-length']
+        };
+    } catch (err) {
+        console.log('ERR::', err);
+        /*if (err.message === 'Received invalid status code: 404') {
+            return Promise.resolve();
+        }*/
+        throw err;
+    }
 };
 module.exports = {
     auth,
     retry,
     getPageData,
-    extractVimeoUrl
+    extractVimeoUrl,
+    vimeoRequest
 };

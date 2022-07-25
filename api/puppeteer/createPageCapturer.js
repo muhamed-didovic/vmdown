@@ -1,17 +1,18 @@
 // const url = require('url')
-const path = require("path");
-const fs = require("fs-extra");
+const path = require("path")
+const fs = require("fs-extra")
 const he = require('he')
-const delay = require("../delay");
+const { orderBy } = require("lodash")
+const { NodeHtmlMarkdown } = require('node-html-markdown')
 
-const { NodeHtmlMarkdown } = require('node-html-markdown');
-const { retry } = require("../puppeteer/helpers");
+const delay = require("../delay")
+const { retry, vimeoRequest } = require("../puppeteer/helpers")
 
 module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, markdown, images) => {//browser =>
     const nhm = new NodeHtmlMarkdown();
     pageUrl = he.decode(pageUrl)
     //const page = await browser.newPage()
-    await page.setViewport({ width: 1920, height: 1080 });
+    // await page.setViewport({ width: 1920, height: 1080 });
     //await page.setViewport({ width: 0, height: 0, deviceScaleFactor: 1.5 })
 
     /*await Promise.all([
@@ -23,7 +24,7 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
         .resolve()
         .then(async () => {
             //await delay(10e3)
-            await page.goto(pageUrl)
+            // await page.goto(pageUrl)
             let courseName = pageUrl.replace(
                 "https://www.vuemastery.com/courses/",
                 ""
@@ -39,12 +40,12 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
             }
 
             //check if source is locked
-            let locked = await page.evaluate(
+            /*let locked = await page.evaluate(
                 () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
             );
             if (locked) {
                 return;
-            }
+            }*/
 
             if (courseName.includes('/')) {
                 try {
@@ -85,12 +86,52 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
 
             const newTitle = allTitles.filter(t => t.includes(title))[0]
 
-            const [, , selectedVideo] = await Promise.all([
+
+            if (images) {
+                const $sec = await page.$('#lessonContent')
+                if (!$sec) throw new Error(`Parsing failed!`)
+                await delay(1e3) //5e3
+                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots'))
+                await $sec.screenshot({
+                    path          : path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots', `${newTitle}.png`),
+                    type          : 'png',
+                    omitBackground: true,
+                    delay         : '500ms'
+                })
+                await delay(1e3) //5e3
+                return Promise.resolve();
+            }
+
+            if (markdown) {
+                //wait for iframe
+                await retry(async () => {//return
+                    await page.waitForSelector('.video-wrapper iframe[src]')
+                }, 6, 1e3, true)
+                let markdown = await page.evaluate(
+                    () => Array.from(document.body.querySelectorAll('#lessonContent'),
+                        txt => txt.outerHTML)[0]
+                );
+                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'markdown'))
+                await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
+                await delay(1e3) //5e3
+                return Promise.resolve();
+            }
+
+            await retry(async () => {//return
+                await page.waitForSelector('.video-wrapper iframe[src]')
+            }, 6, 1e3, true)
+
+            const iframeSrc = await page.evaluate(
+                () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
+            );
+            const selectedVideo = await vimeoRequest(pageUrl, iframeSrc)
+
+            /*const [, , selectedVideo] = await Promise.all([
                 (async () => {
                     if (images) {
                         const $sec = await page.$('#lessonContent')
                         if (!$sec) throw new Error(`Parsing failed!`)
-                        await delay(5e3) //5e3
+                        await delay(1e3) //5e3
                         await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots'))
                         await $sec.screenshot({
                             path          : path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots', `${newTitle}.png`),
@@ -98,6 +139,8 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                             omitBackground: true,
                             delay         : '500ms'
                         })
+                        await delay(1e3) //5e3
+                        return Promise.resolve();
                     }
                 })(),
                 (async () => {
@@ -113,11 +156,23 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                         );
                         await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'markdown'))
                         await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
+                        await delay(1e3) //5e3
+                        return Promise.resolve();
                     }
                 })(),
                 (async () => {
-                    //wait for iframe
+
                     await retry(async () => {//return
+                        await page.waitForSelector('.video-wrapper iframe[src]')
+                    }, 6, 1e3, true)
+
+                    const iframeSrc = await page.evaluate(
+                        () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
+                    );
+                    const selectedVideo = await vimeoRequest(pageUrl, iframeSrc)
+                    return selectedVideo;
+                    //wait for iframe
+                    /!*await retry(async () => {//return
                         await page.waitForSelector('.video-wrapper iframe[src]')
                     }, 6, 1e3, true)
 
@@ -146,17 +201,21 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                     finString = newString.split(']},"lang":"en","sentry":')[0];
 
                     let videos = await eval(`[${finString}]`)
-                    let selectedVideo = await videos.find(vid => vid.quality === quality);
-
+                    let selectedVideo = orderBy(videos, ['height'], ['desc'])[0]
+                    console.log('----', pageUrl, selectedVideo.quality);
+                    /!*let selectedVideo = await videos.find(vid => vid.quality === quality);
                     if (!selectedVideo) {
                         //can't find 1080p quality let's see if there is 720p video
+
+                        console.log('videos', videos);
                         selectedVideo = await videos.find(vid => vid.quality === '720p');
-                    }
+                        console.log('no 1080p video', selectedVideo);
+                    }*!/
                     await pageSrc.close()
-                    return selectedVideo;
+                    return selectedVideo;*!/
 
                 })(),
-            ])
+            ])*/
 
             return {
                 pageUrl,

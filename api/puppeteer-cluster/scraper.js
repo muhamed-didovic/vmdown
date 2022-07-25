@@ -3,20 +3,17 @@ const _ = require("lodash");
 const path = require("path");
 const cliProgress = require('cli-progress');
 const { Cluster } = require('puppeteer-cluster');
-const createPageCapturer = require("./createPageCapturer");
+// const createPageCapturer = require("./createPageCapturer");
 const { auth } = require("./helpers");
 const imgs2pdf = require('../imgs2pdf.js');
 const downloadVideo = require("../downloadVideo");
-const getInnerText = require("../getInnerText");
 const delay = require("../delay");
 const { retry, getPageData, extractVimeoUrl } = require("./helpers");
 
 const Spinnies = require('dreidels');
 const ms = new Spinnies();
 
-const { NodeHtmlMarkdown } = require("node-html-markdown");
 const he = require("he");
-let allData = [];
 let cnt = 0;
 const sitemap = require("../../json/sitemap.json");
 const findChrome = require("chrome-finder");
@@ -28,25 +25,27 @@ const launchOptions = {
         width : 1920,
         height: 1080
     },
-    timeout: 60e3,
+    // timeout          : 63e3,
     args             : [
-        '--disable-gpu',
-        '--disable-dev-shm-usage',
-        '--disable-web-security',
-        '-- Disable XSS auditor', // close XSS auditor
-        '--no-zygote',
         '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '-- allow running secure content', // allow unsafe content
-        '--disable-webgl',
-        '--disable-popup-blocking',
+        '--start-maximized',
+
+        // '--disable-gpu',
+        // '--disable-dev-shm-usage',
+        // '--disable-web-security',
+        // '-- Disable XSS auditor', // close XSS auditor
+        // '--no-zygote',
+        // '--disable-setuid-sandbox',
+        // '-- allow running secure content', // allow unsafe content
+        // '--disable-webgl',
+        // '--disable-popup-blocking',
         //'--proxy-server= http://127.0.0.1:8080 '// configure agent
     ],
-    executablePath   : findChrome(),
+    // executablePath   : findChrome(),
 };
 const clusterLanuchOptions = {
     concurrency      : Cluster.CONCURRENCY_PAGE, // single chrome multi tab mode
-    maxConcurrency   : 5, // number of concurrent workers
+    maxConcurrency   : 10, // number of concurrent workers
     retrylimit       : 5, // number of retries
     skipduplicateurls: true, // do not crawl duplicate URLs
     // monitor: true, // displays the performance consumption
@@ -107,17 +106,19 @@ const scraper = async (opts) => {
         await page.goto("https://www.vuemastery.com", { timeout: 100e3 }); // waitUntil: "networkidle0",
         await page.setViewport({ width: 1920, height: 1080 });
         await delay(1)
-        await auth(page, email, password);
-        await delay(2e3)
         ms.add('login', { text: `Checking authentication...` });
-        await page.reload({ waitUntil: ["networkidle0", "domcontentloaded"], timeout: 21e3  });
+        await auth(page, email, password);
+        ms.succeed('login', { text: "User successfully logged in." });
+        await delay(2e3)
+
+        /*await page.reload({ waitUntil: ["networkidle0", "domcontentloaded"], timeout: 21e3 });
         await page.waitForSelector('button[data-test="signOut"]', { timeout: 29e3 })
         if (await getInnerText(page, 'a[href="/account/dashboard"]') === 'Dashboard') {
             ms.succeed('login', { text: "User successfully logged in." });
         } else {
             ms.fail('login', { text: "Cannot login. Check your user credentials. \n WARNING: Just free videos will be downloaded" });
             return;
-        }
+        }*/
     });
 
     await cluster.task(async ({ page, data }) => {
@@ -130,7 +131,7 @@ const scraper = async (opts) => {
             ms.update('capture', { text: `Puppeteer Capturing... ${++cnt} of ${courses.length} ${link}` });
             //return await createPageCapturer(cluster, link, downDir, extension, quality, markdown, images)
             return await cluster.execute({ link, downDir, extension, quality, markdown, images });
-        }, { concurrency: 5})
+        }, { concurrency: 7 })
         .then(async courses => {
 
             await cluster.idle();
@@ -144,6 +145,7 @@ const scraper = async (opts) => {
         })
         .then(async courses => {
             if (videos) {
+                await fs.writeFile(`./json/pc-courses-${new Date().toISOString()}.json`, JSON.stringify(courses, null, 2), 'utf8')
                 console.log('filtered courses length:', courses.length);
                 // create new container
                 const multibar = new cliProgress.MultiBar({
@@ -188,6 +190,7 @@ const scraper = async (opts) => {
         .catch(console.error)
         .finally(async () => {
             console.log('FINNALY');
+            ms.stopAll()
             // Shutdown after everything is done
             await cluster.idle();
             await cluster.close();

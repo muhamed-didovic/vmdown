@@ -2,6 +2,7 @@ const playwright = require("./api/playwright/scraper");
 const puppeteerScraper = require("./api/puppeteer/scraper");
 const puppeteerCluster = require("./api/puppeteer-cluster/scraper");
 const nightmareScraper = require("./api/nightmare/scraper");
+const puppeteerSocket = require("./api/puppeteer-socket/scraper");
 
 const cli = require("./api/cli.js");
 
@@ -27,7 +28,8 @@ process.on('unhandledRejection', error => {
             'n' : nightmareScraper,
             'p' : puppeteerScraper,
             'pw': playwright,
-            'pc': puppeteerCluster
+            'pc': puppeteerCluster,
+            'ps': puppeteerSocket
         }
         const scrape = map[options.framework] || map.p;
         await scrape({...options})

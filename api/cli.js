@@ -23,7 +23,7 @@ Options
     --extension, -x     Choose video format (default: .mp4)
     --quality, -q       Choose quality from: 1080p / 720p / 540p / 360p / 240p (default: 1080p)
     --directory, -d     Directory to save (default: ./videos)
-    --framework, -f     Framework to use between nightmare, puppeteer, puppeteer-cluster and playwright (default: puppeteer) (Options available: 'p', 'n', 'pc', 'pw')
+    --framework, -f     Framework to use between nightmare, puppeteer, puppeteer-cluster, puppeteer-socket and playwright (default: puppeteer) (Options available: 'p', 'n', 'pc', 'pw', 'ps)
     --concurrency, -c
 
 Examples
@@ -178,7 +178,7 @@ async function commonFlags(flags) {
             initial: 0
         })
 
-    const framework = ['n', 'p', 'pw', 'pc'].includes(flags.framework)
+    const framework = ['n', 'p', 'pw', 'pc', 'ps'].includes(flags.framework)
         ? flags.framework
         : await askOrExit({
             type   : 'select',
@@ -199,7 +199,11 @@ async function commonFlags(flags) {
                 {
                     title: 'Puppeteer-cluster',
                     value: 'pc',
-                }
+                },
+                {
+                    title: 'Puppeteer-socket',
+                    value: 'ps',
+                },
             ],
             initial: 0
         })

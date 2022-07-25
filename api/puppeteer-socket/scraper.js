@@ -1,23 +1,23 @@
-const fs = require("fs-extra")
+const fs = require("fs-extra");
+const path = require("path");
 const he = require('he')
-const _ = require("lodash")
-const path = require("path")
-const cliProgress = require('cli-progress')
+const cliProgress = require("cli-progress");
+const _ = require("lodash");
 
-const createPageCapturer = require("./createPageCapturer");
-const { auth, withBrowser, withPage, retry } = require("./helpers");
-const imgs2pdf = require('../imgs2pdf.js');
-const downloadVideo = require("../downloadVideo");
+const auth = require("./auth");
+// const { createWebsocketMessageListener } = require("./message");
+const { downloadVideo, parseMessage } = require("./course");
+
+const { withPage, retry, withBrowser } = require("../puppeteer-socket/helpers");
+const imgs2pdf = require("../imgs2pdf");
 const delay = require("../delay");
 
-const Spinnies = require('dreidels');
-const ms = new Spinnies();
-
 const sitemap = require("../../json/sitemap.json");
+const { createWebsocketMessageListener } = require("./message");
 
-/*const Bluebird = require('bluebird')
-Bluebird.config({ longStackTraces: true });
-global.Promise = Bluebird*/
+const Spinnies = require('dreidels');
+const { NodeHtmlMarkdown } = require("node-html-markdown");
+const ms = new Spinnies();
 
 const scraper = async ({
     email,
@@ -36,9 +36,9 @@ const scraper = async ({
     if (!courses.length) {
         return console.log('No course(s) found for download')
     }
+    const nhm = new NodeHtmlMarkdown();
     console.log('Courses found:', courses.length);
 
-    //start puppeteer and login
     await withBrowser(async (browser) => {
 
         const result = await withPage(browser)(async (page) => {
@@ -63,30 +63,49 @@ const scraper = async ({
         });
 
         let cnt = 0;
-        ms.add('capture', { text: `Start Puppeteer Capturing...` });
+        let coursesArray = []
+        // ms.add('capture', { text: `Start Puppeteer Capturing...` });
         await Promise
             .map(courses, async (link) => {
                 return await withPage(browser)(async (page) => {
+                    const client = await page.target().createCDPSession();
+                    await client.send('Network.enable');
+                    await client.send('Page.enable');
+                    createWebsocketMessageListener(page, client)
+                        .register(async (message) => {
+                            const video = parseMessage(message);
+                            if (video && !coursesArray.includes(video.downloadLink)) {
+                                coursesArray.push(video.downloadLink)
+                                // console.log('video', video.downloadLink);
+                                await downloadVideo(video, page, nhm)
+                            }
+                        })
 
                     await page.goto(he.decode(link), { waitUntil: ["networkidle2"], timeout: 61e3});
                     //check if source is locked
-                    let locked = await page.evaluate(
+                   /* let locked = await page.evaluate(
                         () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
                     );
                     if (locked) {
+                        console.log('LOCKEDDDDDDD');
                         return;
-                    }
+                    }*/
                     await retry(async () => {//return
+                        console.log('URL TO VISIT', he.decode(link),);
                         await page.waitForSelector('.video-wrapper iframe[src]')
                     }, 6, 1e3, true)
                     //await auth(page, email, password);
 
-                    ms.update('capture', { text: `Puppeteer Capturing... ${++cnt} of ${courses.length} ${link}` });
-                    return await createPageCapturer(browser, page, link, downDir, extension, quality, markdown, images)
+                    // ms.update('capture', { text: `Puppeteer Capturing... ${++cnt} of ${courses.length} ${link}` });
+                    await delay(5e3)
+                    return true;
 
                 });
             }, { concurrency: 3 })
             .then(async courses => {
+              return Promise.resolve();
+            })
+            /*.then(async courses => {
                 await fs.ensureDir(path.resolve(process.cwd(), 'json'))
                 await fs.writeFile(`./json/first-course-puppeteer.json`, JSON.stringify(courses, null, 2), 'utf8')
                 ms.succeed('capture', { text: `Capturing done for ${cnt}...` });
@@ -134,7 +153,7 @@ const scraper = async ({
                                 path.join(process.cwd(), downDir, courseName, 'puppeteer-screenshots', `${courseName}.pdf`))
                         )
                 }
-            })
+            })*/
             .catch(console.error)
             .finally(() => {
                 ms.stopAll()
@@ -144,3 +163,4 @@ const scraper = async ({
 }
 
 module.exports = scraper;
+
