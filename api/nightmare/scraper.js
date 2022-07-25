@@ -36,6 +36,7 @@ const scraper = async ({
     console.log('Courses found:', courses.length);
 
     const n = Nightmare({
+        Promise: require('bluebird'),
         switches      : { 'force-device-scale-factor': '1' },
         show          : false, // Set to true while development
         frame         : true, //false
@@ -115,7 +116,9 @@ const scraper = async ({
                     })
             }
         })
-        //.catch(console.error)
+        .catch(error => {
+            console.error('mmmmmmm', error)
+        })
         .finally(async () => {
             ms.stopAll()
             await n.end()
