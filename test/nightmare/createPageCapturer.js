@@ -29,7 +29,6 @@ const scrape = async (link, quality = '1080p', saveDir = './test/nightmare') => 
                 // },
             });
         }
-        //const result = await capturePage(link, "./test", ".mp4", quality, true, true)
         const result = await createPageCapturer(browser, link, saveDir, ".mp4", quality, true, true, ms)
         // imgs.push(result.imgPath)
         return result
@@ -52,6 +51,7 @@ test.after.always(() => {
 
 
 test('capturePage nightmare', async t => {
+    console.log('11111');
     const res1 = await scrape('https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance', '720p')
     console.log('res1', res1);
     const res2 = await scrape("https://www.vuemastery.com/courses/intro-to-vue-js/attribute-binding");
