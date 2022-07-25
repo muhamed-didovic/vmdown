@@ -13,7 +13,7 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
     pageUrl = he.decode(pageUrl)
     let lock = false;
     console.log('-1', pageUrl);
-    return await n
+    return n
         .goto(pageUrl)
         // .wait('.lesson-video-wrapper')
         // .wait('h1.title')
@@ -22,8 +22,6 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
         // .wait('.relative')
 
         .wait('#lessonContent')
-
-    /*await n*/
         .evaluate(() => {
             return {
                 locked: Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0],
@@ -111,6 +109,6 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
 
                 })
         })
-      
+
 };
 
