@@ -103,7 +103,7 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
                 courseName,
                 dest    : path.join(process.cwd(), saveDir, courseName, `${newTitle.replace('/', '\u2215')}${videoFormat}`),
                 imgPath : path.join(process.cwd(), saveDir, courseName, 'nightmare-screenshots', `${newTitle.replace('/', '\u2215')}.png`),
-                vimeoUrl: selectedVideo//.url
+                vimeoUrl: selectedVideo.url
             };
 
         })

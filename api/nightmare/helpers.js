@@ -154,68 +154,13 @@ const findVideoUrl = (str, pageUrl) => {
             let config = res[0].replace('config = ', '');
             config = JSON.parse(config);
             let progressive = config.request.files.progressive;
-
-            //let videoURL = progressive.find(vid => vid.quality === quality + 'p')?.url;
-
             let video = orderBy(progressive, ['height'], ['desc'])[0];
-            // console.log('url', pageUrl, video.quality);
-            /*if (!videoURL) {
-                console.log('-----no 1080p video', progressive);
-                //can't find 1080p quality let's see if there is 720p video
-                videoURL = progressive.find(vid => vid.quality === '720p')?.url;
-            }*/
-            /*for (let item of progressive) {
-                videoURL = item.url;
-                if (quality + 'p' === item.quality) {
-                    //console.log('item 1440', item);
-                    break;
-                } else {
-                    //console.log('-----no item', item);
-                }
-
-            }*/
-            // console.log('videoURL', videoURL);
-            return video.url;
+            return video;
         }
     }
     return null;
 }
-const vimeoRequest = async (pageUrl, url, n) => {
-    try {
-        const { body, attempts } = await request({
-            url,
-            maxAttempts: 50,
-            headers    : {
-                'Referer'   : "https://www.vuemastery.com/",
-                'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36'
-            }
-        })
 
-        const v = findVideoUrl(body, pageUrl)
-        // console.log('attempts', attempts);
-        const { headers, attempts: a } = await request({
-            url         : v,
-            json        : true,
-            maxAttempts : 50,
-            method      : "HEAD",
-            fullResponse: true, // (default) To resolve the promise with the full response or just the body
-            'headers'   : {
-                'Referer': "https://www.vuemastery.com/"
-            }
-        })
-
-        return {
-            url : v,
-            size: headers['content-length']
-        };
-    } catch (err) {
-        console.log('ERR::', err);
-        /*if (err.message === 'Received invalid status code: 404') {
-            return Promise.resolve();
-        }*/
-        throw err;
-    }
-};
 const extractVimeoUrl = async (iframeSrc, n, quality, pageUrl) => {
     return await retry(async () => {//return
         return await n
