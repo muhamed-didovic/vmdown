@@ -12,7 +12,7 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
     const nhm = new NodeHtmlMarkdown();
     pageUrl = he.decode(pageUrl)
     let lock = false;
-
+    console.log('-1');
     await n
         .goto(pageUrl)
         // .wait('.lesson-video-wrapper')
@@ -28,16 +28,18 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
             }
         })
         .then(({ locked }) => {
+            console.log('-2');
             if (locked) {
                 lock = true;
             }
         })
     //check if access is allowed
     if (lock) {
+        console.log('-3');
         // ms.fail('capture', { text: `Can't Capture lesson ${pageUrl} lesson is locked: ${lock}` });
         return;
     }
-
+    console.log('-4');
     return n
         .wait('.video-wrapper iframe[src]')
         .wait(1000)
