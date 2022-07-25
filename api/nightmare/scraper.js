@@ -37,7 +37,7 @@ const scraper = async ({
 
     const n = Nightmare({
         switches      : { 'force-device-scale-factor': '1' },
-        show          : true, // Set to true while development
+        show          : false, // Set to true while development
         frame         : true, //false
         useContentSize: true,
         //minHeight             : 4000,

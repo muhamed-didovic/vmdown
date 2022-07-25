@@ -1,23 +1,11 @@
-const fs = require("fs-extra");
-const path = require("path");
-const he = require('he')
-const cliProgress = require("cli-progress");
-const _ = require("lodash");
-
 const auth = require("./auth");
-// const { createWebsocketMessageListener } = require("./message");
-const { downloadVideo, parseMessage } = require("./course");
-
-const { withPage, retry, withBrowser, getCourseName } = require("../puppeteer-socket/helpers");
-const imgs2pdf = require("../imgs2pdf");
+const { withPage, withBrowser } = require("../puppeteer-socket/helpers");
+// const imgs2pdf = require("../imgs2pdf");
 const delay = require("../delay");
-
 const sitemap = require("../../json/sitemap.json");
-const { createWebsocketMessageListener } = require("./message");
-
-const Spinnies = require('dreidels');
+const createPageCapturer = require("./createPageCapturer");
 const { NodeHtmlMarkdown } = require("node-html-markdown");
-const { getValidFileName } = require("./helpers");
+const Spinnies = require('dreidels');
 const ms = new Spinnies();
 
 const scraper = async ({
@@ -37,7 +25,6 @@ const scraper = async ({
     if (!courses.length) {
         return console.log('No course(s) found for download')
     }
-    const nhm = new NodeHtmlMarkdown();
     console.log('Courses found:', courses.length);
 
     await withBrowser(async (browser) => {
@@ -69,54 +56,7 @@ const scraper = async ({
         await Promise
             .map(courses, async (link) => {
                 return await withPage(browser)(async (page) => {
-                    const client = await page.target().createCDPSession();
-                    await client.send('Network.enable');
-                    await client.send('Page.enable');
-                    createWebsocketMessageListener(page, client)
-                        .register(async (message) => {
-                            const video = parseMessage(message);
-                            if (video && !coursesArray.includes(video.downloadLink)) {
-                                coursesArray.push(video.downloadLink)
-                                // console.log('video', video.downloadLink);
-                                await downloadVideo(video, page, nhm)
-                            }
-                        })
-
-                    await page.goto(he.decode(link), { waitUntil: ["networkidle2"], timeout: 61e3});
-                    //check if source is locked
-                   /* let locked = await page.evaluate(
-                        () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
-                    );
-                    if (locked) {
-                        console.log('LOCKEDDDDDDD');
-                        return;
-                    }*/
-                    await retry(async () => {//return
-                        console.log('URL TO VISIT', he.decode(link),);
-                        await page.waitForSelector('.video-wrapper iframe[src]')
-                    }, 6, 1e3, true)
-                    //await auth(page, email, password);
-
-                    const courseName = getCourseName(page)
-                    const fileName = await getValidFileName(page);
-
-                    //save screenshot
-                    const $sec = await page.$('#lessonContent')
-                    if (!$sec) throw new Error(`Parsing failed!`)
-                    await delay(1e3) //5e3
-                    await fs.ensureDir(path.join(process.cwd(), 'videos', courseName, 'puppeteer-socket-screenshots'))
-                    await $sec.screenshot({
-                        path          : path.join(process.cwd(), 'videos', courseName, 'puppeteer-socket-screenshots', `${fileName}.png`),
-                        type          : 'png',
-                        omitBackground: true,
-                        delay         : '500ms'
-                    })
-                    await delay(2e3) //5e3
-
-                    // ms.update('capture', { text: `Puppeteer Capturing... ${++cnt} of ${courses.length} ${link}` });
-                    await delay(5e3)
-                    return true;
-
+                    return await createPageCapturer(page, coursesArray, link, downDir);
                 });
             }, { concurrency: 3 })
             .then(async courses => {

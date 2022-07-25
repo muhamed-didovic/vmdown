@@ -6,7 +6,7 @@ const colors = require('colors');
 // const delay = require("../delay");
 
 const { NodeHtmlMarkdown } = require('node-html-markdown');
-const { makeScreenshots, extractVimeoUrl, vimeoRequest } = require("./helpers");
+const { makeScreenshots, extractVimeoUrl } = require("./helpers");
 
 module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, images, ms) => {
     const nhm = new NodeHtmlMarkdown();
@@ -103,7 +103,7 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
                 courseName,
                 dest    : path.join(process.cwd(), saveDir, courseName, `${newTitle.replace('/', '\u2215')}${videoFormat}`),
                 imgPath : path.join(process.cwd(), saveDir, courseName, 'nightmare-screenshots', `${newTitle.replace('/', '\u2215')}.png`),
-                vimeoUrl: selectedVideo.url
+                vimeoUrl: selectedVideo//.url
             };
 
         })
