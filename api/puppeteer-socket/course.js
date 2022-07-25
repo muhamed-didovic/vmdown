@@ -46,8 +46,7 @@ const downloadVideo = async (video, page, nhm) => {
     await fs.ensureDir(directory);
     await fs.ensureDir(path.join(directory, 'markdown-ps'))
 
-
-    const title = await getValidFileName(page, video.title);
+    const title = await getValidFileName(page);//, video.title
     const fileName = title; //`${video.lessonNumber}. ${title}`
 
     //save resources
@@ -64,6 +63,7 @@ const downloadVideo = async (video, page, nhm) => {
     //save markdown
     await saveTextFile(video.markdown, path.resolve(directory, 'markdown-ps', `${fileName}.md`));
 
+
     const remoteFileSize = await remote(video.downloadLink);
     const dest = path.join(process.cwd(), 'videos', courseName, `${fileName}.mp4`);
     // console.log('dest', dest)
@@ -78,20 +78,10 @@ const downloadVideo = async (video, page, nhm) => {
     }
 
     downloadManager.addTask(video.downloadLink, path.resolve(directory, `${fileName}.mp4`));
-
-    const $sec = await page.$('#lessonContent')
-    if (!$sec) throw new Error(`Parsing failed!`)
-    await delay(1e3) //5e3
-    await fs.ensureDir(path.join(process.cwd(), 'videos', courseName, 'puppeteer-socket-screenshots'))
-    await $sec.screenshot({
-        path          : path.join(process.cwd(), 'videos', courseName, 'puppeteer-socket-screenshots', `${newTitle}.png`),
-        type          : 'png',
-        omitBackground: true,
-        delay         : '500ms'
-    })
 };
 
 module.exports = {
     downloadVideo,
-    parseMessage
+    parseMessage,
+    getValidFileName
 }

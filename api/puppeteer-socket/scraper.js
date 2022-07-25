@@ -8,7 +8,7 @@ const auth = require("./auth");
 // const { createWebsocketMessageListener } = require("./message");
 const { downloadVideo, parseMessage } = require("./course");
 
-const { withPage, retry, withBrowser } = require("../puppeteer-socket/helpers");
+const { withPage, retry, withBrowser, getCourseName } = require("../puppeteer-socket/helpers");
 const imgs2pdf = require("../imgs2pdf");
 const delay = require("../delay");
 
@@ -17,6 +17,7 @@ const { createWebsocketMessageListener } = require("./message");
 
 const Spinnies = require('dreidels');
 const { NodeHtmlMarkdown } = require("node-html-markdown");
+const { getValidFileName } = require("./helpers");
 const ms = new Spinnies();
 
 const scraper = async ({
@@ -95,6 +96,22 @@ const scraper = async ({
                         await page.waitForSelector('.video-wrapper iframe[src]')
                     }, 6, 1e3, true)
                     //await auth(page, email, password);
+
+                    const courseName = getCourseName(page)
+                    const fileName = await getValidFileName(page);
+
+                    //save screenshot
+                    const $sec = await page.$('#lessonContent')
+                    if (!$sec) throw new Error(`Parsing failed!`)
+                    await delay(1e3) //5e3
+                    await fs.ensureDir(path.join(process.cwd(), 'videos', courseName, 'puppeteer-socket-screenshots'))
+                    await $sec.screenshot({
+                        path          : path.join(process.cwd(), 'videos', courseName, 'puppeteer-socket-screenshots', `${fileName}.png`),
+                        type          : 'png',
+                        omitBackground: true,
+                        delay         : '500ms'
+                    })
+                    await delay(2e3) //5e3
 
                     // ms.update('capture', { text: `Puppeteer Capturing... ${++cnt} of ${courses.length} ${link}` });
                     await delay(5e3)

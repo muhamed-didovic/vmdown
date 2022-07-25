@@ -56,7 +56,7 @@ const getCourseName = page => page.url().split('/').reduce((courseName, segment,
     return courseName;
 }, '');
 
-const getValidFileName = async (page, fileName) => {
+const getValidFileName = async (page) => {//fileName
     await page.waitForSelector('h1.title')
     await page.waitForSelector('h4.list-item-title')
 
