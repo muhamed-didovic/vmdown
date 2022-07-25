@@ -32,7 +32,7 @@ const getBrowser = createBrowserGetter(puppeteer, {
         width : 1920,
         height: 1080
     },
-    timeout          : 60e3,
+    timeout          : 22e3,
     args             : [
         '--disable-gpu',
         '--disable-dev-shm-usage',
@@ -55,7 +55,7 @@ const scrape = async (link, quality = '1080p', saveDir = './test/puppeteer') => 
         browser = await getBrowser()
     }
     const page = await browser.newPage()
-    page.setDefaultTimeout(61e3)
+    // page.setDefaultTimeout(61e3)
     const result = await createPageCapturer(browser, page, link, saveDir, ".mp4", '1080p', true, true)
     // const result = await capturePage(link, "./test", ".mp4", quality, true, true)
     // imgs.push(result.imgPath)

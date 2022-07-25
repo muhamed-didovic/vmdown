@@ -68,7 +68,7 @@ const scraper = async ({
             .map(courses, async (link) => {
                 return await withPage(browser)(async (page) => {
 
-                    await page.goto(he.decode(link), { waitUntil: ["networkidle2"], timeout: 61e3});
+                    /*await page.goto(he.decode(link), { waitUntil: ["networkidle2"], timeout: 61e3});
                     //check if source is locked
                     let locked = await page.evaluate(
                         () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
@@ -78,7 +78,7 @@ const scraper = async ({
                     }
                     await retry(async () => {//return
                         await page.waitForSelector('.video-wrapper iframe[src]')
-                    }, 6, 1e3, true)
+                    }, 6, 1e3, true)*/
                     //await auth(page, email, password);
 
                     ms.update('capture', { text: `Puppeteer Capturing... ${++cnt} of ${courses.length} ${link}` });

@@ -12,7 +12,7 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
     const nhm = new NodeHtmlMarkdown();
     pageUrl = he.decode(pageUrl)
     //const page = await browser.newPage()
-    // await page.setViewport({ width: 1920, height: 1080 });
+    await page.setViewport({ width: 1920, height: 1080 });
     //await page.setViewport({ width: 0, height: 0, deviceScaleFactor: 1.5 })
 
     /*await Promise.all([
@@ -24,7 +24,7 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
         .resolve()
         .then(async () => {
             //await delay(10e3)
-            // await page.goto(pageUrl)
+            await page.goto(pageUrl, { waitUntil: ["networkidle2"], timeout: 61e3});
             let courseName = pageUrl.replace(
                 "https://www.vuemastery.com/courses/",
                 ""
@@ -40,12 +40,12 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
             }
 
             //check if source is locked
-            /*let locked = await page.evaluate(
+            let locked = await page.evaluate(
                 () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
             );
             if (locked) {
                 return;
-            }*/
+            }
 
             if (courseName.includes('/')) {
                 try {
@@ -125,7 +125,7 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                 () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
             );
             const selectedVideo = await vimeoRequest(pageUrl, iframeSrc)
-            console.log('CV', selectedVideo);
+
             /*const [, , selectedVideo] = await Promise.all([
                 (async () => {
                     if (images) {

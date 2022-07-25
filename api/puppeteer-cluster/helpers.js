@@ -364,7 +364,7 @@ const findVideoUrl = (str, pageUrl) => {
             //let videoURL = progressive.find(vid => vid.quality === quality + 'p')?.url;
 
             let video = orderBy(progressive, ['height'], ['desc'])[0];
-            console.log('url', pageUrl, video.quality);
+            // console.log('url', pageUrl, video.quality);
             /*if (!videoURL) {
                 console.log('-----no 1080p video', progressive);
                 //can't find 1080p quality let's see if there is 720p video
