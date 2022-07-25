@@ -7,7 +7,6 @@ const Nightmare = require("nightmare");
 const Spinnies = require('dreidels');
 const ms = new Spinnies();
 
-
 const scrape = async (link, quality = '1080p', saveDir = './test/nightmare') => {
     try {
         if (!browser) {
@@ -29,6 +28,7 @@ const scrape = async (link, quality = '1080p', saveDir = './test/nightmare') => 
                 // },
             });
         }
+
         const result = await createPageCapturer(browser, link, saveDir, ".mp4", quality, true, true, ms)
         // imgs.push(result.imgPath)
         return result

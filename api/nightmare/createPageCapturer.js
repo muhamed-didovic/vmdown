@@ -33,6 +33,10 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
                 lock = true;
             }
         })
+        .catch(error => {
+            console.error('111Error:', error);
+            throw error;
+        });
     //check if access is allowed
     if (lock) {
         console.log('-3');
