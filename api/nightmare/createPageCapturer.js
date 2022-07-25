@@ -12,7 +12,7 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
     const nhm = new NodeHtmlMarkdown();
     pageUrl = he.decode(pageUrl)
     let lock = false;
-    console.log('-1');
+    console.log('-1', pageUrl);
     await n
         .goto(pageUrl)
         // .wait('.lesson-video-wrapper')
