@@ -20,9 +20,10 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
         // .wait('body')
         // .wait('.body > .title')
         // .wait('.relative')
-
-        .wait('#lessonContent')
-        .evaluate(() => {
+    console.log('-12');
+    await n.wait('#lessonContent')
+    console.log('-13');
+    await n.evaluate(() => {
             return {
                 locked: Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0],
             }

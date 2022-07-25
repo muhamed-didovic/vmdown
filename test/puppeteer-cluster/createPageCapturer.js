@@ -46,7 +46,7 @@ test.after.always(() => {
     fs.removeSync(path.join(__dirname, 'intro-to-vue-js'),  { recursive: true, force: true });//, { recursive: true, force: true }
 })
 
-test('capturePage puppeteer', async t => {
+test.skip('capturePage puppeteer', async t => {
     cluster = await Cluster.launch(clusterLanuchOptions)
     await cluster.task(async ({ page, data }) => {
         return await getPageData(data, page);
