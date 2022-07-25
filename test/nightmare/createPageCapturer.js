@@ -53,9 +53,11 @@ test.after.always(() => {
 
 test('capturePage nightmare', async t => {
     const res1 = await scrape('https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance', '720p')
-    // console.log('nightmare', res1);
+    console.log('res1', res1);
     const res2 = await scrape("https://www.vuemastery.com/courses/intro-to-vue-js/attribute-binding");
+    console.log('res2', res2);
     const res3 = await scrape("https://www.vuemastery.com/courses/intro-to-vue-js/conditional-rendering");
+    console.log('res3', res3);
 
     t.true(fs.existsSync(res1.imgPath))
     t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'markdown', '1. The Vue Instance.md')))
