@@ -3,35 +3,6 @@ const fs = require('fs-extra')
 const imgSize = require('image-size')
 const path = require("path");
 
-/*const Bluebird = require('bluebird');
-Bluebird.config({ longStackTraces: true });
-global.Promise = Bluebird*/
-
-/*const folderContents = async (folder) => {
-    //const options = [];
-    return await fs.readdirSync(folder, (err, files) => {
-        //handling error
-        if (err) {
-            return console.log('Unable to scan directory: ' + err);
-        }
-        console.log('folder', folder, 'files', files);
-        //listing all files using forEach
-        return files
-            .filter(file => {
-                //options.push(path.join(folder, file));
-                return file.includes('.png')
-            })
-            .map(file => {
-                console.log('fileee:', file);
-                return path.join(folder, file)
-            });
-
-        // console.log('options', options);
-        //return options;
-    });
-
-}*/
-
 const folderContents = async (folder) => {
     const files = await fs.readdir(folder)
     // console.log('files', files);
