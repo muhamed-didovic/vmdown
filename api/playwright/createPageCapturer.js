@@ -43,7 +43,7 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
         pageUrl = he.decode(pageUrl)
         page = await context.newPage();
         await retry(async () => {//return
-            await page.goto(pageUrl, { waitUntil: 'networkidle', timeout: 15e3 })
+            await page.goto(pageUrl, { waitUntil: 'networkidle', timeout: 19e3 })
             await page.setViewportSize({ width: 1920, height: 1080 });
             await delay(1e3)
 
@@ -60,7 +60,7 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
         if (await isLocked(page)) {
             return;
         }
-        // let title = await getTitle(page);
+        let title = await getTitle(page);
         // console.log('title', title);
         const allTitles = await page.$$eval('h4.list-item-title', nodes => nodes.map(n => n.textContent))
         let newTitle = allTitles.filter(t => t.includes(title))[0]
@@ -85,7 +85,7 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
                                 h: dimensions.scrollHeight
                             };
                         });
-                        console.log('rect', rect);
+                        // console.log('rect', rect);
 
                         await page.setViewportSize({
                             width : rect.w,
@@ -98,6 +98,7 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
                         const $sec = await page.$('#lessonContent')
                         if (!$sec) throw new Error(`Parsing failed!`)
                         await retry(async () => {//return
+                            // console.log('screenshot:', path.join(process.cwd(), saveDir, courseName, 'playwright-screenshots', `${newTitle}.png`));
                             await $sec.screenshot({
                                 path          : path.join(process.cwd(), saveDir, courseName, 'playwright-screenshots', `${newTitle}.png`),
                                 omitBackground: true,
