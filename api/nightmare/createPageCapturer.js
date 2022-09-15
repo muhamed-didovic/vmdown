@@ -19,7 +19,6 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
         // .wait('h1.title')
         // .wait('body')
         // .wait('.body > .title')
-        // .wait('.relative')
 
         .wait('#lessonContent')
         .evaluate(() => {
@@ -96,15 +95,16 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
                         })(),*/
                     ])
 
-                    let selectedVideo = await extractVimeoUrl(iframeSrc, n, quality, pageUrl);
-                    console.log('SS', selectedVideo);
+                    //let selectedVideo = await extractVimeoUrl(iframeSrc, n, quality, pageUrl);
+                    //console.log('SS', selectedVideo);
 
                     return {
                         pageUrl,
                         courseName,
                         dest    : path.join(process.cwd(), saveDir, courseName, `${newTitle.replace('/', '\u2215')}${videoFormat}`),
                         imgPath : path.join(process.cwd(), saveDir, courseName, 'nightmare-screenshots', `${newTitle.replace('/', '\u2215')}.png`),
-                        vimeoUrl: selectedVideo.url
+                        downFolder: path.join(process.cwd(), saveDir, courseName),
+                        vimeoUrl: iframeSrc//selectedVideo.url
                     };
 
                 })

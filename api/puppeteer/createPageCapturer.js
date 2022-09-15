@@ -88,7 +88,7 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
 
 
             if (images) {
-                const $sec = await page.$('#lessonContent')
+                const $sec = await page.$('.lesson-wrapper')
                 if (!$sec) throw new Error(`Parsing failed!`)
                 await delay(1e3) //5e3
                 await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots'))

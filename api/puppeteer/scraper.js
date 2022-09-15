@@ -15,7 +15,7 @@ const Spinnies = require('dreidels');
 const ms = new Spinnies();
 
 const sitemap = require("../../json/sitemap.json");
-
+const Promise = require('bluebird')
 /*const Bluebird = require('bluebird')
 Bluebird.config({ longStackTraces: true });
 global.Promise = Bluebird*/

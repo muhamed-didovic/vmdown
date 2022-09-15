@@ -63,7 +63,7 @@ const makeScreenshots = async (n, saveDir, courseName, newTitle, ms) => {
 
             /*let sheet = window.document.styleSheets[0];
             sheet.insertRule('#firstHeading:before { content: none }', sheet.cssRules.length);*/
-            const dimensions = document.querySelector('.relative');
+            const dimensions = document.querySelector('.lesson-wrapper');
             // console.log('dimensions', dimensions.scrollWidth, dimensions.scrollHeight);
             return {
                 width : dimensions.scrollWidth,
