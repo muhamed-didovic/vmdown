@@ -5,7 +5,7 @@ const he = require('he')
 const { orderBy } = require("lodash")
 const { NodeHtmlMarkdown } = require('node-html-markdown')
 
-const delay = require("../delay")
+const delay = require("../helpers/delay")
 const { retry, vimeoRequest } = require("../puppeteer/helpers")
 
 module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, markdown, images) => {//browser =>
@@ -124,7 +124,7 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
             const iframeSrc = await page.evaluate(
                 () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
             );
-            const selectedVideo = await vimeoRequest(pageUrl, iframeSrc)
+            //const selectedVideo = await vimeoRequest(pageUrl, iframeSrc)
 
             /*const [, , selectedVideo] = await Promise.all([
                 (async () => {
@@ -222,7 +222,8 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                 courseName,
                 dest    : path.join(process.cwd(), saveDir, courseName, `${newTitle}${videoFormat}`),
                 imgPath : path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots', `${newTitle}.png`),
-                vimeoUrl: selectedVideo.url
+                downFolder: path.join(process.cwd(), saveDir, courseName),
+                vimeoUrl: iframeSrc//selectedVideo.url
             };
         })
 

@@ -2,13 +2,14 @@ const fs = require("fs-extra")
 const he = require('he')
 const _ = require("lodash")
 const path = require("path")
-const cliProgress = require('cli-progress')
+// const cliProgress = require('cli-progress')
 
 const createPageCapturer = require("./createPageCapturer");
 const { auth, withBrowser, withPage, retry } = require("./helpers");
-const imgs2pdf = require('../imgs2pdf.js');
-const downloadVideo = require("../downloadVideo");
-const delay = require("../delay");
+const imgs2pdf = require('../helpers/imgs2pdf.js');
+// const downloadVideo = require("../helpers/downloadVideo");
+const downOverYoutubeDL = require('../helpers/downOverYoutubeDL')
+const delay = require("../helpers/delay");
 
 const Spinnies = require('dreidels');
 const ms = new Spinnies();
@@ -29,6 +30,7 @@ const scraper = async ({
     images,
     markdown,
     pdf,
+    overwrite,
     url = null
 }) => {
     const courses = url ? sitemap.filter(course => course.includes(url)) : sitemap;
@@ -39,7 +41,7 @@ const scraper = async ({
     console.log('Courses found:', courses.length);
 
     //start puppeteer and login
-    await withBrowser(async (browser) => {
+    const lessons = await withBrowser(async (browser) => {
 
         const result = await withPage(browser)(async (page) => {
             await page.goto("https://www.vuemastery.com", { waitUntil: "networkidle0" }); // wait until page load
@@ -64,7 +66,7 @@ const scraper = async ({
 
         let cnt = 0;
         ms.add('capture', { text: `Start Puppeteer Capturing...` });
-        await Promise
+        return await Promise
             .map(courses, async (link) => {
                 return await withPage(browser)(async (page) => {
 
@@ -87,60 +89,74 @@ const scraper = async ({
                 });
             }, { concurrency: 3 })
             .then(async courses => {
+                ms.succeed('capture', { text: `Capturing done for ${cnt}...` });
                 await fs.ensureDir(path.resolve(process.cwd(), 'json'))
                 await fs.writeFile(`./json/first-course-puppeteer.json`, JSON.stringify(courses, null, 2), 'utf8')
-                ms.succeed('capture', { text: `Capturing done for ${cnt}...` });
-                return courses.filter(c => c?.vimeoUrl)
-            })
-            .then(async courses => {
-                if (videos) {
-
-                    // create new container
-                    const multibar = new cliProgress.MultiBar({
-                        clearOnComplete: false,
-                        hideCursor     : true,
-                        format         : '[{bar}] {percentage}% | ETA: {eta}s | Speed: {speed} | FileName: {filename} Found:{l}/{r}'
-                    });
-
-                    await Promise.map(courses, async ({
-                        dest,
-                        vimeoUrl
-                    }) => await downloadVideo(vimeoUrl, dest, ms, multibar), { concurrency: 10 })
-                    multibar.stop();
-                }
                 return courses;
             })
-            .then(async (courses) => {
-                await fs.ensureDir(path.resolve(process.cwd(), 'json'))
-                await fs.writeFile(`./json/courses.json`, JSON.stringify(courses, null, 2), 'utf8')
-                if (pdf && images) {
-                    const groupedCourses = _(courses)
-                        .groupBy('courseName')
-                        .map(function (items, courseName) {
-                            return {
-                                courseName,
-                                images: _.map(items, 'imgPath')
-                            };
-                        })
-                        .value();
 
-                    return await Promise
-                        .map(groupedCourses, async ({
-                                courseName,
-                                images
-                            }) => await imgs2pdf(
-                                images,
-                                path.join(process.cwd(), downDir, courseName, 'puppeteer-screenshots'),
-                                path.join(process.cwd(), downDir, courseName, 'puppeteer-screenshots', `${courseName}.pdf`))
-                        )
-                }
-            })
-            .catch(console.error)
-            .finally(() => {
-                ms.stopAll()
-                browser.close()
-            })
     });
+    console.log('Lessons length:', lessons.length);
+    //let cnt = 0;
+    return Promise
+        .resolve(lessons)
+        .then(async lessons => {
+            return lessons.filter(c => c?.vimeoUrl)
+        })
+        .then(async lessons => {
+            if (videos) {
+
+                // create new container
+                /*const multibar = new cliProgress.MultiBar({
+                    clearOnComplete: false,
+                    hideCursor     : true,
+                    format         : '[{bar}] {percentage}% | ETA: {eta}s | Speed: {speed} | FileName: {filename} Found:{l}/{r}'
+                });*/
+                console.log(`>>Downloading ${lessons.length} lessons`);
+                await Promise.map(lessons, async (lesson, index) => {
+                    // return await downloadVideo(vimeoUrl, dest, ms, multibar)
+                    return await downOverYoutubeDL({
+                        ...lesson,
+                        overwrite,
+                        index,
+                        ms
+                    })
+                }, { concurrency: 10 })
+                //multibar.stop();
+            }
+            return lessons;
+        })
+        .then(async (lessons) => {
+            await fs.ensureDir(path.resolve(process.cwd(), 'json'))
+            await fs.writeFile(`./json/lessons.json`, JSON.stringify(lessons, null, 2), 'utf8')
+            if (pdf && images) {
+                const groupedLessons = _(lessons)
+                    .groupBy('courseName')
+                    .map(function (items, courseName) {
+                        return {
+                            courseName,
+                            images: _.map(items, 'imgPath')
+                        };
+                    })
+                    .value();
+
+                return await Promise
+                    .map(groupedLessons, async ({
+                            courseName,
+                            images
+                        }) => await imgs2pdf(
+                            images,
+                            path.join(process.cwd(), downDir, courseName, 'puppeteer-screenshots'),
+                            path.join(process.cwd(), downDir, courseName, 'puppeteer-screenshots', `${courseName}.pdf`))
+                    )
+            }
+        })
+        .catch(console.error)
+        .finally(() => {
+            console.log('>>>>DONE');
+            ms.stopAll()
+            // browser.close()
+        })
 }
 
 module.exports = scraper;

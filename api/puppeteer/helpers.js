@@ -2,12 +2,17 @@ const createBrowserGetter = require("get-puppeteer-browser");
 const puppeteer = require("puppeteer-core");
 const findChrome = require("chrome-finder");
 const { orderBy } = require("lodash");
-
+const sanitize = require('sanitize-filename')
 const req = require('requestretry');
-const fs = require("fs");
+// const fs = require("fs-extra");
 const j = req.jar();
 const request = req.defaults({ jar: j, retryDelay: 500, fullResponse: true });
-const delay = require("../delay")
+const delay = require("../helpers/delay")
+const Promise = require("bluebird");
+const FileChecker = require("../helpers/fileChecker");
+const youtubedl = require("youtube-dl-wrap");
+const path = require("path");
+const { formatBytes } = require("../helpers/writeWaitingInfo");
 
 const withBrowser = async (fn) => {
     //const browser = await puppeteer.launch({/* ... */});
@@ -22,7 +27,7 @@ const withBrowser = async (fn) => {
             '--start-maximized', // Start in maximized state
         ],*/
 
-        headless         : false, //run false for dev
+        headless         : true, //run false for dev
         Ignorehttpserrors: true, // ignore certificate error
         waitUntil        : 'networkidle2',
         defaultViewport  : {
@@ -161,7 +166,7 @@ const auth = async (page, email, password) => {
     const text = await page.$eval('#__layout > div > div > div > header > div > nav > div.navbar-secondary > button', elem => {
         return elem.innerText;
     })
-    console.log('text---', text);
+    console.log('>>>>>>>text---------------------------------', text);
     if (text !== 'Sign Out') {
         // ms.fail(name, { text: "Cannot login. Check your user credentials. \n WARNING: Just free videos will be downloaded" });
         throw new Error('Auth failed')
