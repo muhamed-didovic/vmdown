@@ -1,6 +1,6 @@
 const { Cluster } = require('puppeteer-cluster');
-const getInnerText = require("../getInnerText");
-const delay = require("../delay");
+const getInnerText = require("../helpers/getInnerText");
+const delay = require("../helpers/delay");
 const { NodeHtmlMarkdown } = require("node-html-markdown");
 const he = require("he");
 const fs = require("fs-extra");

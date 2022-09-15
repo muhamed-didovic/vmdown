@@ -8,8 +8,8 @@ const _ = require("lodash");
 const { login } = require("./helpers");
 const createPageCapturer = require("./createPageCapturer")
 const sitemap = require("../../json/sitemap.json");
-const downloadVideo = require("../downloadVideo");
-const imgs2pdf = require("../imgs2pdf");
+const downloadVideo = require("../helpers/downloadVideo");
+const imgs2pdf = require("../helpers/imgs2pdf");
 
 const Spinnies = require('dreidels');
 const ms = new Spinnies();

@@ -2,7 +2,7 @@
 const path = require("path");
 const fs = require("fs-extra");
 const he = require('he')
-const delay = require("../delay");
+const delay = require("../helpers/delay");
 
 const { NodeHtmlMarkdown } = require('node-html-markdown');
 const { retry } = require("../puppeteer/helpers");

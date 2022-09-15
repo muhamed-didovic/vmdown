@@ -1,7 +1,7 @@
 const auth = require("./auth");
 const { withPage, withBrowser } = require("../puppeteer-socket/helpers");
 // const imgs2pdf = require("../imgs2pdf");
-const delay = require("../delay");
+const delay = require("../helpers/delay");
 const sitemap = require("../../json/sitemap.json");
 const createPageCapturer = require("./createPageCapturer");
 const { NodeHtmlMarkdown } = require("node-html-markdown");

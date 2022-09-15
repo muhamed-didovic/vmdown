@@ -5,9 +5,9 @@ const cliProgress = require('cli-progress');
 const { Cluster } = require('puppeteer-cluster');
 // const createPageCapturer = require("./createPageCapturer");
 const { auth } = require("./helpers");
-const imgs2pdf = require('../imgs2pdf.js');
-const downloadVideo = require("../downloadVideo");
-const delay = require("../delay");
+const imgs2pdf = require('../helpers/imgs2pdf.js');
+const downloadVideo = require("../helpers/downloadVideo");
+const delay = require("../helpers/delay");
 const { retry, getPageData, extractVimeoUrl } = require("./helpers");
 
 const Spinnies = require('dreidels');

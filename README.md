@@ -34,12 +34,13 @@ Options
     --quality, -q       Choose quality from: 1080p / 720p / 540p / 360p / 240p (default: 1080p)
     --directory, -d     Directory to save (default: ./videos)
     --framework, -f     Framework to use between nightmare, puppeteer, puppeteer-cluster, puppeteer-socket and playwright (default: puppeteer) (Options available: 'p', 'n', 'pc', 'pw', 'ps')
+    --overwrite, -o     Overwrite if resource exists (values: 'yes' or 'no'), default value is 'no'
     --concurrency, -c
 
 Examples
     $ vmdown
     $ vmdown -a
-    $ vmdown [url] [-e user@gmail.com] [-p password] [-d dirname] [-v true/false] [-m true/false] [-i true/false] [--pdf true/false] [-c number]
+    $ vmdown [url] [-e user@gmail.com] [-p password] [-d dirname] [-v true/false] [-m true/false] [-i true/false] [-pdf true/false] [-o yes/no] [-c number]
 ```
 
 ## License

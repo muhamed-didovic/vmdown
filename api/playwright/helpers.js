@@ -1,7 +1,7 @@
 const Spinnies = require('dreidels');
 const fs = require("fs-extra");
 const path = require("path");
-const delay = require("../delay");
+const delay = require("../helpers/delay");
 const ms = new Spinnies();
 
 const isLogged = async page => {

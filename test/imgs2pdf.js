@@ -1,6 +1,6 @@
 const test = require('ava')
 const path = require('path')
-const imgs2pdf = require('../api/imgs2pdf')
+const imgs2pdf = require('../api/helpers/imgs2pdf')
 const fs = require('fs')
 
 const IMGS = [...[...Array(3).keys()].map(n => buildPath(`fixtures/bundle/screens/${n}.png`))]
