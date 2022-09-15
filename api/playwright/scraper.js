@@ -13,6 +13,7 @@ const downloadVideo = require("../helpers/downloadVideo")
 const { auth, retry } = require("./helpers")
 
 const Spinnies = require('dreidels')
+const downOverYoutubeDL = require("../helpers/downOverYoutubeDL");
 const ms = new Spinnies();
 
 const scraper = async ({
@@ -25,6 +26,7 @@ const scraper = async ({
     images,
     markdown,
     pdf,
+    overwrite,
     url = null
 }) => {
     const courses = url ? sitemap.filter(course => course.includes(url)) : sitemap;
@@ -78,17 +80,22 @@ const scraper = async ({
             if (videos && courses.length > 0) {
                 console.log('start downloading...');
                 // create new container
-                const multibar = new cliProgress.MultiBar({
+                /*const multibar = new cliProgress.MultiBar({
                     clearOnComplete: false,
                     hideCursor     : true,
                     format         : '[{bar}] {percentage}% | ETA: {eta}s | Speed: {speed} | FileName: {filename} Found:{l}/{r}'
-                });
+                });*/
 
-                await Promise.map(courses, async ({
-                    dest,
-                    vimeoUrl
-                }) => await downloadVideo(vimeoUrl, dest, ms, multibar), { concurrency: 10 })
-                multibar.stop();
+                await Promise.map(courses, async (lesson, index) => {
+                    // return await downloadVideo(vimeoUrl, dest, ms, multibar)
+                    return await downOverYoutubeDL({
+                        ...lesson,
+                        overwrite,
+                        index,
+                        ms
+                    })
+                }, { concurrency: 8 })
+                // multibar.stop();
             }
             console.log('done downloading...');
             return courses;

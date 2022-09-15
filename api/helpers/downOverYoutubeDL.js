@@ -66,7 +66,7 @@ const download = (url, dest, {
     }, 6, 1e3, true);
 });
 
-const downloadVideo = async (url, dest, {
+/*const downloadVideo = async (url, dest, {
     localSizeInBytes,
     remoteSizeInBytes,
     downFolder,
@@ -95,7 +95,7 @@ const downloadVideo = async (url, dest, {
         ms.remove(dest, { text: `Issue with downloading` });
         //reject(e)
     }
-}
+}*/
 
 
 /**
@@ -106,8 +106,8 @@ const downloadVideo = async (url, dest, {
  * @param ms
  */
 module.exports = async ({ downFolder, dest, vimeoUrl: url, overwrite, index, ms } = {}) => {
-    console.log('overwrite:', overwrite);
-    //const {overwrite} = opts;
+    // console.log('overwrite:', overwrite);
+
     //const dest = path.join(downloadFolder, course.title)
     // console.log('url', url);
     //const url = file.url;

@@ -1,9 +1,4 @@
-const playwright = require("./api/playwright/scraper");
-const puppeteerScraper = require("./api/puppeteer/scraper");
-const puppeteerCluster = require("./api/puppeteer-cluster/scraper");
-const nightmareScraper = require("./api/nightmare/scraper");
-const puppeteerSocket = require("./api/puppeteer-socket/scraper");
-
+const libs = require("./api/libs");
 const cli = require("./api/cli.js");
 
 /*const Bluebird = require('bluebird');
@@ -11,6 +6,7 @@ Bluebird.config({ longStackTraces: true });
 global.Promise = Bluebird;*/
 
 process.on('unhandledRejection', error => {
+    // console.log('>>>>>error:', error);
     //TypeError: Cannot read properties of null (reading 'session')
     // TypeError: Cannot read properties of null (reading '_sendMayFail')
     if (!error.message.includes('Cannot read properties of null (')) {
@@ -24,14 +20,14 @@ process.on('unhandledRejection', error => {
         const options = await cli();
         console.log('options', options);
 
-        const map = {
+        /*const map = {
             'n' : nightmareScraper,
             'p' : puppeteerScraper,
             'pw': playwright,
             'pc': puppeteerCluster,
-            'ps': puppeteerSocket
-        }
-        const scrape = map[options.framework] || map.p;
+            'ps': require("./api/puppeteer-socket/scraper")
+        }*/
+        const scrape = libs[options.framework] || libs.p;
         await scrape({...options})
         /*if (options.framework === 'pw'){
             await playwright({...options});
