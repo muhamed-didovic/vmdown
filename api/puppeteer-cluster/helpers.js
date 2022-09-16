@@ -344,7 +344,8 @@ const getPageData = async (data, page) => {
                 courseName,
                 dest    : path.join(process.cwd(), saveDir, courseName, `${newTitle.replace('/', '\u2215')}${videoFormat}`),
                 imgPath : path.join(process.cwd(), saveDir, courseName, 'puppeteer-cluster-screenshots', `${newTitle.replace('/', '\u2215')}.png`),
-                vimeoUrl: selectedVideo.url
+                downFolder: path.join(process.cwd(), saveDir, courseName),
+                vimeoUrl: r.iframeSrc//selectedVideo.url
             };
         })
 

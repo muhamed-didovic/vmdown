@@ -8,12 +8,8 @@ const { NodeHtmlMarkdown } = require('node-html-markdown');
 const { retry } = require("../puppeteer/helpers");
 
 module.exports = async (cluster, pageUrl, saveDir, videoFormat, quality, markdown, images) => {//browser =>
-
     //const page = await browser.newPage()
-
     //await page.setViewport({ width: 0, height: 0, deviceScaleFactor: 1.5 })
-
-
     // Define a task (in this case: screenshot of page)
     await cluster.task(async ({ page, data }) => {
         const { searchTerm, offset } = data;

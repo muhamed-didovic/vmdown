@@ -46,6 +46,8 @@ const withBrowser = async (fn) => {
             '-- allow running secure content', // allow unsafe content
             '--disable-webgl',
             '--disable-popup-blocking',
+
+            '--blink-settings=mainFrameClipsContent=false'
             //'--proxy-server= http://127.0.0.1:8080 '// configure agent
         ],
         executablePath   : findChrome(),

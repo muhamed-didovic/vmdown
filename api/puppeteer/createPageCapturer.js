@@ -1,8 +1,7 @@
-// const url = require('url')
 const path = require("path")
 const fs = require("fs-extra")
 const he = require('he')
-const { orderBy } = require("lodash")
+// const { orderBy } = require("lodash")
 const { NodeHtmlMarkdown } = require('node-html-markdown')
 
 const delay = require("../helpers/delay")
@@ -12,7 +11,8 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
     const nhm = new NodeHtmlMarkdown();
     pageUrl = he.decode(pageUrl)
     //const page = await browser.newPage()
-    await page.setViewport({ width: 1920, height: 1080 });
+    page.waitForNavigation({ waitUntil: 'networkidle2' })
+    await page.setViewport({ width: 1920, height: 1080 });//
     //await page.setViewport({ width: 0, height: 0, deviceScaleFactor: 1.5 })
 
     /*await Promise.all([
@@ -24,7 +24,7 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
         .resolve()
         .then(async () => {
             //await delay(10e3)
-            await page.goto(pageUrl, { waitUntil: ["networkidle2"], timeout: 61e3});
+            await page.goto(pageUrl, { waitUntil: ["networkidle2"], timeout: 61e3 });
             let courseName = pageUrl.replace(
                 "https://www.vuemastery.com/courses/",
                 ""
@@ -75,38 +75,48 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                 // console.log('---locked');
                 return;
             }
-            /*const allTitlesWithoutNumbers = allTitles.map(t => {
-                return t.split(". ")[1];
-            });
-
-            const newTitle = allTitlesWithoutNumbers.indexOf(title) >= 0
-                ? allTitles[allTitlesWithoutNumbers.indexOf(title)]
-                : allTitlesWithoutNumbers.filter(t => t.includes(title))[0] ;*/
-            //title = filenamify(title);
 
             const newTitle = allTitles.filter(t => t.includes(title))[0]
 
-
             if (images) {
+                await page.waitForSelector('#lessonContent')
+                await page.waitForSelector('#lessonContent .body > .title')
+                await page.waitForSelector('#lessonContent .lesson-body')
+                await page.waitForSelector('.video-wrapper iframe[src]')
+                await delay(1e3) //5e3
+                await page.waitForTimeout(1e3)
+                // const bodyHeight = await page.evaluate(() => document.querySelector('.main-body').scrollHeight);
+                // await page.setViewport({ width: 1920, height: bodyHeight })
+
                 const $sec = await page.$('.lesson-wrapper')
                 if (!$sec) throw new Error(`Parsing failed!`)
                 await delay(1e3) //5e3
+                await page.waitForTimeout(1e3)
                 await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots'))
                 await $sec.screenshot({
                     path          : path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots', `${newTitle}.png`),
                     type          : 'png',
                     omitBackground: true,
-                    delay         : '500ms'
+                    delay         : '500ms',
+                    captureBeyondViewport: false
                 })
+                /* await delay(2e3) //5e3
+                 await page.screenshot({
+                     path: path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots', `${newTitle}-full.png`),
+                     fullPage: true,
+                     delay: '500ms', // just wait between the fullPage resize and the actual screenshot creation
+                     captureBeyondViewport: false
+                 });*/
                 await delay(1e3) //5e3
+                await page.waitForTimeout(1e3)
                 //return Promise.resolve();
             }
 
             if (markdown) {
                 //wait for iframe
-               /* await retry(async () => {//return
-                    await page.waitForSelector('.video-wrapper iframe[src]')
-                }, 6, 1e3, true)*/
+                /* await retry(async () => {//return
+                     await page.waitForSelector('.video-wrapper iframe[src]')
+                 }, 6, 1e3, true)*/
                 let markdown = await page.evaluate(
                     () => Array.from(document.body.querySelectorAll('#lessonContent'),
                         txt => txt.outerHTML)[0]
@@ -220,10 +230,10 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
             return {
                 pageUrl,
                 courseName,
-                dest    : path.join(process.cwd(), saveDir, courseName, `${newTitle}${videoFormat}`),
-                imgPath : path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots', `${newTitle}.png`),
+                dest      : path.join(process.cwd(), saveDir, courseName, `${newTitle}${videoFormat}`),
+                imgPath   : path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots', `${newTitle}.png`),
                 downFolder: path.join(process.cwd(), saveDir, courseName),
-                vimeoUrl: iframeSrc//selectedVideo.url
+                vimeoUrl  : iframeSrc//selectedVideo.url
             };
         })
 

@@ -17,6 +17,7 @@ const he = require("he");
 let cnt = 0;
 const sitemap = require("../../json/sitemap.json");
 const findChrome = require("chrome-finder");
+const downOverYoutubeDL = require("../helpers/downOverYoutubeDL");
 const launchOptions = {
     headless         : true, //run false for dev
     Ignorehttpserrors: true, // ignore certificate error
@@ -26,7 +27,7 @@ const launchOptions = {
         height: 1080
     },
     // timeout          : 63e3,
-    args             : [
+    args: [
         '--no-sandbox',
         '--start-maximized',
 
@@ -53,22 +54,6 @@ const clusterLanuchOptions = {
     timeout         : 120e3,
 };
 
-/*const getPageData = async (links, opts) => new Promise(async (resolve, reject) => {
-    const {
-              email,
-              password,
-              downDir,
-              extension,
-              quality,
-              videos,
-              images,
-              markdown,
-              pdf,
-              url = null
-          } = opts;
-
-});*/
-
 const scraper = async (opts) => {
     const {
               email,
@@ -80,6 +65,7 @@ const scraper = async (opts) => {
               images,
               markdown,
               pdf,
+              overwrite,
               url = null
           } = opts;
     const courses = url ? sitemap.filter(course => course.includes(url)) : sitemap;
@@ -148,17 +134,22 @@ const scraper = async (opts) => {
                 await fs.writeFile(`./json/pc-courses-${new Date().toISOString()}.json`, JSON.stringify(courses, null, 2), 'utf8')
                 console.log('filtered courses length:', courses.length);
                 // create new container
-                const multibar = new cliProgress.MultiBar({
+                /*const multibar = new cliProgress.MultiBar({
                     clearOnComplete: false,
                     hideCursor     : true,
                     format         : '[{bar}] {percentage}% | ETA: {eta}s | Speed: {speed} | FileName: {filename} Found:{l}/{r}'
-                });
+                });*/
 
-                await Promise.map(courses, async ({
-                    dest,
-                    vimeoUrl
-                }) => await downloadVideo(vimeoUrl, dest, ms, multibar), { concurrency: 10 })
-                multibar.stop();
+                await Promise.map(courses, async (lesson, index) => {
+                    // return await downloadVideo(vimeoUrl, dest, ms, multibar)
+                    return await downOverYoutubeDL({
+                        ...lesson,
+                        overwrite,
+                        index,
+                        ms
+                    })
+                }, { concurrency: 10 })
+                // multibar.stop();
             }
             return courses;
         })
