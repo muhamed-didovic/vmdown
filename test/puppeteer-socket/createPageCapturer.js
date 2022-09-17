@@ -39,17 +39,17 @@ test.after.always(() => {
     fs.removeSync(path.join(__dirname, 'intro-to-vue-js'),  { recursive: true, force: true });//, { recursive: true, force: true }
 })
 
-test('capturePage puppeteer', async t => {
+test('capturePage puppeteer socket', async t => {
     const res1  = await scrape('https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance');
     const res2  = await scrape('https://www.vuemastery.com/courses/intro-to-vue-js/attribute-binding');
     const res3  = await scrape('https://www.vuemastery.com/courses/intro-to-vue-js/conditional-rendering');
 
-    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'markdown-ps', '1. The Vue Instance.md')))
-    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'puppeteer-socket-screenshots', '1. The Vue Instance.png')))
+    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'sockets', 'markdown', '1. The Vue Instance.md')))
+    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'sockets', 'screenshots', '1. The Vue Instance.png')))
 
-    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'markdown-ps', '2. Attribute Binding.md')))
-    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'puppeteer-socket-screenshots', '2. Attribute Binding.png')))
+    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'sockets', 'markdown', '2. Attribute Binding.md')))
+    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'sockets', 'screenshots', '2. Attribute Binding.png')))
 
-    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'markdown-ps', '3. Conditional Rendering.md')))
-    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'puppeteer-socket-screenshots', '3. Conditional Rendering.png')))
+    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'sockets', 'markdown', '3. Conditional Rendering.md')))
+    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'sockets', 'screenshots', '3. Conditional Rendering.png')))
 })

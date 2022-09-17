@@ -8,6 +8,7 @@ const path = require("path");
 const { orderBy } = require("lodash");
 
 const req = require('requestretry');
+const createHtmlPage = require("../helpers/createHtmlPage");
 const j = req.jar();
 const request = req.defaults({ jar: j, retryDelay: 500, fullResponse: true });
 
@@ -256,9 +257,9 @@ const getPageData = async (data, page) => {
                         const $sec = await page.$('#lessonContent')
                         if (!$sec) throw new Error(`Parsing failed!`)
                         await delay(2e3) //5e3
-                        await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'puppeteer-cluster-screenshots'))
+                        await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots'))
                         await $sec.screenshot({
-                            path          : path.join(process.cwd(), saveDir, courseName, 'puppeteer-cluster-screenshots', `${newTitle}.png`),
+                            path          : path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
                             type          : 'png',
                             omitBackground: true,
                             delay         : '500ms'
@@ -278,8 +279,8 @@ const getPageData = async (data, page) => {
                             () => Array.from(document.body.querySelectorAll('#lessonContent'),
                                 txt => txt.outerHTML)[0]
                         );
-                        await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'markdown'))
-                        await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
+                        await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'cluster', 'markdown'))
+                        await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'cluster', 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
                         return Promise.resolve();
                     }
                 })(),
@@ -308,34 +309,36 @@ const getPageData = async (data, page) => {
             })
 
             if (markdown) {
-                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'markdown'))
-                await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle.replace('/', '\u2215')}.md`), nhm.translate(r.markdown), 'utf8')
+                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'cluster', 'markdown'))
+                await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'cluster', 'markdown', `${newTitle.replace('/', '\u2215')}.md`), nhm.translate(r.markdown), 'utf8')
             }
 
             /*const iframeSrc = await page.evaluate(
                 () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
             );*/
-            const selectedVideo = await vimeoRequest(pageUrl, r.iframeSrc)
+            // const selectedVideo = await vimeoRequest(pageUrl, r.iframeSrc)
 
             if (images) {
                 const $sec = await page.$('#lessonContent')
                 if (!$sec) throw new Error(`Parsing failed!`)
                 await delay(2e3) //5e3
-                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'puppeteer-cluster-screenshots'))
+                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots'))
                 // await page.bringToFront();
                 await $sec.screenshot({
-                    path          : path.join(process.cwd(), saveDir, courseName, 'puppeteer-cluster-screenshots', `${newTitle}.png`),
+                    path          : path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
                     type          : 'png',
                     omitBackground: true,
                     delay         : '1000ms'
                 })
                /* await page.screenshot({
-                    path    : path.join(process.cwd(), saveDir, courseName, 'puppeteer-cluster-screenshots', `${newTitle}.png`),
+                    path    : path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
                     fullPage: true
                 });*/
                 //await page.bringToFront()
                 await delay(5e3)
             }
+
+            await createHtmlPage(page, path.join(process.cwd(), saveDir, courseName, 'cluster', 'html'), `${newTitle}`);
 
             //await page.close();
 
@@ -343,7 +346,7 @@ const getPageData = async (data, page) => {
                 pageUrl,
                 courseName,
                 dest    : path.join(process.cwd(), saveDir, courseName, `${newTitle.replace('/', '\u2215')}${videoFormat}`),
-                imgPath : path.join(process.cwd(), saveDir, courseName, 'puppeteer-cluster-screenshots', `${newTitle.replace('/', '\u2215')}.png`),
+                imgPath : path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots', `${newTitle.replace('/', '\u2215')}.png`),
                 downFolder: path.join(process.cwd(), saveDir, courseName),
                 vimeoUrl: r.iframeSrc//selectedVideo.url
             };

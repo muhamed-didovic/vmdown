@@ -67,7 +67,7 @@ module.exports = async (page, link, opts) => {
                         vimeoUrl  : `https://player.vimeo.com/video/${video.videoEmbedId}?h=c6b73607f6&autoplay=1&app_id=122963`
                     };
                     // console.log('coursesArray', coursesArray);
-                    console.log('2-----', process.cwd(), downDir, courseName, `${fileName}.png`)
+                    // console.log('2-----', process.cwd(), downDir, courseName, `${fileName}.png`)
                     await downloadResources(video, page, nhm, downDir, overwrite)
                     resolve(lesson)
                 }
@@ -90,7 +90,7 @@ module.exports = async (page, link, opts) => {
             await page.waitForSelector('.video-wrapper iframe[src]')
 
             //await auth(page, email, password);
-            console.log('1-----', process.cwd(), downDir, courseName, `${fileName}.png`, browserPage);
+            // console.log('1-----', process.cwd(), downDir, courseName, `${fileName}.png`, browserPage);
             // await makeScreenshot(page, downDir);
             // await createHtmlPage(page, path.join(process.cwd(), downDir, courseName, 'sockets', 'html'), `${fileName}.png`);
 

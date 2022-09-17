@@ -129,7 +129,7 @@ const makeScreenshots = async (n, saveDir, courseName, newTitle, ms) => {
                     }
                 })
         )
-        .toFile(path.join(process.cwd(), saveDir, courseName, 'nightmare-screenshots', `${newTitle.replace('/', '\u2215')}.png`))
+        .toFile(path.join(process.cwd(), saveDir, courseName, 'nightmare', 'screenshots', `${newTitle.replace('/', '\u2215')}.png`))
 
     /*await n.pdf('generated3.pdf', {
         printBackground: true,

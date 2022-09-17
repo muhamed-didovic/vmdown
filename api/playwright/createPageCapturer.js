@@ -4,6 +4,7 @@ const he = require('he')
 const delay = require("../helpers/delay");
 const { auth, retry } = require("./helpers")
 const { NodeHtmlMarkdown } = require('node-html-markdown');
+const createHtmlPage = require("../helpers/createHtmlPage");
 
 const getCourseName = pageUrl => {
     let courseName = pageUrl.replace("https://www.vuemastery.com/courses/", "");
@@ -98,9 +99,9 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
                         const $sec = await page.$('#lessonContent')
                         if (!$sec) throw new Error(`Parsing failed!`)
                         await retry(async () => {//return
-                            // console.log('screenshot:', path.join(process.cwd(), saveDir, courseName, 'playwright-screenshots', `${newTitle}.png`));
+                            // console.log('screenshot:', path.join(process.cwd(), saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`));
                             await $sec.screenshot({
-                                path          : path.join(process.cwd(), saveDir, courseName, 'playwright-screenshots', `${newTitle}.png`),
+                                path          : path.join(process.cwd(), saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
                                 omitBackground: true,
                                 timeout       : 30e3
                             })
@@ -112,8 +113,10 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
                     //create markdown
                     if (markdown) {
                         let markdown = await page.$eval('#lessonContent', txt => txt.outerHTML)
-                        await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'markdown'))
-                        await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
+                        await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'playwright', 'markdown'))
+                        await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'playwright', 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
+                        //save htmlw
+                        await createHtmlPage(page, path.join(process.cwd(), saveDir, courseName, 'playwright', 'html'), `${newTitle}`);
                     }
                 })(),
                 (async () => {
@@ -170,7 +173,7 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
             pageUrl,
             courseName,
             dest      : path.join(process.cwd(), saveDir, courseName, `${newTitle}${videoFormat}`),
-            imgPath   : path.join(process.cwd(), saveDir, courseName, 'playwright-screenshots', `${newTitle}.png`),
+            imgPath   : path.join(process.cwd(), saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
             downFolder: path.join(process.cwd(), saveDir, courseName),
             vimeoUrl  : iframeSrc//selectedVideo.url
         };

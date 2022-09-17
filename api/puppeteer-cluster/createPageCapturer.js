@@ -92,9 +92,9 @@ module.exports = async (cluster, pageUrl, saveDir, videoFormat, quality, markdow
                             const $sec = await page.$('#lessonContent')
                             if (!$sec) throw new Error(`Parsing failed!`)
                             await delay(5e3) //5e3
-                            await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots'))
+                            await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots'))
                             await $sec.screenshot({
-                                path          : path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots', `${newTitle}.png`),
+                                path          : path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
                                 type          : 'png',
                                 omitBackground: true,
                                 delay         : '500ms'
@@ -163,7 +163,7 @@ module.exports = async (cluster, pageUrl, saveDir, videoFormat, quality, markdow
                     pageUrl,
                     courseName,
                     dest    : path.join(process.cwd(), saveDir, courseName, `${newTitle}${videoFormat}`),
-                    imgPath : path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots', `${newTitle}.png`),
+                    imgPath : path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
                     vimeoUrl: selectedVideo.url
                 };
             })

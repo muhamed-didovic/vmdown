@@ -59,7 +59,7 @@ const scraper = async (opts) => {
                     ms.update('capture', { text: `Sockets Capturing... ${++cnt} of ${courses.length} ${he.decode(link)}` });
                     return await createPageCapturer(page, link, opts);
                 });
-            }, { concurrency: 3 })
+            }, { concurrency: 7 })
             .then(async (lessons) => {
                 console.log('--lessons length', lessons.length);
                 ms.succeed('capture', { text: `Capturing done for ${cnt}...` });
@@ -73,7 +73,6 @@ const scraper = async (opts) => {
     return Promise
         .resolve(lessons)
         .then(async lessons => {
-
             return lessons.filter(c => c?.vimeoUrl)
         })
         .then(async courses => {

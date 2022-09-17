@@ -99,7 +99,7 @@ const withPage = (browser) => async (fn) => {
     try {
         return await fn(page);//,client
     } finally {
-        console.log('page close');
+        // console.log('page close');
         // await client.detach();
         await page.close();
     }
@@ -221,34 +221,40 @@ const downloadResources = async (video, page, nhm, downDir, overwrite) => {
     const title = await getValidFileName(page);//, video.title
     const fileName = title; //`${video.lessonNumber}. ${title}`
 
-    //save resources
-    if (video?.resources) {
-        const resources = Object
-            .values(video.resources)
-            .map(item => {
-                return Object.values(item)[0]
-            })
-            .join('<br>')
-        // console.log('resources', resources);
-        await fs.ensureDir(path.resolve(directory, 'sockets', 'resources'));
-        await fs.writeFile(path.join(process.cwd(), downDir, courseName, 'sockets', 'resources', `${fileName}-resources.md`), nhm.translate(resources), 'utf8')
-    }
-
-    //save markdown
-    await fs.ensureDir(path.resolve(directory, 'sockets', 'markdown'));
-    await saveMarkdown(video.markdown, path.resolve(directory, 'sockets', 'markdown', `${fileName}.md`));
+    await Promise.all([
+        (async () => {
+            //save resources
+            if (video?.resources) {
+                const resources = Object
+                    .values(video.resources)
+                    .map(item => {
+                        return Object.values(item)[0]
+                    })
+                    .join('<br>')
+                // console.log('resources', resources);
+                await fs.ensureDir(path.resolve(directory, 'sockets', 'resources'));
+                await fs.writeFile(path.join(process.cwd(), downDir, courseName, 'sockets', 'resources', `${fileName}-resources.md`), nhm.translate(resources), 'utf8')
+            }
+        })(),
+        (async () => {
+            //save markdown
+            await fs.ensureDir(path.resolve(directory, 'sockets', 'markdown'));
+            await saveMarkdown(video.markdown, path.resolve(directory, 'sockets', 'markdown', `${fileName}.md`));
+        })(),
+        (async () => {
+            //save codingChallenge
+            if (video?.codingChallenge) {
+                await fs.ensureDir(path.resolve(directory, 'sockets', 'challenges'));
+                await fs.writeFile(path.join(process.cwd(), downDir, courseName, 'sockets', 'challenges', `${fileName}s.md`), nhm.translate(video.codingChallenge), 'utf8')
+            }
+        })(),
+        makeScreenshot(page, downDir),
+        createHtmlPage(page, path.join(process.cwd(), downDir, courseName, 'sockets', 'html'), `${fileName}`),
+    ])
 
     //save html to markdown
     // await saveHtml2Markdown(video.body, path.resolve(directory, 'sockets', 'markdown', `${fileName}-body.md`));
 
-    //save codingChallenge
-    if (video?.codingChallenge) {
-        await fs.ensureDir(path.resolve(directory, 'sockets', 'challenges'));
-        await fs.writeFile(path.join(process.cwd(), downDir, courseName, 'sockets', 'challenges', `${fileName}s.md`), nhm.translate(video.codingChallenge), 'utf8')
-    }
-
-    await makeScreenshot(page, downDir);
-    await createHtmlPage(page, path.join(process.cwd(), downDir, courseName, 'sockets', 'html'), `${fileName}.png`);
 
     // const remoteFileSize = await remote(video.downloadLink);
     // const dest = path.join(process.cwd(), downDir, courseName, `${fileName}.mp4`);

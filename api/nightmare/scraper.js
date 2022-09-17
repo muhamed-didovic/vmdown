@@ -113,8 +113,8 @@ const scraper = async ({
                 return await Promise
                     .map(groupedCourses, async ({ courseName, images }) => await imgs2pdf(
                             images,
-                            path.join(process.cwd(), saveDir, courseName, 'nightmare-screenshots'),
-                            path.join(process.cwd(), saveDir, courseName, 'nightmare-screenshots', `${courseName}.pdf`)
+                            path.join(process.cwd(), saveDir, courseName, 'nightmare', 'screenshots'),
+                            path.join(process.cwd(), saveDir, courseName, 'nightmare', 'screenshots', `${courseName}.pdf`)
                         )
                     )
                     .then(() => {

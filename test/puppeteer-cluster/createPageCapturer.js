@@ -24,6 +24,7 @@ const launchOptions = {
         '--disable-webgl',
         '--disable-popup-blocking',
         //'--proxy-server= http://127.0.0.1:8080 '// configure agent
+        '--blink-settings=mainFrameClipsContent=false'
     ],
     executablePath   : findChrome(),
 };
@@ -65,20 +66,20 @@ test('capturePage puppeteer', async t => {
 
 
     t.true(fs.existsSync(res1.imgPath))
-    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'markdown', '1. The Vue Instance.md')))
+    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'cluster', 'markdown', '1. The Vue Instance.md')))
     t.is(res1.pageUrl, 'https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance')
     t.is(res1.courseName,  'intro-to-vue-js')
     t.truthy(res1.vimeoUrl)
     fs.copyFileSync(res1.imgPath, path.join(__dirname, '..', 'snapshot/capture1.png'))
 
     t.true(fs.existsSync(res2.imgPath))
-    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'markdown', '2. Attribute Binding.md')))
+    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'cluster', 'markdown', '2. Attribute Binding.md')))
     t.is(res2.pageUrl, 'https://www.vuemastery.com/courses/intro-to-vue-js/attribute-binding')
     // console.log('aaaaa', path.join(__dirname, 'snapshot/capture2.png'));
     fs.copyFileSync(res2.imgPath, path.join(__dirname, '..', 'snapshot/capture2.png'))
 
     t.true(fs.existsSync(res3.imgPath))
-    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'markdown', '3. Conditional Rendering.md')))
+    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'cluster', 'markdown', '3. Conditional Rendering.md')))
     t.is(res3.pageUrl, 'https://www.vuemastery.com/courses/intro-to-vue-js/conditional-rendering')
     fs.copyFileSync(res3.imgPath, path.join(__dirname, '..', 'snapshot/capture3.png'))
 })

@@ -6,6 +6,7 @@ const { NodeHtmlMarkdown } = require('node-html-markdown')
 
 const delay = require("../helpers/delay")
 const { retry, vimeoRequest } = require("../puppeteer/helpers")
+const createHtmlPage = require("../helpers/createHtmlPage");
 
 module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, markdown, images) => {//browser =>
     const nhm = new NodeHtmlMarkdown();
@@ -92,9 +93,9 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                 if (!$sec) throw new Error(`Parsing failed!`)
                 await delay(1e3) //5e3
                 await page.waitForTimeout(1e3)
-                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots'))
+                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'puppeteer', 'screenshots'))
                 await $sec.screenshot({
-                    path          : path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots', `${newTitle}.png`),
+                    path          : path.join(process.cwd(), saveDir, courseName, 'puppeteer', 'screenshots', `${newTitle}.png`),
                     type          : 'png',
                     omitBackground: true,
                     delay         : '500ms',
@@ -102,7 +103,7 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                 })
                 /* await delay(2e3) //5e3
                  await page.screenshot({
-                     path: path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots', `${newTitle}-full.png`),
+                     path: path.join(process.cwd(), saveDir, courseName, 'puppeteer', 'screenshots', `${newTitle}-full.png`),
                      fullPage: true,
                      delay: '500ms', // just wait between the fullPage resize and the actual screenshot creation
                      captureBeyondViewport: false
@@ -121,8 +122,8 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                     () => Array.from(document.body.querySelectorAll('#lessonContent'),
                         txt => txt.outerHTML)[0]
                 );
-                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'markdown'))
-                await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
+                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'puppeteer', 'markdown'))
+                await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'puppeteer', 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
                 await delay(1e3) //5e3
                 //return Promise.resolve();
             }
@@ -134,6 +135,9 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
             const iframeSrc = await page.evaluate(
                 () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
             );
+
+            await createHtmlPage(page, path.join(process.cwd(), saveDir, courseName, 'puppeteer', 'html'), `${newTitle}`);
+
             //const selectedVideo = await vimeoRequest(pageUrl, iframeSrc)
 
             /*const [, , selectedVideo] = await Promise.all([
@@ -142,9 +146,9 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                         const $sec = await page.$('#lessonContent')
                         if (!$sec) throw new Error(`Parsing failed!`)
                         await delay(1e3) //5e3
-                        await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots'))
+                        await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'puppeteer', 'screenshots'))
                         await $sec.screenshot({
-                            path          : path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots', `${newTitle}.png`),
+                            path          : path.join(process.cwd(), saveDir, courseName, 'puppeteer', 'screenshots', `${newTitle}.png`),
                             type          : 'png',
                             omitBackground: true,
                             delay         : '500ms'
@@ -164,8 +168,8 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                             () => Array.from(document.body.querySelectorAll('#lessonContent'),
                                 txt => txt.outerHTML)[0]
                         );
-                        await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'markdown'))
-                        await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
+                        await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'puppeteer', 'markdown'))
+                        await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'puppeteer', 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
                         await delay(1e3) //5e3
                         return Promise.resolve();
                     }
@@ -231,7 +235,7 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                 pageUrl,
                 courseName,
                 dest      : path.join(process.cwd(), saveDir, courseName, `${newTitle}${videoFormat}`),
-                imgPath   : path.join(process.cwd(), saveDir, courseName, 'puppeteer-screenshots', `${newTitle}.png`),
+                imgPath   : path.join(process.cwd(), saveDir, courseName, 'puppeteer', 'screenshots', `${newTitle}.png`),
                 downFolder: path.join(process.cwd(), saveDir, courseName),
                 vimeoUrl  : iframeSrc//selectedVideo.url
             };

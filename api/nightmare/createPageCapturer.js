@@ -7,6 +7,7 @@ const colors = require('colors');
 
 const { NodeHtmlMarkdown } = require('node-html-markdown');
 const { makeScreenshots, extractVimeoUrl } = require("./helpers");
+const createHtmlPage = require("../helpers/createHtmlPage");
 
 module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, images, ms) => {
     const nhm = new NodeHtmlMarkdown();
@@ -71,8 +72,11 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
                         (async () => {
                             //create markdown
                             if (markdown) {
-                                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'markdown'))
-                                await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle.replace('/', '\u2215')}.md`), nhm.translate(md), 'utf8')
+                                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'nightmare', 'markdown'))
+                                await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'nightmare', 'markdown', `${newTitle.replace('/', '\u2215')}.md`), nhm.translate(md), 'utf8')
+
+                                //save HTML of the page
+                                await createHtmlPage(n, path.join(process.cwd(), saveDir, courseName, 'nightmare', 'html'), `${newTitle}`, 'nightmare');
                             }
                         })(),
                         (async () => {
@@ -102,7 +106,7 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
                         pageUrl,
                         courseName,
                         dest    : path.join(process.cwd(), saveDir, courseName, `${newTitle.replace('/', '\u2215')}${videoFormat}`),
-                        imgPath : path.join(process.cwd(), saveDir, courseName, 'nightmare-screenshots', `${newTitle.replace('/', '\u2215')}.png`),
+                        imgPath : path.join(process.cwd(), saveDir, courseName, 'nightmare', 'screenshots', `${newTitle.replace('/', '\u2215')}.png`),
                         downFolder: path.join(process.cwd(), saveDir, courseName),
                         vimeoUrl: iframeSrc//selectedVideo.url
                     };

@@ -173,8 +173,8 @@ const scraper = async (opts) => {
                             images
                         }) => await imgs2pdf(
                             images,
-                            path.join(process.cwd(), downDir, courseName, 'puppeteer-cluster-screenshots'),
-                            path.join(process.cwd(), downDir, courseName, 'puppeteer-cluster-screenshots', `${courseName}.pdf`))
+                            path.join(process.cwd(), downDir, courseName, 'cluster', 'screenshots'),
+                            path.join(process.cwd(), downDir, courseName, 'cluster', 'screenshots', `${courseName}.pdf`))
                     )
             }
         })
