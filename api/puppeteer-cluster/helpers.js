@@ -319,7 +319,7 @@ const getPageData = async (data, page) => {
             // const selectedVideo = await vimeoRequest(pageUrl, r.iframeSrc)
 
             if (images) {
-                const $sec = await page.$('#lessonContent')
+                const $sec = await page.$('.lesson-wrapper')
                 if (!$sec) throw new Error(`Parsing failed!`)
                 await delay(2e3) //5e3
                 await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots'))

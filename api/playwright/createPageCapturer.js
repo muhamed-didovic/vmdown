@@ -44,7 +44,7 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
         pageUrl = he.decode(pageUrl)
         page = await context.newPage();
         await retry(async () => {//return
-            await page.goto(pageUrl, { waitUntil: 'networkidle', timeout: 19e3 })
+            await page.goto(pageUrl, { waitUntil: 'networkidle', timeout: 60e3 })
             await page.setViewportSize({ width: 1920, height: 1080 });
             await delay(1e3)
 
@@ -75,6 +75,8 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
                         await page.waitForSelector('.body > .title', { timeout: 10e3 })
                         await page.waitForSelector('.lesson-body', { timeout: 11e3 })
                         await page.waitForSelector('#lessonContent', { timeout: 12e3 })
+                        await page.waitForSelector('.lesson-wrapper', { timeout: 13e3 })
+                        await page.waitForTimeout(2e3)
                         // const currentViewport = await page.viewportSize();
                         // console.log('currentViewport', currentViewport);
                         await delay(1e3) //5e3
@@ -86,17 +88,17 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
                                 h: dimensions.scrollHeight
                             };
                         });
-                        // console.log('rect', rect);
+                        // console.log('rect', pageUrl, rect);
 
                         await page.setViewportSize({
                             width : rect.w,
                             height: rect.h
                         })
-                        await delay(1e3)
+                        await page.waitForTimeout(1e3)
                         // const currentViewport2 = await page.viewportSize();
                         // console.log('currentViewport2', currentViewport2)
 
-                        const $sec = await page.$('#lessonContent')
+                        const $sec = await page.$('.lesson-wrapper')
                         if (!$sec) throw new Error(`Parsing failed!`)
                         await retry(async () => {//return
                             // console.log('screenshot:', path.join(process.cwd(), saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`));
@@ -105,8 +107,21 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
                                 omitBackground: true,
                                 timeout       : 30e3
                             })
+                            /*await page
+                                .locator('.lesson-wrapper')
+                                .screenshot({
+                                    path: path.join(process.cwd(), saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
+                                    delay         : '1000ms',
+                                    captureBeyondViewport: true
+                                });*/
+                            /*await page.screenshot({
+                                path: path.join(process.cwd(), saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
+                                delay         : '500ms',
+                                captureBeyondViewport: false,
+                                fullPage: true
+                            });*/
                         }, 6, 1e3, true)
-
+                        await page.waitForTimeout(1e3)
                     }
                 })(),
                 (async () => {

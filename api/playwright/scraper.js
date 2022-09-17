@@ -14,6 +14,7 @@ const { auth, retry } = require("./helpers")
 
 const Spinnies = require('dreidels')
 const downOverYoutubeDL = require("../helpers/downOverYoutubeDL");
+const findChrome = require("chrome-finder");
 const ms = new Spinnies();
 
 const scraper = async ({
@@ -37,9 +38,32 @@ const scraper = async ({
     console.log('Courses found:', courses.length);
 
     const browser = await playwright.chromium.launch({
-        headless: true, // Set to false while development
-        //args: ['--start-maximized'],
         // devtools: true
+        headless: true, // Set to false while development
+        Ignorehttpserrors: true, // ignore certificate error
+        waitUntil        : 'networkidle2',
+        defaultViewport  : {
+            width : 1920,
+            height: 1080
+        },
+        timeout          : 60e3,
+        args             : [
+            '--disable-gpu',
+            '--disable-dev-shm-usage',
+            '--disable-web-security',
+            '-- Disable XSS auditor', // close XSS auditor
+            '--no-zygote',
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '-- allow running secure content', // allow unsafe content
+            '--disable-webgl',
+            '--disable-popup-blocking',
+
+            '--blink-settings=mainFrameClipsContent=false'
+            //'--proxy-server= http://127.0.0.1:8080 '// configure agent
+        ],
+        executablePath   : findChrome(),
+
     });
 
     const context = await browser.newContext();
