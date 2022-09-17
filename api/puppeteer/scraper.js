@@ -4,12 +4,13 @@ const _ = require("lodash")
 const path = require("path")
 // const cliProgress = require('cli-progress')
 
+const delay = require("../helpers/delay");
 const createPageCapturer = require("./createPageCapturer");
 const { auth, withBrowser, withPage, retry } = require("./helpers");
 const imgs2pdf = require('../helpers/imgs2pdf.js');
 // const downloadVideo = require("../helpers/downloadVideo");
 const downOverYoutubeDL = require('../helpers/downOverYoutubeDL')
-const delay = require("../helpers/delay");
+
 
 const Spinnies = require('dreidels');
 const ms = new Spinnies();

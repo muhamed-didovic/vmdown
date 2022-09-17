@@ -1,12 +1,17 @@
-const fs = require("fs-extra");
-// const createBrowserGetter = require("get-puppeteer-browser");
-const puppeteer = require("puppeteer");
+const createBrowserGetter = require("get-puppeteer-browser");
+const puppeteer = require("puppeteer-core");
 const findChrome = require("chrome-finder");
+const fs = require("fs-extra");
 const delay = require("../helpers/delay");
 const path = require("path");
-const { createDownloadManager } = require("./downloader");
-const Path = require("path");
+// const { createDownloadManager } = require("./downloader");
 const remote = require("promisify-remote-file-size");
+const downOverYoutubeDL = require("../helpers/downOverYoutubeDL");
+const { stripHtml } = require("string-strip-html");
+const { retry } = require("../helpers/retry");
+const { NodeHtmlMarkdown } = require('node-html-markdown')
+const createHtmlPage = require("../helpers/createHtmlPage");
+const nhm = new NodeHtmlMarkdown();
 
 const withBrowser = async (fn) => {
     //const browser = await puppeteer.launch({/* ... */});
@@ -22,12 +27,64 @@ const withBrowser = async (fn) => {
         ],
     })
     const browser = await getBrowser();*/
-    const browser = await puppeteer.launch(
+    /*const browser = await puppeteer.launch(
         {
             headless       : true, //false for dev env
-            defaultViewport: { width: 1920, height: 1080 }
+            defaultViewport: { width: 1920, height: 1080 },
+            args             : [
+                '--disable-gpu',
+                '--disable-dev-shm-usage',
+                '--disable-web-security',
+                '-- Disable XSS auditor', // close XSS auditor
+                '--no-zygote',
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '-- allow running secure content', // allow unsafe content
+                '--disable-webgl',
+                '--disable-popup-blocking',
+                //'--proxy-server= http://127.0.0.1:8080 '// configure agent
+                '--blink-settings=mainFrameClipsContent=false'
+            ],
+            executablePath   : findChrome(),
         }
-    );
+    );*/
+    const getBrowser = createBrowserGetter(puppeteer, {
+        /*executablePath: findChrome(),
+        headless      : false, // Set to false while development
+        debounce      : 500,
+
+        defaultViewport: null,
+        args           : [
+            '--no-sandbox',
+            '--start-maximized', // Start in maximized state
+        ],*/
+
+        headless         : true, //run false for dev
+        Ignorehttpserrors: true, // ignore certificate error
+        waitUntil        : 'networkidle2',
+        defaultViewport  : {
+            width : 1920,
+            height: 1080
+        },
+        timeout          : 60e3,
+        args             : [
+            '--disable-gpu',
+            '--disable-dev-shm-usage',
+            '--disable-web-security',
+            '-- Disable XSS auditor', // close XSS auditor
+            '--no-zygote',
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '-- allow running secure content', // allow unsafe content
+            '--disable-webgl',
+            '--disable-popup-blocking',
+
+            '--blink-settings=mainFrameClipsContent=false'
+            //'--proxy-server= http://127.0.0.1:8080 '// configure agent
+        ],
+        executablePath   : findChrome(),
+    })
+    const browser = await getBrowser();
     try {
         return await fn(browser);
     } finally {
@@ -36,9 +93,14 @@ const withBrowser = async (fn) => {
 }
 const withPage = (browser) => async (fn) => {
     const page = await browser.newPage();
+    // const client = await page.target().createCDPSession();
+    // await client.send('Network.enable');
+    // await client.send('Page.enable');
     try {
-        return await fn(page);
+        return await fn(page);//,client
     } finally {
+        console.log('page close');
+        // await client.detach();
         await page.close();
     }
 }
@@ -66,21 +128,26 @@ const getValidFileName = async (page) => {//fileName
     const newTitle = allTitles.filter(t => t.includes(title))[0]
     // console.log('newTitle', newTitle);
     //fileName.replace(/[<>"/\\|*\u0000-\u001F]/g, "-");
-    return newTitle.replace('/', '\u2215')
+    return newTitle.replace('/', '\u2215') ///[<>:"/\\|?*\u0000-\u001F]/g
 
-}///[<>:"/\\|?*\u0000-\u001F]/g
+}
 
-const saveTextFile = async (text, file) => {
+const saveMarkdown = async (text, file) => {
     await fs.writeFile(file, text, { encoding: 'utf-8' });
 };
 
-const retry = async (fn, retriesLeft = 5, interval = 1000, exponential = false) => {
+const saveHtml2Markdown = async (text, file) => {
+    await fs.writeFile(file, nhm.translate(stripHtml(text).result, 'utf8'))
+};
+
+/*const retry = async (fn, retriesLeft = 5, interval = 1000, exponential = false) => {
     try {
         const val = await fn();
         return val;
     } catch (error) {
         if (retriesLeft) {
-            console.log('....puppeteer retrying left (' + retriesLeft + ')');
+            console.log('....socket retrying left (' + retriesLeft + ')');
+            console.log('socket error', error);
             await new Promise(r => setTimeout(r, interval));
             return retry(fn, retriesLeft - 1, exponential ? interval*2 : interval, exponential);
         } else {
@@ -89,19 +156,26 @@ const retry = async (fn, retriesLeft = 5, interval = 1000, exponential = false) 
             //throw new Error('Max retries reached');
         }
     }
-};
+};*/
 
 const makeScreenshot = async (page, downDir) => {
     const courseName = getCourseName(page)
     const fileName = await getValidFileName(page);
 
+    await page.waitForSelector('#lessonContent')
+    await page.waitForSelector('#lessonContent .body > .title')
+    await page.waitForSelector('#lessonContent .lesson-body')
+    await page.waitForSelector('.video-wrapper iframe[src]')
+    await delay(1e3) //5e3
+    await page.waitForTimeout(1e3)
+
     //save screenshot
     const $sec = await page.$('#lessonContent')
     if (!$sec) throw new Error(`Parsing failed!`)
     await delay(1e3) //5e3
-    await fs.ensureDir(path.join(process.cwd(), downDir, courseName, 'puppeteer-socket-screenshots'))
+    await fs.ensureDir(path.join(process.cwd(), downDir, courseName, 'sockets', 'screenshots'))
     await $sec.screenshot({
-        path          : path.join(process.cwd(), downDir, courseName, 'puppeteer-socket-screenshots', `${fileName}.png`),
+        path          : path.join(process.cwd(), downDir, courseName, 'sockets', 'screenshots', `${fileName}.png`),
         type          : 'png',
         omitBackground: true,
         delay         : '500ms'
@@ -111,7 +185,7 @@ const makeScreenshot = async (page, downDir) => {
     await delay(5e3)
 };
 
-const downloadManager = createDownloadManager(5);
+// const downloadManager = createDownloadManager(5);
 
 const parseMessage = message => {
     try {
@@ -132,17 +206,17 @@ const parseMessage = message => {
     }
 };
 const getFilesizeInBytes = filename => {
-    let p = Path.resolve(__dirname, filename);
+    let p = path.resolve(__dirname, filename);
     return fs.existsSync(p) ? fs.statSync(p)["size"] : 0;
 };
-const downloadVideo = async (video, page, nhm, downDir) => {
+const downloadResources = async (video, page, nhm, downDir, overwrite) => {
     const courseName = getCourseName(page) || video.belongsToCourse.toString();
 
     //path.join(process.cwd(), 'videos', courseName, `${newTitle}${videoFormat}`)
     // console.log('---------------courseName', courseName, 'page.url()', page.url());
     const directory = path.resolve(process.cwd(), downDir, courseName);
     await fs.ensureDir(directory);
-    await fs.ensureDir(path.join(directory, 'markdown-ps'))
+    await fs.ensureDir(path.join(directory, 'sockets'))
 
     const title = await getValidFileName(page);//, video.title
     const fileName = title; //`${video.lessonNumber}. ${title}`
@@ -156,35 +230,51 @@ const downloadVideo = async (video, page, nhm, downDir) => {
             })
             .join('<br>')
         // console.log('resources', resources);
-        await fs.writeFile(path.join(process.cwd(), downDir, courseName, 'markdown-ps', `${fileName}-resources.md`), nhm.translate(resources), 'utf8')
+        await fs.ensureDir(path.resolve(directory, 'sockets', 'resources'));
+        await fs.writeFile(path.join(process.cwd(), downDir, courseName, 'sockets', 'resources', `${fileName}-resources.md`), nhm.translate(resources), 'utf8')
     }
-    //save markdown
-    await saveTextFile(video.markdown, path.resolve(directory, 'markdown-ps', `${fileName}.md`));
 
-    const remoteFileSize = await remote(video.downloadLink);
-    const dest = path.join(process.cwd(), downDir, courseName, `${fileName}.mp4`);
+    //save markdown
+    await fs.ensureDir(path.resolve(directory, 'sockets', 'markdown'));
+    await saveMarkdown(video.markdown, path.resolve(directory, 'sockets', 'markdown', `${fileName}.md`));
+
+    //save html to markdown
+    // await saveHtml2Markdown(video.body, path.resolve(directory, 'sockets', 'markdown', `${fileName}-body.md`));
+
+    //save codingChallenge
+    if (video?.codingChallenge) {
+        await fs.ensureDir(path.resolve(directory, 'sockets', 'challenges'));
+        await fs.writeFile(path.join(process.cwd(), downDir, courseName, 'sockets', 'challenges', `${fileName}s.md`), nhm.translate(video.codingChallenge), 'utf8')
+    }
+
+    await makeScreenshot(page, downDir);
+    await createHtmlPage(page, path.join(process.cwd(), downDir, courseName, 'sockets', 'html'), `${fileName}.png`);
+
+    // const remoteFileSize = await remote(video.downloadLink);
+    // const dest = path.join(process.cwd(), downDir, courseName, `${fileName}.mp4`);
     // console.log('dest', dest)
     // console.log('size', remoteFileSize,  getFilesizeInBytes(dest), 'page.url()', page.url())
-    if (remoteFileSize == getFilesizeInBytes(dest)) {
+    /*if (remoteFileSize == getFilesizeInBytes(dest)) {
         console.log(`Video exists: ${remoteFileSize}, ${getFilesizeInBytes(`${dest}`)} dest: ${dest}`);
         return Promise.resolve();
     } else {
-        console.log('--------file not found:', dest, 'page.url()', page.url());
+        console.log('--------file not found so it should be downloaded:', dest, 'page.url()', page.url());
         //remove file just in case
-        await fs.remove(dest)
-    }
+        //await fs.remove(dest)
+    }*/
 
-    downloadManager.addTask(video.downloadLink, path.resolve(directory, `${fileName}.mp4`));
+
+    //downloadManager.addTask(video.downloadLink, path.resolve(directory, `${fileName}.mp4`));
+
 };
 
 module.exports = {
     getCourseName,
     getValidFileName,
-    saveTextFile,
+    saveMarkdown,
     withBrowser,
     withPage,
-    retry,
     makeScreenshot,
     parseMessage,
-    downloadVideo
+    downloadResources
 }

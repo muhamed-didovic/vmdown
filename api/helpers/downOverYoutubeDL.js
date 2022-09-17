@@ -26,7 +26,7 @@ const download = (url, dest, {
     await fs.remove(dest) // not supports overwrite..
     let name = dest + index;
     ms.update(name, {
-        text : `to be processed by youtube-dl... ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}`,
+        text: `to be processed by youtube-dl... ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}`,
         color: 'blue'
     });
     // console.log(`to be processed by youtube-dl... ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}`)
@@ -105,7 +105,14 @@ const download = (url, dest, {
  * @param index
  * @param ms
  */
-module.exports = async ({ downFolder, dest, vimeoUrl: url, overwrite, index, ms } = {}) => {
+module.exports = async ({
+    downFolder,
+    dest,
+    vimeoUrl: url,
+    overwrite,
+    index = (Math.random() + 1).toString(36).substring(7),
+    ms
+} = {}) => {
     // console.log('overwrite:', overwrite);
 
     //const dest = path.join(downloadFolder, course.title)
@@ -122,7 +129,7 @@ module.exports = async ({ downFolder, dest, vimeoUrl: url, overwrite, index, ms 
     let localSizeInBytes = formatBytes(getFilesizeInBytes(`${dest}`))
 
     isDownloaded = FileChecker.isCompletelyDownloadedWithOutSize(downFolder, dest)
-    console.log('isDownloaded', isDownloaded);
+    // console.log('isDownloaded', isDownloaded);
 
     if (isDownloaded && overwrite === 'no') {
         //ms.succeed(name, { text: `${index}. Video already downloaded: ${dest.split('/').pop()} - ${localSizeInBytes}/${formatBytes(remoteFileSize)}` });

@@ -75,6 +75,7 @@
         "requestretry": "^7.1.0",
         "sanitize-filename": "^1.6.3",
         "sharp": "^0.30.7",
+        "string-strip-html": "^8.3.0",
         "tempy": "^1.0.1",
         "turndown": "^7.1.1",
         "util-is-email": "^1.0.0",
