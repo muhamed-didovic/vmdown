@@ -34,7 +34,7 @@ const makeScreenshots = async (n, saveDir, courseName, newTitle, ms) => {
     const name = (Math.random() + 1).toString(36).substring(7)
     // ms.add(name, { text: `Start screenshot...` });
     await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 's'))
-    await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'nightmare-screenshots'))
+    await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'nightmare', 'screenshots'))
 
     /*await n
         .wait('.body > .title')
