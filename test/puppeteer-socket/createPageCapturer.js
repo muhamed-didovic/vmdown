@@ -30,7 +30,8 @@ const scrape = async (link) => {
     }
     const page = await browser.newPage()
     page.setDefaultTimeout(61e3)
-    const result = await createPageCapturer(page, coursesArray, link, './test/puppeteer-socket');
+    const opts = { downDir: './test/puppeteer-socket',  markdown: true, overwrite: true }
+    const result = await createPageCapturer(page, link, opts);
     return result
 }
 
