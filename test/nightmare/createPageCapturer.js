@@ -50,7 +50,7 @@ test.after.always(() => {
 })
 
 
-test.skip('capturePage nightmare', async t => {
+test('capturePage nightmare', async t => {
     console.log('11111');
     const res1 = await scrape('https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance', '720p')
     console.log('res1', res1);
