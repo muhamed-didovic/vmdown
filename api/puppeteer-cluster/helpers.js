@@ -9,6 +9,7 @@ const { orderBy } = require("lodash");
 
 const req = require('requestretry');
 const createHtmlPage = require("../helpers/createHtmlPage");
+const { extractResources, extractChallenges } = require("../helpers/extractors");
 const j = req.jar();
 const request = req.defaults({ jar: j, retryDelay: 500, fullResponse: true });
 
@@ -168,6 +169,7 @@ const extractVimeoUrl = async (page, newTitle, pageUrl, quality) => {
     return selectedVideo;
 
 };
+
 const getPageData = async (data, page) => {
     let { link: pageUrl, downDir: saveDir, extension: videoFormat, quality, markdown, images } = data;
     const nhm = new NodeHtmlMarkdown();
@@ -340,7 +342,8 @@ const getPageData = async (data, page) => {
 
             await createHtmlPage(page, path.join(process.cwd(), saveDir, courseName, 'cluster', 'html'), `${newTitle}`);
 
-            //await page.close();
+            await extractResources(page, path.join(process.cwd(), saveDir, courseName, 'cluster', 'resources'), newTitle, nhm);
+            await extractChallenges(page, path.join(process.cwd(), saveDir, courseName, 'cluster', 'challenges'), newTitle, nhm);
 
             return {
                 pageUrl,

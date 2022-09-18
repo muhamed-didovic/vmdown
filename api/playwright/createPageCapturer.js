@@ -5,6 +5,7 @@ const delay = require("../helpers/delay");
 const { auth, retry } = require("./helpers")
 const { NodeHtmlMarkdown } = require('node-html-markdown');
 const createHtmlPage = require("../helpers/createHtmlPage");
+const { extractResources, extractChallenges } = require("../helpers/extractors");
 
 const getCourseName = pageUrl => {
     let courseName = pageUrl.replace("https://www.vuemastery.com/courses/", "");
@@ -132,6 +133,8 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
                         await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'playwright', 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
                         //save htmlw
                         await createHtmlPage(page, path.join(process.cwd(), saveDir, courseName, 'playwright', 'html'), `${newTitle}`);
+                        await extractResources(page, path.join(process.cwd(), saveDir, courseName, 'playwright', 'resources'), newTitle, nhm);
+                        await extractChallenges(page, path.join(process.cwd(), saveDir, courseName, 'playwright', 'challenges'), newTitle, nhm);
                     }
                 })(),
                 (async () => {

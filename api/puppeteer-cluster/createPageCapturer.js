@@ -86,85 +86,88 @@ module.exports = async (cluster, pageUrl, saveDir, videoFormat, quality, markdow
 
                 const newTitle = allTitles.filter(t => t.includes(title))[0]
 
-                const [, , selectedVideo] = await Promise.all([
-                    (async () => {
-                        if (images) {
-                            const $sec = await page.$('#lessonContent')
-                            if (!$sec) throw new Error(`Parsing failed!`)
-                            await delay(5e3) //5e3
-                            await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots'))
-                            await $sec.screenshot({
-                                path          : path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
-                                type          : 'png',
-                                omitBackground: true,
-                                delay         : '500ms'
-                            })
-                        }
-                    })(),
-                    (async () => {
-                        //create markdown
-                        if (markdown) {
+                const [, , iframeSrc] = await Promise //selectedVideo
+                    .all([
+                        (async () => {
+                            if (images) {
+                                const $sec = await page.$('.lesson-wrapper')
+                                if (!$sec) throw new Error(`Parsing failed!`)
+                                await delay(5e3) //5e3
+                                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots'))
+                                await $sec.screenshot({
+                                    path          : path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
+                                    type          : 'png',
+                                    omitBackground: true,
+                                    delay         : '500ms'
+                                })
+                            }
+                        })(),
+                        (async () => {
+                            //create markdown
+                            if (markdown) {
+                                //wait for iframe
+                                await retry(async () => {//return
+                                    await page.waitForSelector('.video-wrapper iframe[src]')
+                                }, 6, 1e3, true)
+                                let markdown = await page.evaluate(
+                                    () => Array.from(document.body.querySelectorAll('#lessonContent'),
+                                        txt => txt.outerHTML)[0]
+                                );
+                                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'markdown'))
+                                await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
+                            }
+                        })(),
+                        (async () => {
                             //wait for iframe
                             await retry(async () => {//return
                                 await page.waitForSelector('.video-wrapper iframe[src]')
                             }, 6, 1e3, true)
-                            let markdown = await page.evaluate(
-                                () => Array.from(document.body.querySelectorAll('#lessonContent'),
-                                    txt => txt.outerHTML)[0]
+
+                            const iframeSrc = await page.evaluate(
+                                () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)
                             );
-                            await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'markdown'))
-                            await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
-                        }
-                    })(),
-                    (async () => {
-                        //wait for iframe
-                        await retry(async () => {//return
-                            await page.waitForSelector('.video-wrapper iframe[src]')
-                        }, 6, 1e3, true)
+                            return iframeSrc
+                            // console.log('iframeSrc', iframeSrc);
+                            /*const pageSrc = await browser.newPage()
+                            await pageSrc.goto('view-source:' + iframeSrc[0], { waitUntil: 'networkidle0', timeout: 0 });
 
-                        const iframeSrc = await page.evaluate(
-                            () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)
-                        );
-                        // console.log('iframeSrc', iframeSrc);
-                        const pageSrc = await browser.newPage()
-                        await pageSrc.goto('view-source:' + iframeSrc[0], { waitUntil: 'networkidle0', timeout: 0 });
+                            const content = await pageSrc.evaluate(
+                                () => Array.from(document.body.querySelectorAll('td.line-content'), txt => txt.textContent)[0]
+                            );
 
-                        const content = await pageSrc.evaluate(
-                            () => Array.from(document.body.querySelectorAll('td.line-content'), txt => txt.textContent)[0]
-                        );
-
-                        let newString;
-                        let finString;
-                        try {
-                            newString = content.split(`progressive":[`)[1];
+                            let newString;
+                            let finString;
+                            try {
+                                newString = content.split(`progressive":[`)[1];
+                                finString = newString.split(']},"lang":"en","sentry":')[0];
+                            } catch (e) {
+                                console.error('Issue with error source:', iframeSrc);
+                                console.error('Issue with getting vimeo data', content, e);
+                                await pageSrc.close()
+                                return;
+                            }
                             finString = newString.split(']},"lang":"en","sentry":')[0];
-                        } catch (e) {
-                            console.error('Issue with error source:', iframeSrc);
-                            console.error('Issue with getting vimeo data', content, e);
+
+                            let videos = await eval(`[${finString}]`)
+                            let selectedVideo = await videos.find(vid => vid.quality === quality);
+
+                            if (!selectedVideo) {
+                                //can't find 1080p quality let's see if there is 720p video
+                                selectedVideo = await videos.find(vid => vid.quality === '720p');
+                            }
                             await pageSrc.close()
-                            return;
-                        }
-                        finString = newString.split(']},"lang":"en","sentry":')[0];
+                            return selectedVideo;*/
 
-                        let videos = await eval(`[${finString}]`)
-                        let selectedVideo = await videos.find(vid => vid.quality === quality);
-
-                        if (!selectedVideo) {
-                            //can't find 1080p quality let's see if there is 720p video
-                            selectedVideo = await videos.find(vid => vid.quality === '720p');
-                        }
-                        await pageSrc.close()
-                        return selectedVideo;
-
-                    })(),
-                ])
+                        })(),
+                    ])
 
                 return {
                     pageUrl,
                     courseName,
                     dest    : path.join(process.cwd(), saveDir, courseName, `${newTitle}${videoFormat}`),
                     imgPath : path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
-                    vimeoUrl: selectedVideo.url
+                    downFolder: path.join(process.cwd(), saveDir, courseName),
+                    vimeoUrl: iframeSrc //selectedVideo.url
                 };
             })
 

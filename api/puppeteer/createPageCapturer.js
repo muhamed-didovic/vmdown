@@ -7,6 +7,7 @@ const { NodeHtmlMarkdown } = require('node-html-markdown')
 const delay = require("../helpers/delay")
 const { retry, vimeoRequest } = require("../puppeteer/helpers")
 const createHtmlPage = require("../helpers/createHtmlPage");
+const { extractResources, extractChallenges } = require("../helpers/extractors");
 
 module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, markdown, images) => {//browser =>
     const nhm = new NodeHtmlMarkdown();
@@ -137,7 +138,8 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
             );
 
             await createHtmlPage(page, path.join(process.cwd(), saveDir, courseName, 'puppeteer', 'html'), `${newTitle}`);
-
+            await extractResources(page, path.join(process.cwd(), saveDir, courseName, 'puppeteer', 'resources'), newTitle, nhm);
+            await extractChallenges(page, path.join(process.cwd(), saveDir, courseName, 'puppeteer', 'challenges'), newTitle, nhm);
             //const selectedVideo = await vimeoRequest(pageUrl, iframeSrc)
 
             /*const [, , selectedVideo] = await Promise.all([
