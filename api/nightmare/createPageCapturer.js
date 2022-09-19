@@ -8,6 +8,7 @@ const colors = require('colors');
 const { NodeHtmlMarkdown } = require('node-html-markdown');
 const { makeScreenshots, extractVimeoUrl } = require("./helpers");
 const createHtmlPage = require("../helpers/createHtmlPage");
+const { extractResources, extractChallenges } = require("../helpers/extractors");
 
 module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, images, ms) => {
     const nhm = new NodeHtmlMarkdown();
@@ -77,6 +78,8 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
 
                                 //save HTML of the page
                                 await createHtmlPage(n, path.join(process.cwd(), saveDir, courseName, 'nightmare', 'html'), `${newTitle}`, 'nightmare');
+                                await extractResources(page, path.join(process.cwd(), saveDir, courseName, 'nightmare', 'resources'), newTitle, nhm, 'nightmare');
+                                await extractChallenges(page, path.join(process.cwd(), saveDir, courseName, 'nightmare', 'challenges'), newTitle, nhm, 'nightmare');
                             }
                         })(),
                         (async () => {

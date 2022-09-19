@@ -7,6 +7,8 @@ const delay = require("../helpers/delay");
 const { NodeHtmlMarkdown } = require('node-html-markdown');
 const { retry } = require("../puppeteer/helpers");
 
+
+//NOT USED AT THE MOMENT
 module.exports = async (cluster, pageUrl, saveDir, videoFormat, quality, markdown, images) => {//browser =>
     //const page = await browser.newPage()
     //await page.setViewport({ width: 0, height: 0, deviceScaleFactor: 1.5 })
@@ -24,28 +26,65 @@ module.exports = async (cluster, pageUrl, saveDir, videoFormat, quality, markdow
             .resolve()
             .then(async () => {
                 //await delay(10e3)
-                await page.goto(pageUrl)
+                await page.goto(pageUrl, { waitUntil: ["networkidle2"], timeout: 61e3 })
+
+                const iframeSrc = await Promise.race([
+                    (async () => {
+                        // check is 'Login' visible
+                        try {
+                            await page.waitForSelector('.video-wrapper iframe[src]')
+                            // await page.waitForNavigation({ waitUntil: 'networkidle0' });
+                            const iframeSrc = await page.evaluate(
+                                () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)
+                            );
+                            return iframeSrc
+                            // console.log(' login tesxt', text);
+                            return iframeSrc;
+                        } catch (e) {
+                            // console.log('1111', e);
+                            return false;
+                        }
+
+                    })(),
+                    (async () => {
+                        //check if "Sign out" is visible
+                        try {
+                            await page.waitForSelector('.locked-action')
+                            //check if source is locked
+                            /*let locked = await page.evaluate(
+                                () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
+                            );
+                            if (locked) {
+                                return;
+                            }*/
+                            return false;
+                        } catch (e) {
+                            // console.log('22222', e);
+                            return false;
+                        }
+                    })(),
+                    (async () => {
+                        try {
+                            await page.waitForSelector('h1.title')
+                            // const postsSelector = '.main .article h2 a';
+                            //await page.waitForSelector(postsSelector, { timeout: 0 });
+                        } catch (e) {
+                            return flase;
+                        }
+                    })(),
+
+                ])
+                if (!iframeSrc) {
+                    console.log('No iframe found or h1.title; result:', iframeSrc);
+                    return;
+                }
+                console.log('iframeSrc:', iframeSrc);
                 let courseName = pageUrl.replace(
                     "https://www.vuemastery.com/courses/",
                     ""
                 );
                 // console.log('url:', courseName);
 
-                try {
-                    await page.waitForSelector('h1.title')
-                    // const postsSelector = '.main .article h2 a';
-                    //await page.waitForSelector(postsSelector, { timeout: 0 });
-                } catch (e) {
-                    return;
-                }
-
-                //check if source is locked
-                let locked = await page.evaluate(
-                    () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
-                );
-                if (locked) {
-                    return;
-                }
 
                 if (courseName.includes('/')) {
                     try {
@@ -86,7 +125,7 @@ module.exports = async (cluster, pageUrl, saveDir, videoFormat, quality, markdow
 
                 const newTitle = allTitles.filter(t => t.includes(title))[0]
 
-                const [, , iframeSrc] = await Promise //selectedVideo
+                const [,] = await Promise //selectedVideo
                     .all([
                         (async () => {
                             if (images) {
@@ -117,7 +156,7 @@ module.exports = async (cluster, pageUrl, saveDir, videoFormat, quality, markdow
                                 await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
                             }
                         })(),
-                        (async () => {
+                        /*(async () => {
                             //wait for iframe
                             await retry(async () => {//return
                                 await page.waitForSelector('.video-wrapper iframe[src]')
@@ -128,7 +167,7 @@ module.exports = async (cluster, pageUrl, saveDir, videoFormat, quality, markdow
                             );
                             return iframeSrc
                             // console.log('iframeSrc', iframeSrc);
-                            /*const pageSrc = await browser.newPage()
+                            /!*const pageSrc = await browser.newPage()
                             await pageSrc.goto('view-source:' + iframeSrc[0], { waitUntil: 'networkidle0', timeout: 0 });
 
                             const content = await pageSrc.evaluate(
@@ -156,9 +195,9 @@ module.exports = async (cluster, pageUrl, saveDir, videoFormat, quality, markdow
                                 selectedVideo = await videos.find(vid => vid.quality === '720p');
                             }
                             await pageSrc.close()
-                            return selectedVideo;*/
+                            return selectedVideo;*!/
 
-                        })(),
+                        })(),*/
                     ])
 
                 return {

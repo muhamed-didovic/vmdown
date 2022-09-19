@@ -41,7 +41,12 @@ const scraper = async (opts) => {
     // return Promise.resolve()
     const lessons = await withBrowser(async (browser) => {
         const result = await withPage(browser)(async (page) => {
-            await page.goto("https://www.vuemastery.com", { waitUntil: "networkidle0" }); // wait until page load
+            await Promise.all([
+                page.setDefaultNavigationTimeout(0),
+                page.goto("https://www.vuemastery.com", { waitUntil: ["networkidle2"], timeout: 32e3 })
+                // page.waitForNavigation({ waitUntil: 'networkidle0' }),
+            ])
+            // await page.goto("https://www.vuemastery.com", { waitUntil: "networkidle2",  timeout: 61e3 }); // wait until page load
             await page.setViewport({ width: 1920, height: 1080 });
             await delay(1)
             //ms.add('login', { text: `Checking authentication...` });
@@ -49,7 +54,7 @@ const scraper = async (opts) => {
             await delay(5e3)
             //ms.succeed('login', { text: "User successfully logged in." });
 
-            return Promise.resolve()
+            //return Promise.resolve()
         });
 
         ms.add('capture', { text: `Start Puppeteer Capturing...` });

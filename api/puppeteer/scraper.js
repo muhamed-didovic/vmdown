@@ -45,24 +45,26 @@ const scraper = async ({
     const lessons = await withBrowser(async (browser) => {
 
         const result = await withPage(browser)(async (page) => {
-            await page.goto("https://www.vuemastery.com", { waitUntil: "networkidle0" }); // wait until page load
-            await page.setViewport({ width: 1920, height: 1080 });
-            await delay(1)
-            ms.add('login', { text: `Checking authentication...` });
-            await auth(page, email, password);
-            await delay(5e3)
-            ms.succeed('login', { text: "User successfully logged in." });
-            /*ms.add('login', { text: `Checking authentication...` });
-            await page.reload({ waitUntil: ["networkidle0", "domcontentloaded"] });
-
-            if (await getInnerText(page, 'a[href="/account/dashboard"]') === 'Dashboard') {
-                console.log('tu smo');
+            return await retry(async () => {//return
+                await page.goto("https://www.vuemastery.com", { waitUntil: "networkidle0" }); // wait until page load
+                await page.setViewport({ width: 1920, height: 1080 });
+                await delay(1)
+                ms.add('login', { text: `Checking authentication...` });
+                await auth(page, email, password);
+                await delay(5e3)
                 ms.succeed('login', { text: "User successfully logged in." });
-            } else {
-                ms.fail('login', { text: "Cannot login. Check your user credentials. \n WARNING: Just free videos will be downloaded" });
-                return;
-            }*/
-            //await delay(5e3)
+                /*ms.add('login', { text: `Checking authentication...` });
+                await page.reload({ waitUntil: ["networkidle0", "domcontentloaded"] });
+
+                if (await getInnerText(page, 'a[href="/account/dashboard"]') === 'Dashboard') {
+                    console.log('tu smo');
+                    ms.succeed('login', { text: "User successfully logged in." });
+                } else {
+                    ms.fail('login', { text: "Cannot login. Check your user credentials. \n WARNING: Just free videos will be downloaded" });
+                    return;
+                }*/
+                //await delay(5e3)
+            }, 6, 1e3, true)
         });
 
         let cnt = 0;

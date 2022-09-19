@@ -69,16 +69,19 @@ const auth = async (page, email, password) => {
     //     return;
     // }
     // await delay(10e3)
-    await page.click('button[class="button inverted"]');
-    await page.click('button[class="button link"]');
+    await retry(async () => {//return
+        await page.click('button[class="button inverted"]');
+        await page.click('button[class="button link"]');
 
-    await page.focus('input[placeholder="Account Email"]');
-    await page.keyboard.type(email)
-    await page.focus('input[placeholder="Password"]');
-    await page.keyboard.type(password)
+        await page.focus('input[placeholder="Account Email"]');
+        await page.keyboard.type(email)
+        await page.focus('input[placeholder="Password"]');
+        await page.keyboard.type(password)
 
-    await page.click('button[class="button primary -full"]')
-    await page.click('button[class="button primary -full"]')
+        await page.click('button[class="button primary -full"]')
+        await page.click('button[class="button primary -full"]')
+    }, 6, 1e3, true)
+
 
     /*console.log('1-');
     await page.waitForSelector('button[data-test="loginBtn"]', {visible: true, timeout: 0});
@@ -182,11 +185,61 @@ const getPageData = async (data, page) => {
         .resolve()
         .then(async () => {
             //await delay(10e3)
-            await page.goto(pageUrl, { waitUntil: 'networkidle0', timeout: 61e3 })//waitUntil: 'networkidle0',
+            await page.goto(pageUrl, { waitUntil: 'networkidle2', timeout: 61e3 })//waitUntil: 'networkidle0',
 
-            await retry(async () => {//return
+            const iframeSrc = await Promise.race([
+                (async () => {
+                    try {
+                        await page.waitForSelector('.video-wrapper iframe[src]')
+                        // await page.waitForNavigation({ waitUntil: 'networkidle0' });
+                        const iframeSrc = await page.evaluate(
+                            () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
+                        );
+                        return iframeSrc
+
+                    } catch (e) {
+                        // console.log('1111', e);
+                        return false;
+                    }
+
+                })(),
+                (async () => {
+                    try {
+                        await page.waitForSelector('.locked-action')
+                        //check if source is locked
+                        /*let locked = await page.evaluate(
+                            () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
+                        );
+                        if (locked) {
+                            return;
+                        }*/
+                        return false;
+                    } catch (e) {
+                        // console.log('22222', e);
+                        return false;
+                    }
+                })(),
+                /*(async () => {
+                    try {
+                        await page.waitForSelector('h1.title')
+                        console.log('33333');
+                        return false;
+                        // const postsSelector = '.main .article h2 a';
+                        //await page.waitForSelector(postsSelector, { timeout: 0 });
+                    } catch (e) {
+                        return false;
+                    }
+                })(),*/
+
+            ])
+            if (!iframeSrc) {
+                // console.log('No iframe found or h1.title; result:', iframeSrc, pageUrl);
+                return;
+            }
+            // console.log('iframeSrc:', iframeSrc);
+            /*await retry(async () => {//return
                 await page.waitForSelector('.video-wrapper iframe[src]')
-            }, 6, 1e3, true)
+            }, 6, 1e3, true)*/
 
             //await auth(page, email, password);
             //check is logged user
@@ -196,7 +249,7 @@ const getPageData = async (data, page) => {
                 ""
             );
 
-            try {
+            /*try {
                 await page.waitForSelector('h1.title')
                 // const postsSelector = '.main .article h2 a';
                 //await page.waitForSelector(postsSelector, { timeout: 0 });
@@ -210,7 +263,7 @@ const getPageData = async (data, page) => {
             );
             if (locked) {
                 return;
-            }
+            }*/
 
             if (courseName.includes('/')) {
                 try {
@@ -231,7 +284,7 @@ const getPageData = async (data, page) => {
             );
 
             //lesson is locked
-            locked = await page.evaluate(
+            /*locked = await page.evaluate(
                 () => Array.from(document.body.querySelector('.list-item.active').classList, txt => txt)//contains('-locked')
             )
             // console.log('locked', locked, pageUrl) ;
@@ -239,15 +292,7 @@ const getPageData = async (data, page) => {
             if (locked.includes('-locked')) {
                 // console.log('---locked');
                 return;
-            }
-            /*const allTitlesWithoutNumbers = allTitles.map(t => {
-                return t.split(". ")[1];
-            });
-
-            const newTitle = allTitlesWithoutNumbers.indexOf(title) >= 0
-                ? allTitles[allTitlesWithoutNumbers.indexOf(title)]
-                : allTitlesWithoutNumbers.filter(t => t.includes(title))[0] ;*/
-            //title = filenamify(title);
+            }*/
 
             const newTitle = allTitles.filter(t => t.includes(title))[0]
 

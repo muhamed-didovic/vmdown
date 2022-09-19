@@ -27,13 +27,55 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
         .then(async () => {
             //await delay(10e3)
             await page.goto(pageUrl, { waitUntil: ["networkidle2"], timeout: 61e3 });
+
+            const iframeSrc = await Promise.race([
+                (async () => {
+                    // check is 'Login' visible
+                    try {
+                        await page.waitForSelector('.video-wrapper iframe[src]')
+                        // await page.waitForNavigation({ waitUntil: 'networkidle0' });
+                        const iframeSrc = await page.evaluate(
+                            () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
+                        );
+                        return iframeSrc
+
+                    } catch (e) {
+                        // console.log('1111', e);
+                        return false;
+                    }
+
+                })(),
+                (async () => {
+                    //check if "Sign out" is visible
+                    try {
+                        await page.waitForSelector('.locked-action')
+                        //check if source is locked
+                        /*let locked = await page.evaluate(
+                            () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
+                        );
+                        if (locked) {
+                            return;
+                        }*/
+                        return false;
+                    } catch (e) {
+                        // console.log('22222', e);
+                        return false;
+                    }
+                })()
+            ])
+            if (!iframeSrc) {
+                // console.log('No iframe found or h1.title; result:', iframeSrc, pageUrl);
+                return;
+            }
+            // console.log('iframeSrc:', iframeSrc);
+
             let courseName = pageUrl.replace(
                 "https://www.vuemastery.com/courses/",
                 ""
             );
             // console.log('url:', courseName);
 
-            try {
+            /*try {
                 await page.waitForSelector('h1.title')
                 // const postsSelector = '.main .article h2 a';
                 //await page.waitForSelector(postsSelector, { timeout: 0 });
@@ -47,7 +89,7 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
             );
             if (locked) {
                 return;
-            }
+            }*/
 
             if (courseName.includes('/')) {
                 try {
@@ -68,7 +110,7 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
             );
 
             //lesson is locked
-            locked = await page.evaluate(
+            /*locked = await page.evaluate(
                 () => Array.from(document.body.querySelector('.list-item.active').classList, txt => txt)//contains('-locked')
             )
             // console.log('locked', locked, pageUrl) ;
@@ -76,7 +118,7 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
             if (locked.includes('-locked')) {
                 // console.log('---locked');
                 return;
-            }
+            }*/
 
             const newTitle = allTitles.filter(t => t.includes(title))[0]
 
@@ -129,13 +171,13 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                 //return Promise.resolve();
             }
 
-            await retry(async () => {//return
+            /*await retry(async () => {//return
                 await page.waitForSelector('.video-wrapper iframe[src]')
             }, 6, 1e3, true)
 
             const iframeSrc = await page.evaluate(
                 () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
-            );
+            );*/
 
             await createHtmlPage(page, path.join(process.cwd(), saveDir, courseName, 'puppeteer', 'html'), `${newTitle}`);
             await extractResources(page, path.join(process.cwd(), saveDir, courseName, 'puppeteer', 'resources'), newTitle, nhm);

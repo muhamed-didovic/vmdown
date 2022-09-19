@@ -56,12 +56,53 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
             //await page.waitForSelector('#__layout > div > div > div > header > div > nav > div.navbar-secondary > a', { timeout: 15e3 })
         }, 6, 10e3, true)
 
+        const iframeSrc = await Promise.race([
+            (async () => {
+                // check is 'Login' visible
+                try {
+                    await page.waitForSelector('.video-wrapper iframe[src]')
+                    // await page.waitForNavigation({ waitUntil: 'networkidle0' });
+                    const iframeSrc = await page.evaluate(
+                        () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
+                    );
+                    return iframeSrc
+
+                } catch (e) {
+                    // console.log('1111', e);
+                    return false;
+                }
+
+            })(),
+            (async () => {
+                //check if "Sign out" is visible
+                try {
+                    await page.waitForSelector('.locked-action')
+                    //check if source is locked
+                    /*let locked = await page.evaluate(
+                        () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
+                    );
+                    if (locked) {
+                        return;
+                    }*/
+                    return false;
+                } catch (e) {
+                    // console.log('22222', e);
+                    return false;
+                }
+            })()
+        ])
+        if (!iframeSrc) {
+            // console.log('No iframe found or h1.title; result:', iframeSrc, pageUrl);
+            return;
+        }
+        // console.log('iframeSrc:', iframeSrc);
+
         let courseName = getCourseName(pageUrl);
         // console.log('courseName', courseName);
         // console.log('1is locked', await isLocked(page));
-        if (await isLocked(page)) {
-            return;
-        }
+        // if (await isLocked(page)) {
+        //     return;
+        // }
         let title = await getTitle(page);
         // console.log('title', title);
         const allTitles = await page.$$eval('h4.list-item-title', nodes => nodes.map(n => n.textContent))
@@ -69,7 +110,7 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
         newTitle = he.decode(newTitle.replace('/', '\u2215'))
         // console.log('newTitle', newTitle);
 
-        const [, , iframeSrc] = await Promise //, selectedVideo
+        const [, ] = await Promise //, selectedVideo
             .all([
                 (async () => {
                     if (images) {
@@ -137,7 +178,7 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
                         await extractChallenges(page, path.join(process.cwd(), saveDir, courseName, 'playwright', 'challenges'), newTitle, nhm);
                     }
                 })(),
-                (async () => {
+                /*(async () => {
                     if (await isLocked(page)) {
                         return Promise.resolve();
                     }
@@ -147,7 +188,7 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
                     const iframeSrc = await page.$eval('.video-wrapper iframe[src]', ({ src }) => src);
                     return iframeSrc;
                     // console.log('iframeSrc', iframeSrc);
-                   /* const pageSrc = await context.newPage()
+                   /!* const pageSrc = await context.newPage()
                     // context.waitForEvent('page')
                     await retry(async () => {//return
                         //await delay(1e3)
@@ -178,14 +219,14 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
                     }
                     //await delay(1e3)
                     await pageSrc.close()
-                    return selectedVideo;*/
-                })(),
+                    return selectedVideo;*!/
+                })(),*/
             ])
 
-        if (await isLocked(page)) {//!selectedVideo ||
+        /*if (await isLocked(page)) {//!selectedVideo ||
             //console.log('lesson locked: ', selectedVideo);
             return;
-        }
+        }*/
 
         return {
             pageUrl,

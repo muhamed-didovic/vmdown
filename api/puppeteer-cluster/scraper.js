@@ -36,11 +36,12 @@ const launchOptions = {
         // '--disable-web-security',
         // '-- Disable XSS auditor', // close XSS auditor
         // '--no-zygote',
+        // '--no-sandbox',
         // '--disable-setuid-sandbox',
         // '-- allow running secure content', // allow unsafe content
         // '--disable-webgl',
         // '--disable-popup-blocking',
-        //'--proxy-server= http://127.0.0.1:8080 '// configure agent
+        // '--blink-settings=mainFrameClipsContent=false'
     ],
     // executablePath   : findChrome(),
 };
@@ -51,7 +52,7 @@ const clusterLanuchOptions = {
     skipduplicateurls: true, // do not crawl duplicate URLs
     // monitor: true, // displays the performance consumption
     puppeteerOptions: launchOptions,
-    timeout         : 150e3,
+    timeout         : 3600e3//90e3,
 };
 
 const scraper = async (opts) => {

@@ -73,10 +73,56 @@ module.exports = async (page, link, opts) => {
                 }
             })
 
-        await page.goto(he.decode(link), { waitUntil: ["networkidle2"], timeout: 61e3 });
-        const browserPage = await page.evaluate(() => location.href)
+        await Promise.all([
+            page.setDefaultNavigationTimeout(0),
+            page.goto(he.decode(link), { waitUntil: ["networkidle2"], timeout: 61e3 })
+            // page.waitForNavigation({ waitUntil: 'networkidle0' }),
+        ])
+        //await page.goto(he.decode(link), { waitUntil: ["networkidle2"], timeout: 61e3 });
+        // const browserPage = await page.evaluate(() => location.href)
 
-        await retry(async () => {//return
+        const iframeSrc = await Promise.race([
+            (async () => {
+                // check is 'Login' visible
+                try {
+                    await page.waitForSelector('.video-wrapper iframe[src]')
+                    // await page.waitForNavigation({ waitUntil: 'networkidle0' });
+                    const iframeSrc = await page.evaluate(
+                        () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
+                    );
+                    return iframeSrc
+
+                } catch (e) {
+                    // console.log('1111', e);
+                    return false;
+                }
+
+            })(),
+            (async () => {
+                //check if "Sign out" is visible
+                try {
+                    await page.waitForSelector('.locked-action')
+                    //check if source is locked
+                    /*let locked = await page.evaluate(
+                        () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
+                    );
+                    if (locked) {
+                        return;
+                    }*/
+                    return false;
+                } catch (e) {
+                    // console.log('22222', e);
+                    return false;
+                }
+            })()
+        ])
+        if (!iframeSrc) {
+            // console.log('No iframe found or h1.title; result:', iframeSrc, pageUrl);
+            return resolve();
+        }
+        // console.log('iframeSrc:', iframeSrc);
+
+        /*await retry(async () => {//return
             //check if source is locked
             let locked = await page.evaluate(
                 () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
@@ -94,7 +140,7 @@ module.exports = async (page, link, opts) => {
             // await makeScreenshot(page, downDir);
             // await createHtmlPage(page, path.join(process.cwd(), downDir, courseName, 'sockets', 'html'), `${fileName}.png`);
 
-        }, 6, 1e3, true, page)
+        }, 6, 1e3, true, page)*/
 
 
         //return Promise.resolve(lesson);
