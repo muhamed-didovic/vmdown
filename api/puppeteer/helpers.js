@@ -168,7 +168,7 @@ const auth = async (page, email, password) => {
     const text = await page.$eval('#__layout > div > div > div > header > div > nav > div.navbar-secondary > button', elem => {
         return elem.innerText;
     })
-    console.log('>>>>>>>text---------------------------------', text);
+    // console.log('>>>>>>>text---------------------------------', text);
     if (text !== 'Sign Out') {
         // ms.fail(name, { text: "Cannot login. Check your user credentials. \n WARNING: Just free videos will be downloaded" });
         throw new Error('Auth failed')
@@ -177,7 +177,6 @@ const auth = async (page, email, password) => {
     // const cookies = await page.cookies()
     // const cookieJson = JSON.stringify(cookies)
     // fs.writeFileSync('cookies.json', cookieJson)
-
     return true;
 }
 

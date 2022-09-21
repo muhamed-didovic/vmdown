@@ -113,8 +113,6 @@ module.exports = async ({
     index = (Math.random() + 1).toString(36).substring(7),
     ms
 } = {}) => {
-    // console.log('overwrite:', overwrite);
-
     //const dest = path.join(downloadFolder, course.title)
     // console.log('url', url);
     //const url = file.url;
