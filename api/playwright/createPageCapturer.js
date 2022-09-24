@@ -2,7 +2,8 @@ const path = require("path");
 const fs = require("fs-extra");
 const he = require('he')
 const delay = require("../helpers/delay");
-const { auth, retry } = require("./helpers")
+const { auth } = require("./helpers")
+const retry = require("../helpers/retry")
 const { NodeHtmlMarkdown } = require('node-html-markdown');
 const createHtmlPage = require("../helpers/createHtmlPage");
 const { extractResources, extractChallenges } = require("../helpers/extractors");
@@ -117,11 +118,11 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
                         await page.waitForSelector('.body > .title', { timeout: 10e3 })
                         await page.waitForSelector('.lesson-body', { timeout: 11e3 })
                         await page.waitForSelector('#lessonContent', { timeout: 12e3 })
-                        await page.waitForSelector('.lesson-wrapper', { timeout: 13e3 })
-                        await page.waitForTimeout(2e3)
+                        await page.waitForSelector('.lesson-wrapper', { timeout: 23e3 })
+                        await page.waitForTimeout(1e3)
                         // const currentViewport = await page.viewportSize();
                         // console.log('currentViewport', currentViewport);
-                        await delay(1e3) //5e3
+                        // await delay(1e3) //5e3
 
                         const rect = await page.$eval('.lesson-wrapper', element => {//.relative
                             const dimensions = document.querySelector('.lesson-wrapper');
@@ -162,7 +163,7 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
                                 captureBeyondViewport: false,
                                 fullPage: true
                             });*/
-                        }, 6, 1e3, true)
+                        }, 6, 1e3, true, page)
                         await page.waitForTimeout(1e3)
                     }
                 })(),
