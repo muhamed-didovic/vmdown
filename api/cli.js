@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 const meow = require('meow')
 const prompts = require('prompts')
 const path = require('path')

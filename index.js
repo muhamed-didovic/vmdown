@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const libs = require("./api/libs");
 const cli = require("./api/cli.js");
 
