@@ -70,7 +70,7 @@ const scraper = async ({
         let cnt = 0;
         ms.add('capture', { text: `Start Puppeteer Capturing...` });
         return await Promise
-            .map(courses, async (link) => {
+            .map(courses, async (link, index) => {
                 return await withPage(browser)(async (page) => {
 
                     /*await page.goto(he.decode(link), { waitUntil: ["networkidle2"], timeout: 61e3});
@@ -87,10 +87,21 @@ const scraper = async ({
                     //await auth(page, email, password);
 
                     ms.update('capture', { text: `Puppeteer Capturing... ${++cnt} of ${courses.length} ${link}` });
-                    return await createPageCapturer(browser, page, link, downDir, extension, quality, markdown, images)
+                    const lesson = await createPageCapturer(browser, page, link, downDir, extension, quality, markdown, images)
+
+                    if (lesson?.vimeoUrl) {
+                        await downOverYoutubeDL({
+                            ...lesson,
+                            overwrite,
+                            index,
+                            ms
+                        })
+                    }
+
+                    return lesson;
 
                 });
-            }, { concurrency: 3 })
+            }, { concurrency: 7 })
             .then(async courses => {
                 ms.succeed('capture', { text: `Capturing done for ${cnt}...` });
                 await fs.ensureDir(path.resolve(process.cwd(), 'json'))
@@ -106,15 +117,15 @@ const scraper = async ({
         .then(async lessons => {
             return lessons.filter(c => c?.vimeoUrl)
         })
-        .then(async lessons => {
+        /*.then(async lessons => {
             if (videos) {
 
                 // create new container
-                /*const multibar = new cliProgress.MultiBar({
+                /!*const multibar = new cliProgress.MultiBar({
                     clearOnComplete: false,
                     hideCursor     : true,
                     format         : '[{bar}] {percentage}% | ETA: {eta}s | Speed: {speed} | FileName: {filename} Found:{l}/{r}'
-                });*/
+                });*!/
                 console.log(`>>Downloading ${lessons.length} lessons`);
                 await Promise.map(lessons, async (lesson, index) => {
                     // return await downloadVideo(vimeoUrl, dest, ms, multibar)
@@ -128,7 +139,7 @@ const scraper = async ({
                 //multibar.stop();
             }
             return lessons;
-        })
+        })*/
         .then(async (lessons) => {
             await fs.ensureDir(path.resolve(process.cwd(), 'json'))
             await fs.writeFile(`./json/lessons.json`, JSON.stringify(lessons, null, 2), 'utf8')

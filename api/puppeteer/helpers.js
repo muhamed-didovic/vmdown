@@ -197,6 +197,7 @@ async function retry(fn, retriesLeft = 5, interval = 1000, exponential = false) 
     } catch (error) {
         if (retriesLeft) {
             console.log('....puppeteer retrying left (' + retriesLeft + ')');
+            console.log('e:', error);
             await new Promise(r => setTimeout(r, interval));
             return retry(fn, retriesLeft - 1, exponential ? interval*2 : interval, exponential);
         } else {
