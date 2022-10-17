@@ -173,9 +173,9 @@ const makeScreenshot = async (page, downDir) => {
     const $sec = await page.$('#lessonContent')
     if (!$sec) throw new Error(`Parsing failed!`)
     await delay(1e3) //5e3
-    await fs.ensureDir(path.join(process.cwd(), downDir, courseName, 'sockets', 'screenshots'))
+    await fs.ensureDir(path.join(downDir, courseName, 'sockets', 'screenshots'))
     await $sec.screenshot({
-        path          : path.join(process.cwd(), downDir, courseName, 'sockets', 'screenshots', `${fileName}.png`),
+        path          : path.join(downDir, courseName, 'sockets', 'screenshots', `${fileName}.png`),
         type          : 'png',
         omitBackground: true,
         delay         : '500ms'
@@ -212,9 +212,9 @@ const getFilesizeInBytes = filename => {
 const downloadResources = async (video, page, nhm, downDir, overwrite) => {
     const courseName = getCourseName(page) || video.belongsToCourse.toString();
 
-    //path.join(process.cwd(), 'videos', courseName, `${newTitle}${videoFormat}`)
+    //path.join('videos', courseName, `${newTitle}${videoFormat}`)
     // console.log('---------------courseName', courseName, 'page.url()', page.url());
-    const directory = path.resolve(process.cwd(), downDir, courseName);
+    const directory = path.resolve(downDir, courseName);
     await fs.ensureDir(directory);
     await fs.ensureDir(path.join(directory, 'sockets'))
 
@@ -233,7 +233,7 @@ const downloadResources = async (video, page, nhm, downDir, overwrite) => {
                     .join('<br>')
                 // console.log('resources', resources);
                 await fs.ensureDir(path.resolve(directory, 'sockets', 'resources'));
-                await fs.writeFile(path.join(process.cwd(), downDir, courseName, 'sockets', 'resources', `${fileName}-resources.md`), nhm.translate(resources), 'utf8')
+                await fs.writeFile(path.join(downDir, courseName, 'sockets', 'resources', `${fileName}-resources.md`), nhm.translate(resources), 'utf8')
             }
         })(),
         (async () => {
@@ -245,11 +245,11 @@ const downloadResources = async (video, page, nhm, downDir, overwrite) => {
             //save codingChallenge
             if (video?.codingChallenge) {
                 await fs.ensureDir(path.resolve(directory, 'sockets', 'challenges'));
-                await fs.writeFile(path.join(process.cwd(), downDir, courseName, 'sockets', 'challenges', `${fileName}s.md`), nhm.translate(video.codingChallenge), 'utf8')
+                await fs.writeFile(path.join(downDir, courseName, 'sockets', 'challenges', `${fileName}s.md`), nhm.translate(video.codingChallenge), 'utf8')
             }
         })(),
         makeScreenshot(page, downDir),
-        createHtmlPage(page, path.join(process.cwd(), downDir, courseName, 'sockets', 'html'), `${fileName}`),
+        createHtmlPage(page, path.join(downDir, courseName, 'sockets', 'html'), `${fileName}`),
     ])
 
     //save html to markdown

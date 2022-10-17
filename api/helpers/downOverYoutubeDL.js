@@ -6,7 +6,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const Promise = require('bluebird')
 const youtubedl = require("youtube-dl-wrap")
-const retry = require("./retry");
+// const retry = require("./retry");
 
 const pRetry = require('@byungi/p-retry').pRetry
 const pDelay = require('@byungi/p-delay').pDelay
@@ -15,88 +15,91 @@ const getFilesizeInBytes = filename => {
     return fs.existsSync(filename) ? fs.statSync(filename)["size"] : 0;
 };
 
-const download = (url, dest, {
+const download = async (url, dest, {
     localSizeInBytes,
     remoteSizeInBytes,
     downFolder,
     index = 0,
     ms
-}) => new Promise(async (resolve, reject) => {
+}) => {
+
     const videoLogger = FileChecker.createLogger(downFolder);
     await fs.remove(dest) // not supports overwrite..
     let name = dest + index;
     ms.update(name, {
-        text: `to be processed by youtube-dl... ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}`,
+        text : `to be processed by youtube-dl... ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}`,
         color: 'blue'
     });
+    const youtubeDlWrap = new youtubedl()
     // console.log(`to be processed by youtube-dl... ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}`)
-    await retry(async () => {
-        const youtubeDlWrap = new youtubedl()
-        let youtubeDlEventEmitter = youtubeDlWrap
-            .exec([
-                url,
-                '--all-subs',
-                '--referer', 'https://vuemastery.com/',
-                "-o", path.toNamespacedPath(dest),
-                '--socket-timeout', '5'
-            ])
-            .on("progress", (progress) => {
-                ms.update(name, { text: `${index}. Downloading: ${progress.percent}% of ${progress.totalSize} at ${progress.currentSpeed} in ${progress.eta} | ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}` })
-            })
-            // .on("youtubeDlEvent", (eventType, eventData) => console.log(eventType, eventData))
-            .on("error", (error) => {
-                ms.remove(name, { text: error })
-                console.log('error--', error)
-                //ms.remove(dest);
-                /*fs.unlink(dest, (err) => {
+    return await retry(async () => {
+        return new Promise(async (resolve, reject) => {
+            let youtubeDlEventEmitter = await youtubeDlWrap
+                .exec([
+                    url,
+                    '--all-subs',
+                    '--referer', 'https://vuemastery.com/',
+                    '-o', path.toNamespacedPath(dest),
+                    '--socket-timeout', '10',
+                    '--retries', 'infinite',
+                    '--fragment-retries', 'infinite',
+                    '--no-check-certificate',
+                    '--download-archive', 'downloaded.txt'
+                    // '--prefer-insecure'
+                ])
+                .on("progress", (progress) => {
+                    ms.update(name, { text: `${index}. Downloading: ${progress.percent}% of ${progress.totalSize} at ${progress.currentSpeed} in ${progress.eta} | ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}` })
+                })
+                // .on("youtubeDlEvent", (eventType, eventData) => console.log(eventType, eventData))
+                .on("error", (error) => {
+                    ms.remove(name, { text: error })
+                    console.log('error--', error)
+                    //ms.remove(dest);
+                    /*fs.unlink(dest, (err) => {
+                        reject(error);
+                    });*/
                     reject(error);
-                });*/
-                reject(error);
 
-            })
-            .on("close", () => {
-                //ms.succeed(dest, { text: `${index}. End download ytdl: ${dest} Found:${localSizeInBytes}/${remoteSizeInBytes} - Size:${formatBytes(getFilesizeInBytes(dest))}` })//.split('/').pop()
-                ms.remove(name);
-                console.log(`${index}. End download ytdl: ${dest} Found:${localSizeInBytes}/${remoteSizeInBytes} - Size:${formatBytes(getFilesizeInBytes(dest))}`);
-                // videoLogger.write(`${dest} Size:${getFilesizeInBytes(dest)}\n`);
-                FileChecker.writeWithOutSize(downFolder, dest)
-                resolve()
-            })
-
+                })
+                .on("close", () => {
+                    //ms.succeed(dest, { text: `${index}. End download ytdl: ${dest} Found:${localSizeInBytes}/${remoteSizeInBytes} - Size:${formatBytes(getFilesizeInBytes(dest))}` })//.split('/').pop()
+                    ms.remove(name);
+                    console.log(`${index}. End download ytdl: ${dest} Found:${localSizeInBytes}/${remoteSizeInBytes} - Size:${formatBytes(getFilesizeInBytes(dest))}`);
+                    // videoLogger.write(`${dest} Size:${getFilesizeInBytes(dest)}\n`);
+                    FileChecker.writeWithOutSize(downFolder, dest)
+                    resolve()
+                })
+        });
     }, 6, 1e3, true);
-});
 
-/*const downloadVideo = async (url, dest, {
-    localSizeInBytes,
-    remoteSizeInBytes,
-    downFolder,
-    index,
-    ms
-}) => {
+};
+
+const retry = async (fn, retriesLeft = 5, interval = 1000, exponential = false, page = false) => {
     try {
-        await pRetry(() => download(url, dest,
-            {
-                localSizeInBytes,
-                remoteSizeInBytes,
-                downFolder,
-                index,
-                ms
-            }), {
-            retries        : 3,
-            onFailedAttempt: error => {
-                console.log(`Attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`);
-                // 1st request => Attempt 1 failed. There are 4 retries left.
-                // 2nd request => Attempt 2 failed. There are 3 retries left.
-                // …
+        const val = await fn()
+        return val
+    } catch (error) {
+        if (retriesLeft) {
+            console.log('.... retrying left (' + retriesLeft + ')')
+            console.log('retrying err', error)
+            if (page) {
+                const browserPage = await page.evaluate(() => location.href)
+                console.log('----retrying err on url', browserPage)
+                await fs.ensureDir(path.resolve(process.cwd(), 'errors'))
+                await page.screenshot({
+                    path: path.resolve(process.cwd(), `errors/${new Date().toISOString()}.png`),
+                    // path    : path.join(process., sanitize(`${String(position).padStart(2, '0')}-${title}-full.png`)),
+                    fullPage: true
+                });
             }
-        })
-    } catch (e) {
-        console.log('eeee', e);
-        ms.remove(dest, { text: `Issue with downloading` });
-        //reject(e)
+            await new Promise(r => setTimeout(r, interval))
+            return retry(fn, retriesLeft - 1, exponential ? interval*2 : interval, exponential, page)//page,
+        } else {
+            console.log('Max retries reached')
+            throw error
+        }
     }
-}*/
-
+}
 
 /**
  * @param file

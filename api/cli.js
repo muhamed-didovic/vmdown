@@ -32,7 +32,7 @@ Examples
     $ vmdown [url] [-e user@gmail.com] [-p password] [-d dirname] [-v true/false] [-m true/false] [-i true/false] [--pdf true/false] [-o yes/no] [-c number]
 `, {
     hardRejection: false,
-    flags: {
+    flags        : {
         help       : { alias: 'h' },
         version    : { alias: 'v' },
         email      : { type: 'string', alias: 'e' },
@@ -42,7 +42,7 @@ Examples
         videos     : { type: 'boolean', alias: 'v', default: true },
         images     : { type: 'boolean', alias: 'i', default: true },
         pdf        : { type: 'boolean', default: true },
-        directory  : { type: 'string', alias: 'd', default: process.cwd() },
+        directory  : { type: 'string', alias: 'd' },//, default: process.cwd()
         extension  : { type: 'string', alias: 'x', default: '.mp4' },
         quality    : { type: 'string', alias: 'q', default: '1080p' },
         concurrency: { type: 'number', alias: 'c', default: 10 },
@@ -88,12 +88,16 @@ async function commonFlags(flags) {
         message : 'Enter password',
         validate: value => value.length < 5 ? `Sorry, password must be longer` : true
     })
-    const downDir = flags.directory || path.resolve(await askOrExit({
-        type    : 'text',
-        message : `Enter a directory to save a file (eg: ${path.resolve(process.cwd())})`,
-        initial : path.resolve(process.cwd(), 'videos/'),
-        validate: isValidPath
-    }))
+
+    const downDir = flags.directory
+        ? path.resolve(flags.directory)
+        : path.resolve(await askOrExit({
+            type    : 'text',
+            message : `Enter a directory to save a file (eg: ${path.resolve(process.cwd())})`,
+            initial : './videos',
+            validate: isValidPath
+        }))
+
     const videos = flags.videos || await askOrExit({
         type    : 'toggle',
         name    : 'value',
@@ -227,7 +231,20 @@ async function commonFlags(flags) {
             initial: 1
         }))
 
-    return { email, password, downDir, videos, markdown, images, concurrency, extension, quality, pdf, framework, overwrite };
+    return {
+        email,
+        password,
+        downDir,
+        videos,
+        markdown,
+        images,
+        concurrency,
+        extension,
+        quality,
+        pdf,
+        framework,
+        overwrite
+    };
 }
 
 module.exports = async () => {

@@ -121,7 +121,7 @@ const isLogged = async page => {
 
         ])
 
-        console.log('text', result);
+        console.log('logged text:', result);
         return result;
 
         // return logged && !notLogged;

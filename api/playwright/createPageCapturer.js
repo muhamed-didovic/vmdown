@@ -146,7 +146,7 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
                         await retry(async () => {//return
                             // console.log('screenshot:', path.join(process.cwd(), saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`));
                             await $sec.screenshot({
-                                path          : path.join(process.cwd(), saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
+                                path          : path.join(saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
                                 omitBackground: true,
                                 timeout       : 30e3
                             })
@@ -171,12 +171,12 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
                     //create markdown
                     if (markdown) {
                         let markdown = await page.$eval('#lessonContent', txt => txt.outerHTML)
-                        await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'playwright', 'markdown'))
-                        await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'playwright', 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
+                        await fs.ensureDir(path.join(saveDir, courseName, 'playwright', 'markdown'))
+                        await fs.writeFile(path.join(saveDir, courseName, 'playwright', 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
                         //save htmlw
-                        await createHtmlPage(page, path.join(process.cwd(), saveDir, courseName, 'playwright', 'html'), `${newTitle}`);
-                        await extractResources(page, path.join(process.cwd(), saveDir, courseName, 'playwright', 'resources'), newTitle, nhm);
-                        await extractChallenges(page, path.join(process.cwd(), saveDir, courseName, 'playwright', 'challenges'), newTitle, nhm);
+                        await createHtmlPage(page, path.join(saveDir, courseName, 'playwright', 'html'), `${newTitle}`);
+                        await extractResources(page, path.join(saveDir, courseName, 'playwright', 'resources'), newTitle, nhm);
+                        await extractChallenges(page, path.join(saveDir, courseName, 'playwright', 'challenges'), newTitle, nhm);
                     }
                 })(),
                 /*(async () => {
@@ -232,9 +232,9 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
         return {
             pageUrl,
             courseName,
-            dest      : path.join(process.cwd(), saveDir, courseName, `${newTitle}${videoFormat}`),
-            imgPath   : path.join(process.cwd(), saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
-            downFolder: path.join(process.cwd(), saveDir, courseName),
+            dest      : path.join(saveDir, courseName, `${newTitle}${videoFormat}`),
+            imgPath   : path.join(saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
+            downFolder: path.join(saveDir, courseName),
             vimeoUrl  : iframeSrc//selectedVideo.url
         };
     } finally {

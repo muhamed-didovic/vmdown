@@ -132,9 +132,9 @@ module.exports = async (cluster, pageUrl, saveDir, videoFormat, quality, markdow
                                 const $sec = await page.$('.lesson-wrapper')
                                 if (!$sec) throw new Error(`Parsing failed!`)
                                 await delay(5e3) //5e3
-                                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots'))
+                                await fs.ensureDir(path.join(saveDir, courseName, 'cluster', 'screenshots'))
                                 await $sec.screenshot({
-                                    path          : path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
+                                    path          : path.join(saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
                                     type          : 'png',
                                     omitBackground: true,
                                     delay         : '500ms'
@@ -152,8 +152,8 @@ module.exports = async (cluster, pageUrl, saveDir, videoFormat, quality, markdow
                                     () => Array.from(document.body.querySelectorAll('#lessonContent'),
                                         txt => txt.outerHTML)[0]
                                 );
-                                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'markdown'))
-                                await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
+                                await fs.ensureDir(path.join(saveDir, courseName, 'markdown'))
+                                await fs.writeFile(path.join(saveDir, courseName, 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
                             }
                         })(),
                         /*(async () => {
@@ -203,9 +203,9 @@ module.exports = async (cluster, pageUrl, saveDir, videoFormat, quality, markdow
                 return {
                     pageUrl,
                     courseName,
-                    dest    : path.join(process.cwd(), saveDir, courseName, `${newTitle}${videoFormat}`),
-                    imgPath : path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
-                    downFolder: path.join(process.cwd(), saveDir, courseName),
+                    dest    : path.join(saveDir, courseName, `${newTitle}${videoFormat}`),
+                    imgPath : path.join(saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
+                    downFolder: path.join(saveDir, courseName),
                     vimeoUrl: iframeSrc //selectedVideo.url
                 };
             })

@@ -51,7 +51,7 @@ const isLogged = async page => {
 
         ])
 
-        console.log('text', result);
+        console.log('logged text', result);
         return result;
 
         // return logged && !notLogged;
@@ -356,8 +356,8 @@ const getPageData = async (data, page) => {
             })
 
             if (markdown) {
-                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'cluster', 'markdown'))
-                await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'cluster', 'markdown', `${newTitle.replace('/', '\u2215')}.md`), nhm.translate(r.markdown), 'utf8')
+                await fs.ensureDir(path.join(saveDir, courseName, 'cluster', 'markdown'))
+                await fs.writeFile(path.join(saveDir, courseName, 'cluster', 'markdown', `${newTitle.replace('/', '\u2215')}.md`), nhm.translate(r.markdown), 'utf8')
             }
 
             /*const iframeSrc = await page.evaluate(
@@ -369,33 +369,33 @@ const getPageData = async (data, page) => {
                 const $sec = await page.$('.lesson-wrapper')
                 if (!$sec) throw new Error(`Parsing failed!`)
                 await delay(2e3) //5e3
-                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots'))
+                await fs.ensureDir(path.join(saveDir, courseName, 'cluster', 'screenshots'))
                 // await page.bringToFront();
                 await $sec.screenshot({
-                    path          : path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
+                    path          : path.join(saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
                     type          : 'png',
                     omitBackground: true,
                     delay         : '1000ms'
                 })
                /* await page.screenshot({
-                    path    : path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
+                    path    : path.join(saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
                     fullPage: true
                 });*/
                 //await page.bringToFront()
                 await delay(5e3)
             }
 
-            await createHtmlPage(page, path.join(process.cwd(), saveDir, courseName, 'cluster', 'html'), `${newTitle}`);
+            await createHtmlPage(page, path.join(saveDir, courseName, 'cluster', 'html'), `${newTitle}`);
 
-            await extractResources(page, path.join(process.cwd(), saveDir, courseName, 'cluster', 'resources'), newTitle, nhm);
-            await extractChallenges(page, path.join(process.cwd(), saveDir, courseName, 'cluster', 'challenges'), newTitle, nhm);
+            await extractResources(page, path.join(saveDir, courseName, 'cluster', 'resources'), newTitle, nhm);
+            await extractChallenges(page, path.join(saveDir, courseName, 'cluster', 'challenges'), newTitle, nhm);
 
             return {
                 pageUrl,
                 courseName,
-                dest    : path.join(process.cwd(), saveDir, courseName, `${newTitle.replace('/', '\u2215')}${videoFormat}`),
-                imgPath : path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots', `${newTitle.replace('/', '\u2215')}.png`),
-                downFolder: path.join(process.cwd(), saveDir, courseName),
+                dest    : path.join(saveDir, courseName, `${newTitle.replace('/', '\u2215')}${videoFormat}`),
+                imgPath : path.join(saveDir, courseName, 'cluster', 'screenshots', `${newTitle.replace('/', '\u2215')}.png`),
+                downFolder: path.join(saveDir, courseName),
                 vimeoUrl: r.iframeSrc//selectedVideo.url
             };
         })

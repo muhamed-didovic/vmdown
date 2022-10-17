@@ -128,8 +128,8 @@ const scraper = async (opts) => {
                             images
                         }) => await imgs2pdf(
                             images,
-                            path.join(process.cwd(), downDir, courseName, 'sockets', 'screenshots'),
-                            path.join(process.cwd(), downDir, courseName, 'sockets', 'screenshots', `${courseName}.pdf`))
+                            path.join(downDir, courseName, 'sockets', 'screenshots'),
+                            path.join(downDir, courseName, 'sockets', 'screenshots', `${courseName}.pdf`))
                     )
             }
         })

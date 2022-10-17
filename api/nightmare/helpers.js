@@ -5,7 +5,38 @@ const sharp = require("sharp");
 const Spinnies = require('dreidels');
 const { orderBy } = require("lodash");
 
-const login = async (n, email, password) => {
+/**
+ * Wait conditionally.
+ * @param {String} selector
+ */
+
+const waitDeffered = exports.waitDeffered = function(selector) {
+    var interval = 1000 * 5; // 30 seconds
+    return nightmare => {
+        nightmare
+            .wait(() => {
+               /* var dom = document.querySelector(selector);
+                console.log('-------dom', dom);
+                return dom*/
+                //return pill ? pill.textContent.toLowerCase() : 'pending';
+
+                return {
+                    title    : Array.from(document.body.querySelectorAll('h1.title'), txt => txt.textContent)[0],
+                    allTitles: Array.from(document.body.querySelectorAll('h4.list-item-title'), txt => txt.textContent),
+                    md       : Array.from(document.body.querySelectorAll('#lessonContent'), txt => txt.outerHTML)[0],
+                    iframeSrc: Array.from(document.body.querySelectorAll('iframe[src]'), ({ src }) => src)[0],
+                    locked   : Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
+                }
+
+            }, selector, interval);
+    };
+};
+
+/**
+ *
+ * @type {function(*, *, *): Promise<*>}
+ */
+const login = exports.login = async (n, email, password) => {
     const ms = new Spinnies();
     ms.add('login', { text: `Checking authentication...` });
     return await retry(async () => {//return
@@ -20,7 +51,7 @@ const login = async (n, email, password) => {
             .wait('#__layout > div > div > div > header > div > nav > div.navbar-secondary > a')
             .evaluate(() => document.querySelector('#__layout > div > div > div > header > div > nav > div.navbar-secondary > button').innerText)
             .then((text) => {
-                console.log('text', text);
+                console.log('logged text', text);
                 if (text !== 'Sign Out') {
                     ms.fail('login', { text: "Cannot login. Check your user credentials. \n WARNING: Just free videos will be downloaded" });
                     throw new Error('Auth failed')
@@ -30,11 +61,16 @@ const login = async (n, email, password) => {
     }, 6, 1e3, true)
 
 };
-const makeScreenshots = async (n, saveDir, courseName, newTitle, ms) => {
+
+/**
+ *
+ * @type {(function(*, *, *, *, *): Promise<void>)|*}
+ */
+const makeScreenshots = exports.makeScreenshots = async (n, saveDir, courseName, newTitle, ms) => {
     const name = (Math.random() + 1).toString(36).substring(7)
     // ms.add(name, { text: `Start screenshot...` });
-    await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 's'))
-    await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'nightmare', 'screenshots'))
+    await fs.ensureDir(path.join(saveDir, courseName, 's'))
+    await fs.ensureDir(path.join(saveDir, courseName, 'nightmare', 'screenshots'))
 
     /*await n
         .wait('.body > .title')
@@ -113,7 +149,7 @@ const makeScreenshots = async (n, saveDir, courseName, newTitle, ms) => {
                 document.querySelector('.main').scrollTop = offset;
             }, offset)
             .wait(1000)
-            .screenshot(path.join(process.cwd(), saveDir, courseName, 's', `source.${a}.png`));
+            .screenshot(path.join(saveDir, courseName, 's', `source.${a}.png`));
     }
 
     await image
@@ -123,13 +159,13 @@ const makeScreenshots = async (n, saveDir, courseName, newTitle, ms) => {
                 .map(function (value, index) {
                     return {
                         // input: `generated.${index + 1}.png`,
-                        input: path.join(process.cwd(), saveDir, courseName, 's', `source.${index + 1}.png`), //`source.${index + 1}.png`,
+                        input: path.join(saveDir, courseName, 's', `source.${index + 1}.png`), //`source.${index + 1}.png`,
                         left : 0,
                         top  : pageheight*index
                     }
                 })
         )
-        .toFile(path.join(process.cwd(), saveDir, courseName, 'nightmare', 'screenshots', `${newTitle.replace('/', '\u2215')}.png`))
+        .toFile(path.join(saveDir, courseName, 'nightmare', 'screenshots', `${newTitle.replace('/', '\u2215')}.png`))
 
     /*await n.pdf('generated3.pdf', {
         printBackground: true,
@@ -161,7 +197,7 @@ const findVideoUrl = (str, pageUrl) => {
     return null;
 }
 
-const extractVimeoUrl = async (iframeSrc, n, quality, pageUrl) => {
+const extractVimeoUrl= exports.extractVimeoUrl = async (iframeSrc, n, quality, pageUrl) => {
     return await retry(async () => {//return
         return await n
             .goto(iframeSrc)
@@ -222,9 +258,9 @@ async function retry(fn, retriesLeft = 5, interval = 1000, exponential = false) 
     }
 }
 
-module.exports = {
+/*module.exports = {
     retry,
     login,
     makeScreenshots,
     extractVimeoUrl
-}
+}*/

@@ -2,15 +2,11 @@ const fs = require("fs-extra")
 const he = require('he')
 const _ = require("lodash")
 const path = require("path")
-// const cliProgress = require('cli-progress')
-
 const delay = require("../helpers/delay");
 const createPageCapturer = require("./createPageCapturer");
 const { auth, withBrowser, withPage, retry } = require("./helpers");
 const imgs2pdf = require('../helpers/imgs2pdf.js');
-// const downloadVideo = require("../helpers/downloadVideo");
 const downOverYoutubeDL = require('../helpers/downOverYoutubeDL')
-
 
 const Spinnies = require('dreidels');
 const ms = new Spinnies();
@@ -49,10 +45,10 @@ const scraper = async ({
                 await page.goto("https://www.vuemastery.com", { waitUntil: "networkidle0" }); // wait until page load
                 await page.setViewport({ width: 1920, height: 1080 });
                 await delay(1)
-                ms.add('login', { text: `Checking authentication...` });
+                console.log(`Checking authentication...`);
                 await auth(page, email, password);
                 await delay(5e3)
-                ms.succeed('login', { text: "User successfully logged in." });
+                console.log("User successfully logged in.");
                 /*ms.add('login', { text: `Checking authentication...` });
                 await page.reload({ waitUntil: ["networkidle0", "domcontentloaded"] });
 
@@ -160,8 +156,8 @@ const scraper = async ({
                             images
                         }) => await imgs2pdf(
                             images,
-                            path.join(process.cwd(), downDir, courseName, 'puppeteer', 'screenshots'),
-                            path.join(process.cwd(), downDir, courseName, 'puppeteer', 'screenshots', `${courseName}.pdf`))
+                            path.join(downDir, courseName, 'puppeteer', 'screenshots'),
+                            path.join(downDir, courseName, 'puppeteer', 'screenshots', `${courseName}.pdf`))
                     )
             }
         })

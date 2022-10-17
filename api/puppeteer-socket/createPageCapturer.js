@@ -61,13 +61,13 @@ module.exports = async (page, link, opts) => {
                     lesson = {
                         pageUrl   : he.decode(link),
                         courseName,
-                        dest      : path.join(process.cwd(), downDir, courseName, `${fileName}${extension}`),
-                        imgPath   : path.join(process.cwd(), downDir, courseName, 'sockets', 'screenshots', `${fileName}.png`),
-                        downFolder: path.join(process.cwd(), downDir, courseName),
+                        dest      : path.join(downDir, courseName, `${fileName}${extension}`),
+                        imgPath   : path.join(downDir, courseName, 'sockets', 'screenshots', `${fileName}.png`),
+                        downFolder: path.join(downDir, courseName),
                         vimeoUrl  : `https://player.vimeo.com/video/${video.videoEmbedId}?h=c6b73607f6&autoplay=1&app_id=122963`
                     };
                     // console.log('coursesArray', coursesArray);
-                    // console.log('2-----', process.cwd(), downDir, courseName, `${fileName}.png`)
+                    // console.log('2-----', downDir, courseName, `${fileName}.png`)
                     await downloadResources(video, page, nhm, downDir, overwrite)
                     resolve(lesson)
                 }
