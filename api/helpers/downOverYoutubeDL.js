@@ -6,10 +6,9 @@ const path = require('path')
 const fs = require('fs-extra')
 const Promise = require('bluebird')
 const youtubedl = require("youtube-dl-wrap")
+// const youtubedl = require('yt-dlp-wrap').default;
+// const youtubedl = require('yt-dlp-wrap-extended').default;
 // const retry = require("./retry");
-
-const pRetry = require('@byungi/p-retry').pRetry
-const pDelay = require('@byungi/p-delay').pDelay
 
 const getFilesizeInBytes = filename => {
     return fs.existsSync(filename) ? fs.statSync(filename)["size"] : 0;
@@ -23,15 +22,15 @@ const download = async (url, dest, {
     ms
 }) => {
 
-    const videoLogger = FileChecker.createLogger(downFolder);
+    //const videoLogger = FileChecker.createLogger(downFolder);
     await fs.remove(dest) // not supports overwrite..
     let name = dest + index;
     ms.update(name, {
-        text : `to be processed by youtube-dl... ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}`,
+        text : `to be processed by yt-dlp... ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}`,
         color: 'blue'
     });
     const youtubeDlWrap = new youtubedl()
-    // console.log(`to be processed by youtube-dl... ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}`)
+    // console.log(`to be processed by yt-dlp... ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}`)
     return await retry(async () => {
         return new Promise(async (resolve, reject) => {
             let youtubeDlEventEmitter = await youtubeDlWrap
@@ -43,9 +42,10 @@ const download = async (url, dest, {
                     '--socket-timeout', '10',
                     '--retries', 'infinite',
                     '--fragment-retries', 'infinite',
-                    '--no-check-certificate',
-                    '--download-archive', 'downloaded.txt'
+                    // '--no-check-certificate',
+                    // '--download-archive', 'downloaded.txt'
                     // '--prefer-insecure'
+                    // '--progress'
                 ])
                 .on("progress", (progress) => {
                     ms.update(name, { text: `${index}. Downloading: ${progress.percent}% of ${progress.totalSize} at ${progress.currentSpeed} in ${progress.eta} | ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}` })
@@ -61,10 +61,13 @@ const download = async (url, dest, {
                     reject(error);
 
                 })
+                /*.on('ytDlpEvent', (eventType, eventData) =>
+                    console.log('eventType:',eventType, 'eventData:',eventData)
+                )*/
                 .on("close", () => {
                     //ms.succeed(dest, { text: `${index}. End download ytdl: ${dest} Found:${localSizeInBytes}/${remoteSizeInBytes} - Size:${formatBytes(getFilesizeInBytes(dest))}` })//.split('/').pop()
                     ms.remove(name);
-                    console.log(`${index}. End download ytdl: ${dest} Found:${localSizeInBytes}/${remoteSizeInBytes} - Size:${formatBytes(getFilesizeInBytes(dest))}`);
+                    console.log(`${index}. End download yt-dlp: ${dest} Found:${localSizeInBytes}/${remoteSizeInBytes} - Size:${formatBytes(getFilesizeInBytes(dest))}`);
                     // videoLogger.write(`${dest} Size:${getFilesizeInBytes(dest)}\n`);
                     FileChecker.writeWithOutSize(downFolder, dest)
                     resolve()

@@ -7,6 +7,7 @@ const createHtmlPage = require("../helpers/createHtmlPage");
 // const downOverYoutubeDL = require("../helpers/downOverYoutubeDL")
 const { NodeHtmlMarkdown } = require("node-html-markdown")
 const Promise = require("bluebird");
+const delay = require("../helpers/delay");
 const nhm = new NodeHtmlMarkdown()
 let coursesArray = []
 
@@ -101,6 +102,7 @@ module.exports = async (page, link, opts) => {
             (async () => {
                 //check if "Sign out" is visible
                 try {
+                    await delay(2e3)
                     await page.waitForSelector('.locked-action')
                     //check if source is locked
                     /*let locked = await page.evaluate(

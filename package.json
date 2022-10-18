@@ -1,6 +1,6 @@
 {
     "name": "vmdown",
-    "version": "0.12.1",
+    "version": "0.12.2",
     "description": "Downloader and scraper for vuemastery.com",
     "main": "index.js",
     "scripts": {
@@ -46,7 +46,8 @@
         "cli-progress": "^3.11.2",
         "colors": "^1.4.0",
         "dreidels": "^0.5.2",
-        "filenamify": "^4.3.0",
+        "filenamify": "^5.1.1",
+        "filesize": "^10.0.5",
         "fs-extra": "^10.1.0",
         "fuse.js": "^6.6.2",
         "geckodriver": "^3.0.2",
@@ -78,10 +79,11 @@
         "tempy": "^1.0.1",
         "turndown": "^7.1.1",
         "util-is-email": "^1.0.0",
+        "vo": "^4.0.2",
         "youtube-dl-wrap": "^2.1.1",
         "yt-dlp-wrap": "^2.3.11",
-        "ytdl-core": "^4.11.2",
-        "vo": "^4.0.2"
+        "yt-dlp-wrap-extended": "^2.3.15",
+        "ytdl-core": "^4.11.2"
     },
     "devDependencies": {
         "ava": "^4.3.3"

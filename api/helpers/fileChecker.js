@@ -10,14 +10,14 @@ module.exports = class FileChecker {
         return fs.existsSync(filename) ? fs.statSync(filename)["size"] : 0;
     };
 
-
     static createLogger(downloadFolder) {
-        const logFile = `${downloadFolder}${path.sep}videos.txt`
+        const logFile = path.join(downloadFolder, 'videos.txt');
         /* fs.existsSync(logFile) ?
              console.log(`File ${logFile} already exists`) :
              console.log(`File ${logFile} created`);*/
-        this.logger = fs.createWriteStream(logFile, { flags: 'a' });
-        return this.logger;
+        return fs.createWriteStream(logFile, { flags: 'a' });
+        // this.logger = fs.createWriteStream(logFile, { flags: 'a' });
+        // return this.logger;
     };
 
     static write(downFolder, dest) {
@@ -30,7 +30,10 @@ module.exports = class FileChecker {
     static writeWithOutSize(downFolder, dest) {
         // console.log('this.isCompletelyDownloaded(downFolder, dest)', this.isCompletelyDownloaded(downFolder, dest));
         if (!this.isCompletelyDownloadedWithOutSize(downFolder, dest)) {
-            this.logger.write(`${dest}\n`);
+            // this.createLogger(downFolder)
+            // this.logger.write(`${dest}\n`);
+            const videoLogger = this.createLogger(downFolder);
+            videoLogger.write(`${dest}\n`);
         }
     }
 

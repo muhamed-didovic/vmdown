@@ -48,6 +48,7 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                 (async () => {
                     //check if "Sign out" is visible
                     try {
+                        await delay(2e3)
                         await page.waitForSelector('.locked-action')
                         //check if source is locked
                         /*let locked = await page.evaluate(

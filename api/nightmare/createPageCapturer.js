@@ -34,7 +34,7 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
                     locked   : Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
                 }
             })
-        console.log('111aaaaa', a.locked, a.iframeSrc);
+        // console.log('111aaaaa', a.locked, a.iframeSrc);
         if (!a?.locked && !a?.iframeSrc) {
             throw new Error('Check again')
         }
@@ -44,7 +44,7 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
     // console.log('2222aaaaaaaaaa', dom);
     const { title, allTitles, md = null, iframeSrc, locked } = dom
     if (locked) {
-        console.log('locked', locked, pageUrl);
+        // console.log('locked', locked, pageUrl);
         return;
     }
     //

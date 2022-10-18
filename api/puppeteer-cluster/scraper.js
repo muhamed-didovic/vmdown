@@ -1,23 +1,24 @@
 const fs = require("fs-extra");
 const _ = require("lodash");
 const path = require("path");
-const cliProgress = require('cli-progress');
+const he = require("he");
 const { Cluster } = require('puppeteer-cluster');
 // const createPageCapturer = require("./createPageCapturer");
 const { auth } = require("./helpers");
 const imgs2pdf = require('../helpers/imgs2pdf.js');
-const downloadVideo = require("../helpers/downloadVideo");
+// const downloadVideo = require("../helpers/downloadVideo");
+// const cliProgress = require('cli-progress');
+// const findChrome = require("chrome-finder");
 const delay = require("../helpers/delay");
 const { retry, getPageData, extractVimeoUrl } = require("./helpers");
 
+const downOverYoutubeDL = require("../helpers/downOverYoutubeDL");
+
 const Spinnies = require('dreidels');
 const ms = new Spinnies();
-
-const he = require("he");
-let cnt = 0;
+const Promise = require("bluebird");
 const sitemap = require("../../json/sitemap.json");
-const findChrome = require("chrome-finder");
-const downOverYoutubeDL = require("../helpers/downOverYoutubeDL");
+let cnt = 0;
 const launchOptions = {
     headless         : true, //run false for dev
     Ignorehttpserrors: true, // ignore certificate error

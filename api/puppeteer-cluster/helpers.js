@@ -82,7 +82,7 @@ const auth = async (page, email, password) => {
         await page.click('button[class="button primary -full"]')
     }, 6, 1e3, true)
 
-
+    //await delay(10e3)
     /*console.log('1-');
     await page.waitForSelector('button[data-test="loginBtn"]', {visible: true, timeout: 0});
     await page.click('button[data-test="loginBtn"]');
@@ -186,7 +186,7 @@ const getPageData = async (data, page) => {
         .then(async () => {
             //await delay(10e3)
             await page.goto(pageUrl, { waitUntil: 'networkidle2', timeout: 61e3 })//waitUntil: 'networkidle0',
-
+            // await delay(1e3)
             const iframeSrc = await Promise.race([
                 (async () => {
                     try {
@@ -205,13 +205,14 @@ const getPageData = async (data, page) => {
                 })(),
                 (async () => {
                     try {
-                        await page.waitForSelector('.locked-action')
+                        await delay(2e3)
+                        await page.waitForSelector('.locked-action', { timeout: 30e3 })
                         //check if source is locked
-                        /*let locked = await page.evaluate(
+                        let locked = await page.evaluate(
                             () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
                         );
-                        if (locked) {
-                            return;
+                        /*if (locked) {
+                            return false;
                         }*/
                         return false;
                     } catch (e) {
@@ -236,7 +237,6 @@ const getPageData = async (data, page) => {
                 // console.log('No iframe found or h1.title; result:', iframeSrc, pageUrl);
                 return;
             }
-            // console.log('iframeSrc:', iframeSrc);
             /*await retry(async () => {//return
                 await page.waitForSelector('.video-wrapper iframe[src]')
             }, 6, 1e3, true)*/
