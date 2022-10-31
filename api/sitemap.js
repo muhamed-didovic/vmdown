@@ -21,7 +21,7 @@ async function getSitemapUrls() {
                         regex.lastIndex++;
                     }
                     m.forEach((match) => {
-                        if (match.indexOf('<') < 0){
+                        if (match.indexOf('<') < 0 && match.length){
                             console.log('match', match);
                             out.push(`https://www.vuemastery.com/courses/` + match);
                         }
