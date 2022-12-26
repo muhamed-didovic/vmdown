@@ -121,7 +121,7 @@ const isLogged = async page => {
 
         ])
 
-        console.log('logged text:', result);
+        console.log('puppeteer logged text:', result);
         return result;
 
         // return logged && !notLogged;

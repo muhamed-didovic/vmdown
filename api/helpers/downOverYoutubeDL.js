@@ -5,7 +5,9 @@ const FileChecker = require('./fileChecker');
 const path = require('path')
 const fs = require('fs-extra')
 const Promise = require('bluebird')
-const youtubedl = require("youtube-dl-wrap")
+
+// const youtubedl = require("youtube-dl-wrap")
+const YTDlpWrap = require('yt-dlp-wrap').default;
 // const youtubedl = require('yt-dlp-wrap').default;
 // const youtubedl = require('yt-dlp-wrap-extended').default;
 // const retry = require("./retry");
@@ -104,6 +106,78 @@ const retry = async (fn, retriesLeft = 5, interval = 1000, exponential = false, 
     }
 }
 
+const newDownload = async (url, dest, {
+    // file,
+    localSizeInBytes,
+    remoteSizeInBytes,
+    downFolder,
+    index = 0,
+    ms
+}) => {
+    return new Promise(async (resolve, reject) => {
+        // console.log('file', file);
+        // const { skipVimeoDownload, vimeoUrl } = file;
+
+        // const videoLogger = createLogger(downFolder);
+        await fs.remove(dest) // not supports overwrite..
+        //let name = dest + index;
+        ms.update(dest, {
+            text : `to be processed by yt-dlp... ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}`,
+            color: 'blue'
+        });
+        // console.log(`to be processed by youtube-dl... ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes} - ${url}`)
+        // return Promise.resolve()
+        // https://player.vimeo.com/texttrack/17477597.vtt?token=6321c441_0x383403d52f6fdaa619c98c88b50efbb63b6d0096
+        // const youtubeDlWrap = new youtubedl()
+        // return youtubeDlWrap
+        const ytDlpWrap = new YTDlpWrap();
+        let ytDlpEventEmitter = ytDlpWrap
+            .exec([
+                url,
+
+                "--write-subs",
+                "--write-auto-sub",
+
+                '--referer', 'https://vuemastery.com/',
+                "-o", path.resolve(dest),
+                '--socket-timeout', '5'
+
+                // '--all-subs',
+                // '--referer', 'https://codecourse.com/',
+                // "-o", path.toNamespacedPath(dest),
+                // '--socket-timeout', '5',
+                //...(skipVimeoDownload ? ['--skip-download'] : []),
+            ])
+            .on('ytDlpEvent', (eventType, eventData) =>
+                // console.log(eventType, eventData)
+                //65.0% of   24.60MiB at    6.14MiB/s ETA 00:01
+                ms.update(dest, { text: `${eventType}: ${eventData} | ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}` })
+            )
+            // .on("youtubeDlEvent", (eventType, eventData) => console.log(eventType, eventData))
+            .on("error", (error) => {
+                ms.remove(dest, { text: error })
+                console.log('URL:', url, 'dest:', dest, 'error--', error)
+                //ms.remove(dest);
+                /*fs.unlink(dest, (err) => {
+                    reject(error);
+                });*/
+                //return Promise.reject(error)
+                reject(error);
+
+            })
+            .on("close", () => {
+                //ms.succeed(dest, { text: `${index}. End download yt-dlp: ${dest} Found:${localSizeInBytes}/${remoteSizeInBytes} - Size:${formatBytes(getFilesizeInBytes(dest))}` })//.split('/').pop()
+                ms.remove(dest);
+                console.log(`${index}. End download yt-dlp: ${dest} Found:${localSizeInBytes}/${remoteSizeInBytes} - Size:${formatBytes(getFilesizeInBytes(dest))}`);
+                // videoLogger.write(`${dest} Size:${getFilesizeInBytes(dest)}\n`);
+                FileChecker.writeWithOutSize(downFolder, dest)
+                // videoLogger.write(`${dest} Size:${getFilesizeInBytes(dest)}\n`);
+                // return Promise.resolve()
+                resolve()
+            })
+    })
+}
+
 /**
  * @param file
  * @param {import("fs").PathLike} dest
@@ -123,8 +197,8 @@ module.exports = async ({
     // console.log('url', url);
     //const url = file.url;
     //let remoteFileSize = file.size;
-    const name = dest + index;
-    ms.add(name, { text: `Checking if video is downloaded: ${dest.split('/').pop()}` });
+    // const name = dest + index;
+    ms.add(dest, { text: `Checking if video is downloaded: ${dest.split('/').pop()}` });
     // console.log(`Checking if video is downloaded: ${dest.split('/').pop()}`);
 
     //check if mpd is returned instead of mp4, so we need to check if we have video in videos.txt
@@ -136,16 +210,16 @@ module.exports = async ({
     // console.log('isDownloaded', isDownloaded);
 
     if (isDownloaded && overwrite === 'no') {
-        //ms.succeed(name, { text: `${index}. Video already downloaded: ${dest.split('/').pop()} - ${localSizeInBytes}/${formatBytes(remoteFileSize)}` });
-        ms.remove(name);
+        //ms.succeed(dest, { text: `${index}. Video already downloaded: ${dest.split('/').pop()} - ${localSizeInBytes}/${formatBytes(remoteFileSize)}` });
+        ms.remove(dest);
         console.log(`${index}. Video already downloaded: ${dest.split('/').pop()} - ${localSizeInBytes}}`);// /${formatBytes(remoteFileSize)
         // console.log(`${index}. Video already downloaded: ${dest.split('/').pop()} - ${localSizeInBytes}/${formatBytes(remoteFileSize)}`.blue);
         // downloadBars.create(100, 100, { eta: 0, filename: dest })
         return;
     } else {
-        ms.update(name, { text: `${index} Start download video: ${dest.split('/').pop()} - ${localSizeInBytes}} ` });// /${formatBytes(remoteFileSize)
+        ms.update(dest, { text: `${index} Start download video: ${dest.split('/').pop()} - ${localSizeInBytes}} ` });// /${formatBytes(remoteFileSize)
         // console.log(`${index} Start ytdl download: ${dest.split('/').pop()} - ${localSizeInBytes}/${formatBytes(remoteFileSize)} `);
-        return await download(url, dest, {
+        return await newDownload(url, dest, {
             localSizeInBytes,
             remoteSizeInBytes: formatBytes(0),
             downFolder,
