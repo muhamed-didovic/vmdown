@@ -6,6 +6,7 @@
 
 ## Requirement
 - Node 18
+- yt-dlp (https://github.com/yt-dlp/yt-dlp)
 
 ## Install
 ```sh
