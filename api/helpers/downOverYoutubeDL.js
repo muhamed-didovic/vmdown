@@ -119,7 +119,7 @@ const newDownload = async (url, dest, {
         // const { skipVimeoDownload, vimeoUrl } = file;
 
         // const videoLogger = createLogger(downFolder);
-        await fs.remove(dest) // not supports overwrite..
+        // await fs.remove(dest) // not supports overwrite..
         //let name = dest + index;
         ms.update(dest, {
             text : `to be processed by yt-dlp... ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}`,

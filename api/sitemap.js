@@ -2,6 +2,7 @@
 const https = require('https');
 const path = require("path");
 const fs = require("fs-extra");
+const he = require("he");
 
 async function getSitemapUrls() {
     return new Promise(function (resolve, reject) {
@@ -22,8 +23,8 @@ async function getSitemapUrls() {
                     }
                     m.forEach((match) => {
                         if (match.indexOf('<') < 0 && match.length){
-                            console.log('match', match);
-                            out.push(`https://www.vuemastery.com/courses/` + match);
+                            console.log('course:', match);
+                            out.push(`https://www.vuemastery.com/courses/` + he.unescape(match));
                         }
 
                     });
