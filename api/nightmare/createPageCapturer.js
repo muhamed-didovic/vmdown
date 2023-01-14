@@ -34,8 +34,8 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
                     locked   : Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
                 }
             })
-        // console.log('111aaaaa', a.locked, a.iframeSrc);
         if (!a?.locked && !a?.iframeSrc) {
+            console.log('----->page:', pageUrl, a);
             throw new Error('Check again')
         }
         return a;

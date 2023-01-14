@@ -166,7 +166,7 @@ const scraper = async ({
             }
         })
         .catch(error => {
-            console.error('mmmmmmm', error)
+            console.error('nightmare error:', error)
         })
         .finally(async () => {
             ms.stopAll()
