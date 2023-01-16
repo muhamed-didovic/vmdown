@@ -4,18 +4,17 @@ const he = require('he')
 const fs = require("fs-extra")
 const _ = require("lodash")
 const path = require("path")
-const cliProgress = require('cli-progress')
 const delay = require("../helpers/delay")
-const sitemap = require("../../json/sitemap.json")
 const createPageCapturer = require("./createPageCapturer")
 const imgs2pdf = require('../helpers/imgs2pdf.js')
-const downloadVideo = require("../helpers/downloadVideo")
+const Promise = require('bluebird')
 const { auth, retry } = require("./helpers")
 
-const Spinnies = require('dreidels')
 const downOverYoutubeDL = require("../helpers/downOverYoutubeDL");
 const findChrome = require("chrome-finder");
+const Spinnies = require('dreidels')
 const ms = new Spinnies();
+const sitemap = require("../../json/search-courses.json")
 
 const scraper = async ({
     email,
@@ -30,7 +29,7 @@ const scraper = async ({
     overwrite,
     url = null
 }) => {
-    const courses = url ? sitemap.filter(course => course.includes(url)) : sitemap;
+    const courses = url ? sitemap.filter(course => course.value.includes(url)) : sitemap;
 
     if (!courses.length) {
         return console.log('No course(s) found for download')
@@ -80,20 +79,21 @@ const scraper = async ({
     ms.add('capture', { text: `Start playwright Capturing...` });
     let cnt = 0;
     await Promise
-        .map(courses, async (link) => {//.slice(0, 10)
+        .map(courses, async ({value}) => {//.slice(0, 10)
             //check is logged and if not logs user
             await auth(page, email, password);
 
             //check is logged user
             await page.waitForSelector('#__layout > div > div > div > header > div > nav > div.navbar-secondary > a', { timeout: 15e3 })
 
-            ms.update('capture', { text: `Playwright Capturing... ${++cnt} of ${courses.length} ${he.decode(link)}` });
-            return await createPageCapturer(context, link, downDir, extension, quality, markdown, images)
+            ms.update('capture', { text: `Playwright Capturing... ${++cnt} of ${courses.length} ${he.decode(value)}` });
+            return await createPageCapturer(context, value, downDir, extension, quality, markdown, images)
 
         }, {
             concurrency: 3
         })
         .then(async courses => {
+            courses = courses.flat()
             await browser.close()
             await fs.ensureDir(path.resolve(process.cwd(), 'json'))
             await fs.writeFile(`./json/first-course-playwright.json`, JSON.stringify(courses, null, 2), 'utf8')

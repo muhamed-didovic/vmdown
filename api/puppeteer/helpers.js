@@ -17,10 +17,7 @@ const { formatBytes } = require("../helpers/writeWaitingInfo");
 const withBrowser = async (fn) => {
     //const browser = await puppeteer.launch({/* ... */});
     const getBrowser = createBrowserGetter(puppeteer, {
-        /*executablePath: findChrome(),
-        headless      : false, // Set to false while development
-        debounce      : 500,
-
+        /*
         defaultViewport: null,
         args           : [
             '--no-sandbox',

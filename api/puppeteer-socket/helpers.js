@@ -13,6 +13,38 @@ const { NodeHtmlMarkdown } = require('node-html-markdown')
 const createHtmlPage = require("../helpers/createHtmlPage");
 const nhm = new NodeHtmlMarkdown();
 
+const v = {
+    __meta__        : {
+        lastModifiedBy  : 'UNKNOWN',
+        lastModifiedDate: '2021-09-16T21:34:53.449Z'
+    },
+    author          : 'Adam Jahr',
+    belongsToCourse : 1516789793545,
+    body            : '<p><br><br># 1) The Vue Instance<br><br>**Welcome**<br>This is the beginning of Vue Mastery’s Intro to Vue course. Throughout this series you will learn the fundamentals of Vue while we build this product page together.<br><br><br>![](https://d2mxuefqeaa7sj.cloudfro',
+    cloudStoragePath: 'lessons/vue-instance.mp4',
+    codingChallenge : '<a href="https://codepen.io/VueMastery/pen/qxwZBQ" target="_blank">Start the Challenge</a> <hr> <a href="https://codepen.io/VueMastery/pen/JpVXXw" target="_blank">View the Solution</a>',
+    date            : '2018-02-21T00:00:00-05:00',
+    description     : 'This lesson covers how to get your data from your JavaScript to show up in your HTML.',
+    downloadLink    : 'https://player.vimeo.com/external/258707456.hd.mp4?s=8b98589a2a3f3482ea9272d076fbb6c9fb578eaf&profile_id=175&download=1',
+    duration        : '00:05:44',
+    facebookImage   : { '0': 1526928912677 },
+    free            : true,
+    id              : 1517861162312,
+    image           : { '0': 1526928912677 },
+    lessonNumber    : 1,
+    lock            : false,
+    markdown        : '.....',
+
+    order                   : 0,
+    parentId                : 0,
+    slug                    : 'vue-instance',
+    socialSharingDescription: "I'm becoming a Vue Master by watching Intro to Vue.js: The Vue Instance.",
+    status                  : 'published',
+    title                   : 'The Vue Instance',
+    twitterImage            : { '0': 1526928912677 },
+    uploadedToCloudStorage  : true,
+    videoEmbedId            : '258707456'
+}
 const withBrowser = async (fn) => {
     //const browser = await puppeteer.launch({/* ... */});
     /*const getBrowser = createBrowserGetter(puppeteer, {
@@ -49,16 +81,6 @@ const withBrowser = async (fn) => {
         }
     );*/
     const getBrowser = createBrowserGetter(puppeteer, {
-        /*executablePath: findChrome(),
-        headless      : false, // Set to false while development
-        debounce      : 500,
-
-        defaultViewport: null,
-        args           : [
-            '--no-sandbox',
-            '--start-maximized', // Start in maximized state
-        ],*/
-
         headless         : true, //run false for dev
         Ignorehttpserrors: true, // ignore certificate error
         waitUntil        : 'networkidle2',
@@ -199,9 +221,15 @@ const parseMessage = message => {
                 return courseInfo[firstKey];
             }
         }
+        /*if (json?.d?.b?.d?.expires) {
+            const auth = json?.d?.b?.d?.auth;
+            console.log('auth', auth);
+            return auth
+        }*/
         return null;
     } catch (error) {
         console.error(error);
+        console.log('ERRROR with message', message);
         return null;
     }
 };

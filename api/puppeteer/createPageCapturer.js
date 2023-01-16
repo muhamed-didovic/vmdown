@@ -3,30 +3,18 @@ const fs = require("fs-extra")
 const he = require('he')
 // const { orderBy } = require("lodash")
 const { NodeHtmlMarkdown } = require('node-html-markdown')
-
+const Promise = require("bluebird");
 const delay = require("../helpers/delay")
 const { retry, vimeoRequest } = require("../puppeteer/helpers")
 const createHtmlPage = require("../helpers/createHtmlPage");
 const { extractResources, extractChallenges } = require("../helpers/extractors");
 
-module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, markdown, images) => {//browser =>
-    const nhm = new NodeHtmlMarkdown();
-    pageUrl = he.decode(pageUrl)
-    //const page = await browser.newPage()
-    page.waitForNavigation({ waitUntil: 'networkidle2' })
-    await page.setViewport({ width: 1920, height: 1080 });//
-    //await page.setViewport({ width: 0, height: 0, deviceScaleFactor: 1.5 })
-
-    /*await Promise.all([
-        page.setDefaultNavigationTimeout(0),
-        page.goto(pageUrl),
-        // page.waitForNavigation({ waitUntil: 'networkidle0' }),
-    ]);*/
+const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFormat) => {
     const options = await Promise
         .resolve()
         .then(async () => {
-            //await delay(10e3)
-            await page.goto(pageUrl, { waitUntil: ["networkidle2"], timeout: 61e3 });
+            // await delay(10e3)
+            // await page.goto(pageUrl, { waitUntil: ["networkidle2"], timeout: 61e3 });
 
             const iframeSrc = await Promise.race([
                 (async () => {
@@ -139,10 +127,10 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
                 await page.waitForTimeout(1e3)
                 await fs.ensureDir(path.join(saveDir, courseName, 'puppeteer', 'screenshots'))
                 await $sec.screenshot({
-                    path          : path.join(saveDir, courseName, 'puppeteer', 'screenshots', `${newTitle}.png`),
-                    type          : 'png',
-                    omitBackground: true,
-                    delay         : '500ms',
+                    path                 : path.join(saveDir, courseName, 'puppeteer', 'screenshots', `${newTitle}.png`),
+                    type                 : 'png',
+                    omitBackground       : true,
+                    delay                : '500ms',
                     captureBeyondViewport: false
                 })
                 /* await delay(2e3) //5e3
@@ -288,4 +276,33 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
 
     //console.log('{ ...options }', { ...options });
     return { ...options }
+};
+
+module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, markdown, images) => {//browser =>
+    const nhm = new NodeHtmlMarkdown();
+    pageUrl = he.decode(pageUrl)
+    //const page = await browser.newPage()
+    page.waitForNavigation({ waitUntil: 'networkidle2' })
+    await page.setViewport({ width: 1920, height: 1080 });//
+    //await page.setViewport({ width: 0, height: 0, deviceScaleFactor: 1.5 })
+
+    // await delay(10e3)
+    await page.goto(pageUrl, { waitUntil: ["networkidle2"], timeout: 61e3 });
+
+    const lessons = await scrapePage(page, pageUrl, images, saveDir, markdown, nhm, videoFormat);
+    // console.log('lessons', lessons);
+    const lessonsTitles = await page.evaluate(
+        () => Array.from(document.body.querySelectorAll('div.lessons-list > div > div.list-item'), (txt, i) => [...txt.classList].includes('unlock') ? ++i : null).filter(Boolean)//.slice(1)
+    );
+    console.log('lessonsTitles slice:', lessonsTitles);
+    const res =  await Promise.mapSeries(lessonsTitles.slice(1), async (lessonsTitle) => {
+        //click on link in the menu
+        // console.log('link', `div.lessons-list > div > div:nth-child(${index+2})`, lessonsTitle);
+        await page.click(`div.lessons-list > div > div:nth-child(${lessonsTitle})`)
+        await delay(2e3)
+        return await scrapePage(page, pageUrl, images, saveDir, markdown, nhm, videoFormat);
+    })
+    // console.log('----->res:', res);
+    return [lessons, ...res];
+
 }

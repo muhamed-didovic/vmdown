@@ -1,16 +1,14 @@
-const url = require('url')
+// const url = require('url')
 const path = require('path')
 const fs = require('fs-extra')
-const cliProgress = require("cli-progress")
+// const cliProgress = require("cli-progress")
 const _ = require("lodash");
-
-
-const { login, waitDeffered } = require("./helpers");
+const { login, waitDeffered, getCourses } = require("./helpers");
 const createPageCapturer = require("./createPageCapturer")
-const sitemap = require("../../json/sitemap.json");
-const downloadVideo = require("../helpers/downloadVideo");
+const sitemap = require("../../json/search-courses.json");
+// const downloadVideo = require("../helpers/downloadVideo");
 const imgs2pdf = require("../helpers/imgs2pdf");
-
+const Promise = require("bluebird");
 const Spinnies = require('dreidels');
 const ms = new Spinnies();
 
@@ -70,7 +68,7 @@ const scraper = async ({
     overwrite,
     url = null
 }) => {
-    const courses = url ? sitemap.filter(course => course.includes(url)) : sitemap;
+    const courses = url ? sitemap.filter(course => course.value.includes(url)) : sitemap;
 
     if (!courses.length) {
         return console.log('No course(s) found for download')
@@ -104,29 +102,25 @@ const scraper = async ({
     let cnt = 0;
     ms.add('capture', { text: `Start Nightmare Capturing...` });
     await Promise
-        .mapSeries(courses, async (pageUrl) => {
-            ms.update('capture', { text: `Nightmare Capturing... ${++cnt} of ${courses.length} ${pageUrl}` });
-            return await createPageCapturer(n, pageUrl, saveDir, videoFormat, quality, markdown, images, ms)
+        // .resolve(() => getCourses(n))
+        .mapSeries(courses, async ({value}) => {//
+            ms.update('capture', { text: `Nightmare Capturing course... ${++cnt} of ${courses.length} ${value}` });
+            return await createPageCapturer(n, value, saveDir, videoFormat, quality, markdown, images, ms)
         }, {
             concurrency: 1
         })
         .then(async courses => {
+            courses = courses.flat()
             await fs.ensureDir(path.resolve(process.cwd(), 'json'))
             await fs.writeFile(`./json/first-course-nightmare.json`, JSON.stringify(courses, null, 2), 'utf8')
             ms.succeed('capture', { text: `Capturing done for total lessons: ${cnt}...` });
             // console.log('1courses', courses);
-            return courses.filter(c => !!c?.vimeoUrl)
+            return courses.filter(c => !!c?.vimeoUrl)//.filter(Boolean)
         })
         .then(async courses => {
             if (videos) {
                 // create new container
-                /*const multibar = new cliProgress.MultiBar({
-                    clearOnComplete: false,
-                    hideCursor     : true
-                }, cliProgress.Presets.shades_grey);*/
-
                 await Promise.map(courses, async (lesson, index) => {
-                    // return await downloadVideo(vimeoUrl, dest, ms, multibar)
                     return await downOverYoutubeDL({
                         ...lesson,
                         overwrite,
@@ -134,13 +128,12 @@ const scraper = async ({
                         ms
                     })
                 }, { concurrency: 10 })
-                //multibar.stop();
             }
-            return courses;
+            return courses
         })
         .then(async (courses) => {
             await fs.ensureDir(path.resolve(process.cwd(), 'json'))
-            await fs.writeFile(`./json/courses.json`, JSON.stringify(courses, null, 2), 'utf8')
+            await fs.writeFile(`./json/courses-new.json`, JSON.stringify(courses, null, 2), 'utf8')
             if (pdf && images) {
                 ms.add('pdf', { text: `Start to create to pdf...` });
                 const groupedCourses = _(courses)

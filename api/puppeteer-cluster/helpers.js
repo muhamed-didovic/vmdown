@@ -10,6 +10,7 @@ const { orderBy } = require("lodash");
 const req = require('requestretry');
 const createHtmlPage = require("../helpers/createHtmlPage");
 const { extractResources, extractChallenges } = require("../helpers/extractors");
+const Promise = require("bluebird");
 const j = req.jar();
 const request = req.defaults({ jar: j, retryDelay: 500, fullResponse: true });
 
@@ -173,232 +174,241 @@ const extractVimeoUrl = async (page, newTitle, pageUrl, quality) => {
 
 };
 
+async function scrapePage(page, pageUrl, markdown, saveDir, nhm, images, videoFormat) {
+    const iframeSrc = await Promise.race([
+        (async () => {
+            try {
+                await page.waitForSelector('.video-wrapper iframe[src]')
+                // await page.waitForNavigation({ waitUntil: 'networkidle0' });
+                const iframeSrc = await page.evaluate(
+                    () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
+                );
+                return iframeSrc
+
+            } catch (e) {
+                // console.log('1111', e);
+                return false;
+            }
+
+        })(),
+        (async () => {
+            try {
+                await delay(2e3)
+                await page.waitForSelector('.locked-action', { timeout: 30e3 })
+                //check if source is locked
+                let locked = await page.evaluate(
+                    () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
+                );
+                /*if (locked) {
+                    return false;
+                }*/
+                return false;
+            } catch (e) {
+                // console.log('22222', e);
+                return false;
+            }
+        })(),
+        /*(async () => {
+            try {
+                await page.waitForSelector('h1.title')
+                console.log('33333');
+                return false;
+                // const postsSelector = '.main .article h2 a';
+                //await page.waitForSelector(postsSelector, { timeout: 0 });
+            } catch (e) {
+                return false;
+            }
+        })(),*/
+
+    ])
+    if (!iframeSrc) {
+        // console.log('No iframe found or h1.title; result:', iframeSrc, pageUrl);
+        return;
+    }
+    /*await retry(async () => {//return
+        await page.waitForSelector('.video-wrapper iframe[src]')
+    }, 6, 1e3, true)*/
+
+    //await auth(page, email, password);
+    //check is logged user
+    // await page.waitForSelector('button[data-test="signOut"]', { timeout: 29e3 })
+    let courseName = pageUrl.replace(
+        "https://www.vuemastery.com/courses/",
+        ""
+    );
+
+    if (courseName.includes('/')) {
+        try {
+            courseName = courseName.split("/")[0];
+        } catch (e) {
+            console.log('Issue with course name:', courseName, e);
+            return;
+        }
+    }
+
+    let title = await page.evaluate(
+        () => Array.from(document.body.querySelectorAll('h1.title'), txt => txt.textContent)[0]
+    );
+
+    const allTitles = await page.evaluate(
+        () => Array.from(document.body.querySelectorAll('h4.list-item-title'),
+            txt => txt.textContent)
+    );
+
+    //lesson is locked
+    /*locked = await page.evaluate(
+        () => Array.from(document.body.querySelector('.list-item.active').classList, txt => txt)//contains('-locked')
+    )
+    // console.log('locked', locked, pageUrl) ;
+    // console.log('aaaa', locked.includes('-locked'));
+    if (locked.includes('-locked')) {
+        // console.log('---locked');
+        return;
+    }*/
+
+    const newTitle = allTitles.filter(t => t.includes(title))[0]
+
+
+    //const [,, selectedVideo] =
+    /*await Promise.all([
+        (async () => {
+            if (images) {
+                const $sec = await page.$('#lessonContent')
+                if (!$sec) throw new Error(`Parsing failed!`)
+                await delay(2e3) //5e3
+                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots'))
+                await $sec.screenshot({
+                    path          : path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
+                    type          : 'png',
+                    omitBackground: true,
+                    delay         : '500ms'
+                })
+                await delay(2e3)
+                return Promise.resolve();
+            }
+        })(),
+        (async () => {
+            //create markdown
+            if (markdown) {
+                //wait for iframe
+                /!*await retry(async () => {//return
+                    await page.waitForSelector('.video-wrapper iframe[src]')
+                }, 6, 1e3, true)*!/
+                let markdown = await page.evaluate(
+                    () => Array.from(document.body.querySelectorAll('#lessonContent'),
+                        txt => txt.outerHTML)[0]
+                );
+                await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'cluster', 'markdown'))
+                await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'cluster', 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
+                return Promise.resolve();
+            }
+        })(),
+        /!*(async () => {
+            //await extractVimeoUrl(newTitle, pageUrl, page);
+           /!* await retry(async () => {//return
+                await page.waitForSelector('.video-wrapper iframe[src]')
+            }, 6, 1e3, true)*!/
+
+            const iframeSrc = await page.evaluate(
+                () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
+            );
+            const selectedVideo = await vimeoRequest(pageUrl, iframeSrc)
+            return selectedVideo;
+        })(),*!/
+    ])*/
+    //let selectedVideo = await extractVimeoUrl(page, newTitle, pageUrl, quality);
+
+    const r = await page.evaluate(() => {
+        const markdown = Array.from(document.body.querySelectorAll('#lessonContent'), txt => txt.outerHTML)[0]
+        const iframeSrc = Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
+        return {
+            markdown,
+            iframeSrc
+        }
+    })
+    // console.log('rrrrr', r);
+    if (markdown) {
+        await fs.ensureDir(path.join(saveDir, courseName, 'cluster', 'markdown'))
+        await fs.writeFile(path.join(saveDir, courseName, 'cluster', 'markdown', `${newTitle.replace('/', '\u2215')}.md`), nhm.translate(r.markdown), 'utf8')
+    }
+
+    /*const iframeSrc = await page.evaluate(
+        () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
+    );*/
+    // const selectedVideo = await vimeoRequest(pageUrl, r.iframeSrc)
+
+    if (images) {
+        await retry(async () => {//return
+            await page.waitForSelector('.lesson-wrapper')
+            const $sec = await page.$('.lesson-wrapper')
+            if (!$sec) throw new Error(`Parsing failed!`)
+            await delay(2e3) //5e3
+            await fs.ensureDir(path.join(saveDir, courseName, 'cluster', 'screenshots'))
+            // await page.bringToFront();
+            await $sec.screenshot({
+                path          : path.join(saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
+                type          : 'png',
+                omitBackground: true,
+                delay         : '1000ms'
+            })
+            /* await page.screenshot({
+                 path    : path.join(saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
+                 fullPage: true
+             });*/
+            //await page.bringToFront()
+            await delay(5e3)
+        }, 6, 1e3, true)
+
+    }
+
+    await createHtmlPage(page, path.join(saveDir, courseName, 'cluster', 'html'), `${newTitle}`);
+
+    await extractResources(page, path.join(saveDir, courseName, 'cluster', 'resources'), newTitle, nhm);
+    await extractChallenges(page, path.join(saveDir, courseName, 'cluster', 'challenges'), newTitle, nhm);
+
+    return {
+        pageUrl,
+        courseName,
+        dest      : path.join(saveDir, courseName, `${newTitle.replace('/', '\u2215')}${videoFormat}`),
+        imgPath   : path.join(saveDir, courseName, 'cluster', 'screenshots', `${newTitle.replace('/', '\u2215')}.png`),
+        downFolder: path.join(saveDir, courseName),
+        vimeoUrl  : r.iframeSrc//selectedVideo.url
+    };
+}
+
 const getPageData = async (data, page) => {
     let { link: pageUrl, downDir: saveDir, extension: videoFormat, quality, markdown, images } = data;
     const nhm = new NodeHtmlMarkdown();
     pageUrl = he.decode(pageUrl)
     // console.log('----pageUrl', pageUrl);
-    //await page.goto(url);
     // await page.setViewport({ width: 1920, height: 1080 });
 
-    return await Promise
+    await page.goto(pageUrl, { waitUntil: 'networkidle2', timeout: 61e3 })//waitUntil: 'networkidle0',
+    // await delay(1e3)
+    const lessons = await scrapePage(page, pageUrl, markdown, saveDir, nhm, images, videoFormat);
+    // console.log('lessons', lessons);
+    const lessonsTitles = await page.evaluate(
+        () => Array.from(document.body.querySelectorAll('div.lessons-list > div > div.list-item'), (txt, i) => [...txt.classList].includes('unlock') ? ++i : null).filter(Boolean)//.slice(1)
+    );
+    // console.log('lessonsTitles slice:', lessonsTitles.slice(1));
+    const res =  await Promise.mapSeries(lessonsTitles.slice(1), async (lessonsTitle, index) => {
+        //click on link in the menu
+        // console.log('link', `div.lessons-list > div > div:nth-child(${index+2})`, lessonsTitle);
+        await page.click(`div.lessons-list > div > div:nth-child(${lessonsTitle})`)
+        await delay(2e3)
+        return await scrapePage(page, pageUrl, markdown, saveDir, nhm, images, videoFormat);
+    })
+    // console.log('----->res:', res);
+    return [lessons, ...res];
+    /*return await Promise
         .resolve()
         .then(async () => {
             //await delay(10e3)
             await page.goto(pageUrl, { waitUntil: 'networkidle2', timeout: 61e3 })//waitUntil: 'networkidle0',
             // await delay(1e3)
-            const iframeSrc = await Promise.race([
-                (async () => {
-                    try {
-                        await page.waitForSelector('.video-wrapper iframe[src]')
-                        // await page.waitForNavigation({ waitUntil: 'networkidle0' });
-                        const iframeSrc = await page.evaluate(
-                            () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
-                        );
-                        return iframeSrc
 
-                    } catch (e) {
-                        // console.log('1111', e);
-                        return false;
-                    }
-
-                })(),
-                (async () => {
-                    try {
-                        await delay(2e3)
-                        await page.waitForSelector('.locked-action', { timeout: 30e3 })
-                        //check if source is locked
-                        let locked = await page.evaluate(
-                            () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
-                        );
-                        /*if (locked) {
-                            return false;
-                        }*/
-                        return false;
-                    } catch (e) {
-                        // console.log('22222', e);
-                        return false;
-                    }
-                })(),
-                /*(async () => {
-                    try {
-                        await page.waitForSelector('h1.title')
-                        console.log('33333');
-                        return false;
-                        // const postsSelector = '.main .article h2 a';
-                        //await page.waitForSelector(postsSelector, { timeout: 0 });
-                    } catch (e) {
-                        return false;
-                    }
-                })(),*/
-
-            ])
-            if (!iframeSrc) {
-                // console.log('No iframe found or h1.title; result:', iframeSrc, pageUrl);
-                return;
-            }
-            /*await retry(async () => {//return
-                await page.waitForSelector('.video-wrapper iframe[src]')
-            }, 6, 1e3, true)*/
-
-            //await auth(page, email, password);
-            //check is logged user
-            // await page.waitForSelector('button[data-test="signOut"]', { timeout: 29e3 })
-            let courseName = pageUrl.replace(
-                "https://www.vuemastery.com/courses/",
-                ""
-            );
-
-            /*try {
-                await page.waitForSelector('h1.title')
-                // const postsSelector = '.main .article h2 a';
-                //await page.waitForSelector(postsSelector, { timeout: 0 });
-            } catch (e) {
-                return;
-            }
-
-            //check if source is locked
-            let locked = await page.evaluate(
-                () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
-            );
-            if (locked) {
-                return;
-            }*/
-
-            if (courseName.includes('/')) {
-                try {
-                    courseName = courseName.split("/")[0];
-                } catch (e) {
-                    console.log('Issue with course name:', courseName, e);
-                    return;
-                }
-            }
-
-            let title = await page.evaluate(
-                () => Array.from(document.body.querySelectorAll('h1.title'), txt => txt.textContent)[0]
-            );
-
-            const allTitles = await page.evaluate(
-                () => Array.from(document.body.querySelectorAll('h4.list-item-title'),
-                    txt => txt.textContent)
-            );
-
-            //lesson is locked
-            /*locked = await page.evaluate(
-                () => Array.from(document.body.querySelector('.list-item.active').classList, txt => txt)//contains('-locked')
-            )
-            // console.log('locked', locked, pageUrl) ;
-            // console.log('aaaa', locked.includes('-locked'));
-            if (locked.includes('-locked')) {
-                // console.log('---locked');
-                return;
-            }*/
-
-            const newTitle = allTitles.filter(t => t.includes(title))[0]
-
-
-            //const [,, selectedVideo] =
-            /*await Promise.all([
-                (async () => {
-                    if (images) {
-                        const $sec = await page.$('#lessonContent')
-                        if (!$sec) throw new Error(`Parsing failed!`)
-                        await delay(2e3) //5e3
-                        await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots'))
-                        await $sec.screenshot({
-                            path          : path.join(process.cwd(), saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
-                            type          : 'png',
-                            omitBackground: true,
-                            delay         : '500ms'
-                        })
-                        await delay(2e3)
-                        return Promise.resolve();
-                    }
-                })(),
-                (async () => {
-                    //create markdown
-                    if (markdown) {
-                        //wait for iframe
-                        /!*await retry(async () => {//return
-                            await page.waitForSelector('.video-wrapper iframe[src]')
-                        }, 6, 1e3, true)*!/
-                        let markdown = await page.evaluate(
-                            () => Array.from(document.body.querySelectorAll('#lessonContent'),
-                                txt => txt.outerHTML)[0]
-                        );
-                        await fs.ensureDir(path.join(process.cwd(), saveDir, courseName, 'cluster', 'markdown'))
-                        await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'cluster', 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
-                        return Promise.resolve();
-                    }
-                })(),
-                /!*(async () => {
-                    //await extractVimeoUrl(newTitle, pageUrl, page);
-                   /!* await retry(async () => {//return
-                        await page.waitForSelector('.video-wrapper iframe[src]')
-                    }, 6, 1e3, true)*!/
-
-                    const iframeSrc = await page.evaluate(
-                        () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
-                    );
-                    const selectedVideo = await vimeoRequest(pageUrl, iframeSrc)
-                    return selectedVideo;
-                })(),*!/
-            ])*/
-            //let selectedVideo = await extractVimeoUrl(page, newTitle, pageUrl, quality);
-
-            const r = await page.evaluate(() => {
-                const markdown = Array.from(document.body.querySelectorAll('#lessonContent'), txt => txt.outerHTML)[0]
-                const iframeSrc = Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
-                return {
-                    markdown,
-                    iframeSrc
-                }
-            })
-
-            if (markdown) {
-                await fs.ensureDir(path.join(saveDir, courseName, 'cluster', 'markdown'))
-                await fs.writeFile(path.join(saveDir, courseName, 'cluster', 'markdown', `${newTitle.replace('/', '\u2215')}.md`), nhm.translate(r.markdown), 'utf8')
-            }
-
-            /*const iframeSrc = await page.evaluate(
-                () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
-            );*/
-            // const selectedVideo = await vimeoRequest(pageUrl, r.iframeSrc)
-
-            if (images) {
-                const $sec = await page.$('.lesson-wrapper')
-                if (!$sec) throw new Error(`Parsing failed!`)
-                await delay(2e3) //5e3
-                await fs.ensureDir(path.join(saveDir, courseName, 'cluster', 'screenshots'))
-                // await page.bringToFront();
-                await $sec.screenshot({
-                    path          : path.join(saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
-                    type          : 'png',
-                    omitBackground: true,
-                    delay         : '1000ms'
-                })
-               /* await page.screenshot({
-                    path    : path.join(saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
-                    fullPage: true
-                });*/
-                //await page.bringToFront()
-                await delay(5e3)
-            }
-
-            await createHtmlPage(page, path.join(saveDir, courseName, 'cluster', 'html'), `${newTitle}`);
-
-            await extractResources(page, path.join(saveDir, courseName, 'cluster', 'resources'), newTitle, nhm);
-            await extractChallenges(page, path.join(saveDir, courseName, 'cluster', 'challenges'), newTitle, nhm);
-
-            return {
-                pageUrl,
-                courseName,
-                dest    : path.join(saveDir, courseName, `${newTitle.replace('/', '\u2215')}${videoFormat}`),
-                imgPath : path.join(saveDir, courseName, 'cluster', 'screenshots', `${newTitle.replace('/', '\u2215')}.png`),
-                downFolder: path.join(saveDir, courseName),
-                vimeoUrl: r.iframeSrc//selectedVideo.url
-            };
-        })
+            return await scrapePage(page, pageUrl, markdown, saveDir, nhm, images, videoFormat);
+        })*/
 
     // console.log('options:', { options });
     //return { ...options }

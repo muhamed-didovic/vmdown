@@ -6,9 +6,6 @@ const { Cluster } = require('puppeteer-cluster');
 // const createPageCapturer = require("./createPageCapturer");
 const { auth } = require("./helpers");
 const imgs2pdf = require('../helpers/imgs2pdf.js');
-// const downloadVideo = require("../helpers/downloadVideo");
-// const cliProgress = require('cli-progress');
-// const findChrome = require("chrome-finder");
 const delay = require("../helpers/delay");
 const { retry, getPageData, extractVimeoUrl } = require("./helpers");
 
@@ -17,7 +14,7 @@ const downOverYoutubeDL = require("../helpers/downOverYoutubeDL");
 const Spinnies = require('dreidels');
 const ms = new Spinnies();
 const Promise = require("bluebird");
-const sitemap = require("../../json/sitemap.json");
+const sitemap = require("../../json/search-courses.json");
 let cnt = 0;
 const launchOptions = {
     headless         : true, //run false for dev
@@ -46,7 +43,7 @@ const launchOptions = {
     ],
     // executablePath   : findChrome(),
 };
-const clusterLanuchOptions = {
+const clusterLaunchOptions = {
     concurrency      : Cluster.CONCURRENCY_PAGE, // single chrome multi tab mode
     maxConcurrency   : 10, // number of concurrent workers
     retrylimit       : 5, // number of retries
@@ -70,14 +67,14 @@ const scraper = async (opts) => {
               overwrite,
               url = null
           } = opts;
-    const courses = url ? sitemap.filter(course => course.includes(url)) : sitemap;
+    const courses = url ? sitemap.filter(course => course.value.includes(url)) : sitemap;
 
     if (!courses.length) {
         return console.log('No course(s) found for download')
     }
     console.log('Cluster courses found:', courses.length);
 
-    const cluster = await Cluster.launch(clusterLanuchOptions)
+    const cluster = await Cluster.launch(clusterLaunchOptions)
     // Event handler to be called in case of problems
     cluster.on('taskerror', (err, data, willRetry) => {
         if (willRetry) {
@@ -115,13 +112,13 @@ const scraper = async (opts) => {
 
     ms.add('capture', { text: `Start Puppeteer Capturing...` });
     await Promise
-        .map(courses, async (link) => {
-            ms.update('capture', { text: `Puppeteer Capturing... ${++cnt} of ${courses.length} ${link}` });
-            //return await createPageCapturer(cluster, link, downDir, extension, quality, markdown, images)
-            return await cluster.execute({ link, downDir, extension, quality, markdown, images });
+        .map(courses, async ({value}) => {
+            ms.update('capture', { text: `Puppeteer Capturing... ${++cnt} of ${courses.length} ${value}` });
+            //return await createPageCapturer(cluster, value, downDir, extension, quality, markdown, images)
+            return await cluster.execute({ link:value, downDir, extension, quality, markdown, images });
         }, { concurrency: 7 })
         .then(async courses => {
-
+            courses = courses.flat()
             await cluster.idle();
             await cluster.close();
             console.log('found courses length:', courses.length);

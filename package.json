@@ -1,6 +1,6 @@
 {
     "name": "vmdown",
-    "version": "0.13.3",
+    "version": "0.14.0",
     "description": "Downloader and scraper for vuemastery.com",
     "main": "index.js",
     "scripts": {
@@ -42,6 +42,7 @@
         "@vimeo/player": "^2.18.0",
         "axios": "^1.2.2",
         "bluebird": "^3.7.2",
+        "cheerio": "^1.0.0-rc.12",
         "chrome-finder": "^1.0.7",
         "chromedriver": "^109.0.0",
         "cli-progress": "^3.11.2",

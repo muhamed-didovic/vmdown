@@ -6,6 +6,10 @@ const isValidPath = require('is-valid-path')
 const isEmail = require('util-is-email').default
 const Fuse = require('fuse.js')
 const { uniqBy } = require("lodash");
+const cheerio = require("cheerio");
+const req = require('requestretry');
+const j = req.jar();
+const request = req.defaults({ jar: j, retryDelay: 500, fullResponse: true });
 
 const cli = meow(`
 Usage
@@ -20,7 +24,7 @@ Options
     --images, -i        Save each lesson's description into image (default: true)
     --pdf               Put all images into pdf (default: true)
     --extension, -x     Choose video format (default: .mp4)
-    --quality, -q       Choose quality from: 1080p / 720p / 540p / 360p / 240p (default: 1080p)
+    --quality, -q       Choose quality from: 1080p / 720p / 540p / 360p / 240p (default: highest available)
     --directory, -d     Directory to save (default: ./videos)
     --framework, -f     Framework to use between nightmare, puppeteer, puppeteer-cluster, puppeteer-socket and playwright (default: puppeteer) (Options available: 'p', 'n', 'pc', 'pw', 'ps)
     --overwrite, -o     Overwrite if resource exists (values: 'yes' or 'no'), default value is 'no'
@@ -57,6 +61,31 @@ Examples
 // const errorHandler = err => (console.error(err), logger.fail(String(err)), process.exit(1))
 // const errorHandler = err => console.error('err:', err)
 
+const getCoursesForSearch = async (searchFromLocalFile) => {
+    if (searchFromLocalFile && await fs.exists(path.resolve(process.cwd(), 'json/search-courses.json'))) {
+        console.log('LOAD FROM LOCAL SEARCH FILE');
+        return require(path.resolve(process.cwd(), 'json/search-courses.json'))
+    }
+
+    const { body } = await request(`https://www.vuemastery.com/courses/`)
+    const $ = cheerio.load(body)
+
+    let courses = $('.playlist-card:not(.nuxt-link-active)')
+        .map((i, elem) => {
+            // console.log('--', $(elem).find('.playlist-card-content-title').text())
+            // console.log($(elem).attr('href'));
+            return {
+                title: $(elem).find('.playlist-card-content-title').text(),
+                value: `https://www.vuemastery.com${$(elem).attr('href')}`,
+                //url  : $(elem).attr('href'),
+
+            }
+        })
+        .get();
+    courses = uniqBy(courses, 'title')
+    await fs.writeFile(`./json/search-courses.json`, JSON.stringify(courses, null, 2), 'utf8')
+    return courses
+}
 const askOrExit = question => prompts({ name: 'value', ...question }, { onCancel: () => process.exit(0) }).then(r => r.value);
 
 const folderContents = async (folder) => {
@@ -249,29 +278,32 @@ async function commonFlags(flags) {
 
 module.exports = async () => {
     const { flags, input } = cli
+    let all = flags.all
+    let fileChoices;
+
     // console.log('cli', { flags, input });
     // const fileChoices = await folderContents(path.resolve(process.cwd(), 'json'))
 
-    if (flags.all || (input.length === 0 && await askOrExit({
+    if (all || (input.length === 0 && await askOrExit({
         type: 'confirm', message: 'Do you want all courses?', initial: false
     }))) {
-        /*const file = flags.file || await askOrExit({
-            type   : 'confirm',
+        const file = flags.file || await askOrExit({
+            type   : (fileChoices = await folderContents(path.resolve(process.cwd(), 'json'))).length ? 'confirm' : null,
             message: 'Do you want download from a file',
             initial: false
         })
-
         const filePath = flags.file || await askOrExit({
-            type    : file ? 'autocomplete' : null,
-            message : `Enter a file path eg: ${path.resolve(process.cwd(), 'json/!*.json')} `,
-            choices : [],//fileChoices,
-            validate: isValidPath
-        })*/
+            type   : (file && fileChoices.length) ? 'autocomplete' : null,
+            message: `Enter a file path eg: ${path.resolve(process.cwd(), 'json/*.json')} `,
+            choices: fileChoices,
+            //validate: isValidPath
+        })
         const options = await commonFlags(flags);
         return ({ ...options })//file, filePath,
     }
 
-    const searchOrDownload = await askOrExit({
+    //check if course url is provided, if yes then hide the options
+    const searchOrDownload = flags.file || await askOrExit({
         type   : input.length === 0 ? 'confirm' : null,
         message: 'Choose "Y" if you want to search for a course otherwise choose "N" if you have a link for download',
         initial: true
@@ -285,13 +317,19 @@ module.exports = async () => {
             validate: value => value.includes('vuemastery.com') ? true : 'Url is not valid'
         }))
     } else {
+        let searchCoursesFile = false;
+        if (await fs.exists(path.resolve(process.cwd(), 'json/search-courses.json'))) {
+            searchCoursesFile = true;
+        }
+        const foundSearchCoursesFile = await askOrExit({
+            type   : (searchCoursesFile && input.length === 0 && !flags.file) ? 'confirm' : null,
+            message: 'Do you want to search for a courses from a local file (which is faster)',
+            initial: true
+        })
         input.push(await askOrExit({
             type   : input.length === 0 ? 'autocomplete' : null,
             message: 'Search for a course',
-            choices: uniqBy(require('../json/sitemap.json').map(item => ({
-                title: item.replace('https://www.vuemastery.com/courses/', '').split('/').shift(),
-                value: item.replace('https://www.vuemastery.com/courses/', '').split('/').shift()
-            })), 'title'),
+            choices:  await getCoursesForSearch(foundSearchCoursesFile),
             suggest: (input, choices) => {
                 if (!input) return choices;
                 // reset = true;

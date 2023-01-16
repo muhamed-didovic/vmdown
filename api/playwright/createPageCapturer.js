@@ -7,6 +7,7 @@ const retry = require("../helpers/retry")
 const { NodeHtmlMarkdown } = require('node-html-markdown');
 const createHtmlPage = require("../helpers/createHtmlPage");
 const { extractResources, extractChallenges } = require("../helpers/extractors");
+const Promise = require("bluebird");
 
 const getCourseName = pageUrl => {
     let courseName = pageUrl.replace("https://www.vuemastery.com/courses/", "");
@@ -39,6 +40,190 @@ const isLocked = async page => {
     }
 };
 
+async function scrapePage(page, pageUrl, images, saveDir, markdown, nhm, videoFormat) {
+    const iframeSrc = await Promise.race([
+        (async () => {
+            // check is 'Login' visible
+            try {
+                await page.waitForSelector('.video-wrapper iframe[src]')
+                // await page.waitForNavigation({ waitUntil: 'networkidle0' });
+                const iframeSrc = await page.evaluate(
+                    () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
+                );
+                return iframeSrc
+
+            } catch (e) {
+                // console.log('1111', e);
+                return false;
+            }
+
+        })(),
+        (async () => {
+            //check if "Sign out" is visible
+            try {
+                await delay(2e3)
+                await page.waitForSelector('.locked-action')
+                //check if source is locked
+                /*let locked = await page.evaluate(
+                    () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
+                );
+                if (locked) {
+                    return;
+                }*/
+                return false;
+            } catch (e) {
+                // console.log('22222', e);
+                return false;
+            }
+        })()
+    ])
+    if (!iframeSrc) {
+        // console.log('No iframe found or h1.title; result:', iframeSrc, pageUrl);
+        return;
+    }
+    // console.log('iframeSrc:', iframeSrc);
+
+    let courseName = getCourseName(pageUrl);
+    // console.log('courseName', courseName);
+    // console.log('1is locked', await isLocked(page));
+    // if (await isLocked(page)) {
+    //     return;
+    // }
+    let title = await getTitle(page);
+    // console.log('title', title);
+    const allTitles = await page.$$eval('h4.list-item-title', nodes => nodes.map(n => n.textContent))
+    let newTitle = allTitles.filter(t => t.includes(title))[0]
+    newTitle = he.decode(newTitle.replace('/', '\u2215'))
+    // console.log('newTitle', newTitle);
+
+    const [,] = await Promise //, selectedVideo
+        .all([
+            (async () => {
+                if (images) {
+                    await page.waitForSelector('.body > .title', { timeout: 10e3 })
+                    await page.waitForSelector('.lesson-body', { timeout: 11e3 })
+                    await page.waitForSelector('#lessonContent', { timeout: 12e3 })
+                    await page.waitForSelector('.lesson-wrapper', { timeout: 23e3 })
+                    await page.waitForTimeout(1e3)
+                    // const currentViewport = await page.viewportSize();
+                    // console.log('currentViewport', currentViewport);
+                    // await delay(1e3) //5e3
+
+                    const rect = await page.$eval('.lesson-wrapper', element => {//.relative
+                        const dimensions = document.querySelector('.lesson-wrapper');
+                        return {
+                            w: dimensions.scrollWidth,
+                            h: dimensions.scrollHeight
+                        };
+                    });
+                    // console.log('rect', pageUrl, rect);
+
+                    await page.setViewportSize({
+                        width : rect.w,
+                        height: rect.h
+                    })
+                    await page.waitForTimeout(1e3)
+                    // const currentViewport2 = await page.viewportSize();
+                    // console.log('currentViewport2', currentViewport2)
+
+                    const $sec = await page.$('.lesson-wrapper')
+                    if (!$sec) throw new Error(`Parsing failed!`)
+                    await retry(async () => {//return
+                        // console.log('screenshot:', path.join(process.cwd(), saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`));
+                        await $sec.screenshot({
+                            path          : path.join(saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
+                            omitBackground: true,
+                            timeout       : 30e3
+                        })
+                        /*await page
+                            .locator('.lesson-wrapper')
+                            .screenshot({
+                                path: path.join(process.cwd(), saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
+                                delay         : '1000ms',
+                                captureBeyondViewport: true
+                            });*/
+                        /*await page.screenshot({
+                            path: path.join(process.cwd(), saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
+                            delay         : '500ms',
+                            captureBeyondViewport: false,
+                            fullPage: true
+                        });*/
+                    }, 6, 1e3, true, page)
+                    await page.waitForTimeout(1e3)
+                }
+            })(),
+            (async () => {
+                //create markdown
+                if (markdown) {
+                    let markdown = await page.$eval('#lessonContent', txt => txt.outerHTML)
+                    await fs.ensureDir(path.join(saveDir, courseName, 'playwright', 'markdown'))
+                    await fs.writeFile(path.join(saveDir, courseName, 'playwright', 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
+                    //save htmlw
+                    await createHtmlPage(page, path.join(saveDir, courseName, 'playwright', 'html'), `${newTitle}`);
+                    await extractResources(page, path.join(saveDir, courseName, 'playwright', 'resources'), newTitle, nhm);
+                    await extractChallenges(page, path.join(saveDir, courseName, 'playwright', 'challenges'), newTitle, nhm);
+                }
+            })(),
+            /*(async () => {
+                if (await isLocked(page)) {
+                    return Promise.resolve();
+                }
+
+                //create screenshot
+                await page.waitForSelector('.video-wrapper iframe[src]', { timeout: 20e3 })
+                const iframeSrc = await page.$eval('.video-wrapper iframe[src]', ({ src }) => src);
+                return iframeSrc;
+                // console.log('iframeSrc', iframeSrc);
+               /!* const pageSrc = await context.newPage()
+                // context.waitForEvent('page')
+                await retry(async () => {//return
+                    //await delay(1e3)
+                    await pageSrc.goto('view-source:' + iframeSrc, { timeout: 15e3 });//waitUntil: 'networkidle0',
+                    await delay(1e3)
+                }, 6, 10e3, true)
+
+                const content = await pageSrc.$eval('td.line-content', txt => txt.textContent)
+
+                let newString;
+                let finString;
+                try {
+                    newString = content.split(`progressive":[`)[1];
+                    finString = newString.split(']},"lang":"en","sentry":')[0];
+                } catch (e) {
+                    console.error('Issue with error source:', iframeSrc);
+                    console.error('Issue with getting vimeo data', content, e);
+                    return;
+                }
+                finString = newString.split(']},"lang":"en","sentry":')[0];
+
+                let videos = await eval(`[${finString}]`)
+                let selectedVideo = await videos.find(vid => vid.quality === quality);
+
+                if (!selectedVideo) {
+                    //can't find 1080p quality let's see if there is 720p video
+                    selectedVideo = await videos.find(vid => vid.quality === '720p');
+                }
+                //await delay(1e3)
+                await pageSrc.close()
+                return selectedVideo;*!/
+            })(),*/
+        ])
+
+    /*if (await isLocked(page)) {//!selectedVideo ||
+        //console.log('lesson locked: ', selectedVideo);
+        return;
+    }*/
+
+    return {
+        pageUrl,
+        courseName,
+        dest      : path.join(saveDir, courseName, `${newTitle}${videoFormat}`),
+        imgPath   : path.join(saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
+        downFolder: path.join(saveDir, courseName),
+        vimeoUrl  : iframeSrc//selectedVideo.url
+    };
+}
+
 const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, quality, markdown, images) => {//(page, context) =>
     let page;
     try {
@@ -57,187 +242,24 @@ const createPageCapturer = async (context, pageUrl, saveDir, videoFormat, qualit
             //await page.waitForSelector('#__layout > div > div > div > header > div > nav > div.navbar-secondary > a', { timeout: 15e3 })
         }, 6, 10e3, true)
 
-        const iframeSrc = await Promise.race([
-            (async () => {
-                // check is 'Login' visible
-                try {
-                    await page.waitForSelector('.video-wrapper iframe[src]')
-                    // await page.waitForNavigation({ waitUntil: 'networkidle0' });
-                    const iframeSrc = await page.evaluate(
-                        () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
-                    );
-                    return iframeSrc
+        const lessons = await scrapePage(page, pageUrl, images, saveDir, markdown, nhm, videoFormat);
+        // console.log('lessons', lessons);
+        await page.$eval('h1.title', txt => txt.textContent)
+        const lessonsTitles = await page.$$eval('div.lessons-list > div > div.list-item', nodes => nodes.map((n, i) => [...n.classList].includes('unlock') ? ++i : null).filter(Boolean))
+        // const lessonsTitles = await page.evaluate(
+        //     () => Array.from(document.body.querySelectorAll('div.lessons-list > div > div.list-item'), (txt, i) => [...txt.classList].includes('unlock') ? ++i : null).filter(Boolean)//.slice(1)
+        // )
+        // console.log('lessonsTitles slice:', lessonsTitles);
+        const res =  await Promise.mapSeries(lessonsTitles.slice(1), async (lessonsTitle) => {
+            //click on link in the menu
+            // console.log('link', `div.lessons-list > div > div:nth-child(${index+2})`, lessonsTitle);
+            await page.click(`div.lessons-list > div > div:nth-child(${lessonsTitle})`)
+            await delay(2e3)
+            return await scrapePage(page, pageUrl, images, saveDir, markdown, nhm, videoFormat);
+        })
+        // console.log('----->res:', res);
+        return [lessons, ...res];
 
-                } catch (e) {
-                    // console.log('1111', e);
-                    return false;
-                }
-
-            })(),
-            (async () => {
-                //check if "Sign out" is visible
-                try {
-                    await delay(2e3)
-                    await page.waitForSelector('.locked-action')
-                    //check if source is locked
-                    /*let locked = await page.evaluate(
-                        () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
-                    );
-                    if (locked) {
-                        return;
-                    }*/
-                    return false;
-                } catch (e) {
-                    // console.log('22222', e);
-                    return false;
-                }
-            })()
-        ])
-        if (!iframeSrc) {
-            // console.log('No iframe found or h1.title; result:', iframeSrc, pageUrl);
-            return;
-        }
-        // console.log('iframeSrc:', iframeSrc);
-
-        let courseName = getCourseName(pageUrl);
-        // console.log('courseName', courseName);
-        // console.log('1is locked', await isLocked(page));
-        // if (await isLocked(page)) {
-        //     return;
-        // }
-        let title = await getTitle(page);
-        // console.log('title', title);
-        const allTitles = await page.$$eval('h4.list-item-title', nodes => nodes.map(n => n.textContent))
-        let newTitle = allTitles.filter(t => t.includes(title))[0]
-        newTitle = he.decode(newTitle.replace('/', '\u2215'))
-        // console.log('newTitle', newTitle);
-
-        const [, ] = await Promise //, selectedVideo
-            .all([
-                (async () => {
-                    if (images) {
-                        await page.waitForSelector('.body > .title', { timeout: 10e3 })
-                        await page.waitForSelector('.lesson-body', { timeout: 11e3 })
-                        await page.waitForSelector('#lessonContent', { timeout: 12e3 })
-                        await page.waitForSelector('.lesson-wrapper', { timeout: 23e3 })
-                        await page.waitForTimeout(1e3)
-                        // const currentViewport = await page.viewportSize();
-                        // console.log('currentViewport', currentViewport);
-                        // await delay(1e3) //5e3
-
-                        const rect = await page.$eval('.lesson-wrapper', element => {//.relative
-                            const dimensions = document.querySelector('.lesson-wrapper');
-                            return {
-                                w: dimensions.scrollWidth,
-                                h: dimensions.scrollHeight
-                            };
-                        });
-                        // console.log('rect', pageUrl, rect);
-
-                        await page.setViewportSize({
-                            width : rect.w,
-                            height: rect.h
-                        })
-                        await page.waitForTimeout(1e3)
-                        // const currentViewport2 = await page.viewportSize();
-                        // console.log('currentViewport2', currentViewport2)
-
-                        const $sec = await page.$('.lesson-wrapper')
-                        if (!$sec) throw new Error(`Parsing failed!`)
-                        await retry(async () => {//return
-                            // console.log('screenshot:', path.join(process.cwd(), saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`));
-                            await $sec.screenshot({
-                                path          : path.join(saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
-                                omitBackground: true,
-                                timeout       : 30e3
-                            })
-                            /*await page
-                                .locator('.lesson-wrapper')
-                                .screenshot({
-                                    path: path.join(process.cwd(), saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
-                                    delay         : '1000ms',
-                                    captureBeyondViewport: true
-                                });*/
-                            /*await page.screenshot({
-                                path: path.join(process.cwd(), saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
-                                delay         : '500ms',
-                                captureBeyondViewport: false,
-                                fullPage: true
-                            });*/
-                        }, 6, 1e3, true, page)
-                        await page.waitForTimeout(1e3)
-                    }
-                })(),
-                (async () => {
-                    //create markdown
-                    if (markdown) {
-                        let markdown = await page.$eval('#lessonContent', txt => txt.outerHTML)
-                        await fs.ensureDir(path.join(saveDir, courseName, 'playwright', 'markdown'))
-                        await fs.writeFile(path.join(saveDir, courseName, 'playwright', 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
-                        //save htmlw
-                        await createHtmlPage(page, path.join(saveDir, courseName, 'playwright', 'html'), `${newTitle}`);
-                        await extractResources(page, path.join(saveDir, courseName, 'playwright', 'resources'), newTitle, nhm);
-                        await extractChallenges(page, path.join(saveDir, courseName, 'playwright', 'challenges'), newTitle, nhm);
-                    }
-                })(),
-                /*(async () => {
-                    if (await isLocked(page)) {
-                        return Promise.resolve();
-                    }
-
-                    //create screenshot
-                    await page.waitForSelector('.video-wrapper iframe[src]', { timeout: 20e3 })
-                    const iframeSrc = await page.$eval('.video-wrapper iframe[src]', ({ src }) => src);
-                    return iframeSrc;
-                    // console.log('iframeSrc', iframeSrc);
-                   /!* const pageSrc = await context.newPage()
-                    // context.waitForEvent('page')
-                    await retry(async () => {//return
-                        //await delay(1e3)
-                        await pageSrc.goto('view-source:' + iframeSrc, { timeout: 15e3 });//waitUntil: 'networkidle0',
-                        await delay(1e3)
-                    }, 6, 10e3, true)
-
-                    const content = await pageSrc.$eval('td.line-content', txt => txt.textContent)
-
-                    let newString;
-                    let finString;
-                    try {
-                        newString = content.split(`progressive":[`)[1];
-                        finString = newString.split(']},"lang":"en","sentry":')[0];
-                    } catch (e) {
-                        console.error('Issue with error source:', iframeSrc);
-                        console.error('Issue with getting vimeo data', content, e);
-                        return;
-                    }
-                    finString = newString.split(']},"lang":"en","sentry":')[0];
-
-                    let videos = await eval(`[${finString}]`)
-                    let selectedVideo = await videos.find(vid => vid.quality === quality);
-
-                    if (!selectedVideo) {
-                        //can't find 1080p quality let's see if there is 720p video
-                        selectedVideo = await videos.find(vid => vid.quality === '720p');
-                    }
-                    //await delay(1e3)
-                    await pageSrc.close()
-                    return selectedVideo;*!/
-                })(),*/
-            ])
-
-        /*if (await isLocked(page)) {//!selectedVideo ||
-            //console.log('lesson locked: ', selectedVideo);
-            return;
-        }*/
-
-        return {
-            pageUrl,
-            courseName,
-            dest      : path.join(saveDir, courseName, `${newTitle}${videoFormat}`),
-            imgPath   : path.join(saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
-            downFolder: path.join(saveDir, courseName),
-            vimeoUrl  : iframeSrc//selectedVideo.url
-        };
     } finally {
         await page.close();
     }

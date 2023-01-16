@@ -14,7 +14,7 @@ const downOverYoutubeDL = require("../helpers/downOverYoutubeDL");
 const Spinnies = require('dreidels');
 const ms = new Spinnies();
 
-const sitemap = require("../../json/sitemap.json");
+const sitemap = require("../../json/search-courses.json");
 const Promise = require("bluebird");
 
 const scraper = async (opts) => {
@@ -31,7 +31,7 @@ const scraper = async (opts) => {
               overwrite,
               url = null
           } = opts
-    const courses = url ? sitemap.filter(course => course.includes(url)) : sitemap;
+    const courses = url ? sitemap.filter(course => course.value.includes(url)) : sitemap;
 
     if (!courses.length) {
         return console.log('No course(s) found for download')
@@ -59,13 +59,14 @@ const scraper = async (opts) => {
 
         ms.add('capture', { text: `Start Puppeteer Capturing...` });
         return await Promise
-            .map(courses, async (link) => {
+            .map(courses, async ({value}) => {
                 return await withPage(browser)(async (page) => {
-                    ms.update('capture', { text: `Sockets Capturing... ${++cnt} of ${courses.length} ${he.decode(link)}` });
-                    return await createPageCapturer(page, link, opts);
+                    ms.update('capture', { text: `Sockets Capturing... ${++cnt} of ${courses.length} ${he.decode(value)}` });
+                    return await createPageCapturer(page, value, opts);
                 });
             }, { concurrency: 7 })
             .then(async (lessons) => {
+                lessons = lessons.flat()
                 console.log('--lessons length', lessons.length);
                 ms.succeed('capture', { text: `Capturing done for ${cnt}...` });
                 await fs.ensureDir(path.resolve(process.cwd(), 'json'))

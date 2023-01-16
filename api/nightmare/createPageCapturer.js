@@ -4,64 +4,24 @@ const fs = require("fs-extra");
 const he = require('he')
 const colors = require('colors');
 // const delay = require("../delay");
-
+const Promise = require("bluebird");
 const { NodeHtmlMarkdown } = require('node-html-markdown');
-const { makeScreenshots, extractVimeoUrl, waitDeffered } = require("./helpers");
+const { makeScreenshots, extractVimeoUrl, waitDeffered, extractDom } = require("./helpers");
 const createHtmlPage = require("../helpers/createHtmlPage");
 const { extractResources, extractChallenges } = require("../helpers/extractors");
 const retry = require("../helpers/retry");
 
-module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, images, ms) => {
-    const nhm = new NodeHtmlMarkdown();
-    pageUrl = he.decode(pageUrl)
-    let lock = false;
+const scrapePage = async (n, pageUrl, markdown, saveDir, nhm, images, ms, videoFormat) => {
 
-    await n
-        .goto(pageUrl)
-        .wait('h1.title')
-        .wait(1000);
-    // console.log('-1pageUrl:', pageUrl);
+    const { title, allTitles, md = null, iframeSrc, locked } = await extractDom(n);
 
-    const dom = await retry(async () => {//return
-        const a = await n
-            //.awaitSelectors( ['h1.title', 'body', '.video-wrapper iframe[src]'], '.locked-action', false, 1000 )
-            .evaluate(() => {
-                return {
-                    title    : Array.from(document.body.querySelectorAll('h1.title'), txt => txt.textContent)[0],
-                    allTitles: Array.from(document.body.querySelectorAll('h4.list-item-title'), txt => txt.textContent),
-                    md       : Array.from(document.body.querySelectorAll('#lessonContent'), txt => txt.outerHTML)[0],
-                    iframeSrc: Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0],
-                    locked   : Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
-                }
-            })
-        if (!a?.locked && !a?.iframeSrc) {
-            console.log('----->page:', pageUrl, a);
-            throw new Error('Check again')
-        }
-        return a;
-    }, 6, 1e3, true)
-
-    // console.log('2222aaaaaaaaaa', dom);
-    const { title, allTitles, md = null, iframeSrc, locked } = dom
     if (locked) {
         // console.log('locked', locked, pageUrl);
         return;
     }
-    //
+
     return n
-        /*.evaluate(() => {
-            return {
-                locked: Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0],
-            }
-        })
-        .then(({ locked }) => {
-            console.log('-2', locked);
-
-            return !!locked;
-        })*/
         .then(async () => {
-
-
             console.log(`nightmare vimeoUrl ${title} ${iframeSrc}`.blue);
             //get course name
             let courseName = pageUrl.replace("https://www.vuemastery.com/courses/", "");
@@ -205,6 +165,42 @@ module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, ima
 
                 })*/
         })
+};
 
+module.exports = async (n, pageUrl, saveDir, videoFormat, quality, markdown, images, ms) => {
+    const nhm = new NodeHtmlMarkdown();
+    pageUrl = he.decode(pageUrl)
+    let lock = false;
+
+    await n
+        .goto(pageUrl)
+        .wait('h1.title')
+        .wait(1e3);
+    // console.log('-1pageUrl:', pageUrl);
+
+    //click on the lessons on the right side and wait for text to be loaded
+    const lessons = await scrapePage(n, pageUrl, markdown, saveDir, nhm, images, ms, videoFormat);
+    // console.log('lessons', lessons);
+    // Array.from(document.querySelectorAll('.unlock h4')).filter(a=>/2. Virtual DOM & Render Functions/.test(a.innerText))
+    const res = await n
+        .evaluate(() => Array.from(document.body.querySelectorAll('div.lessons-list > div > div.list-item'), (txt, i) => [...txt.classList].includes('unlock') ? ++i : null).filter(Boolean))
+        .then((lessonsTitles) => lessonsTitles.slice(1))//remove first lessons
+        .then(lessonsTitles => {
+            // console.log('lessonsTitles', lessonsTitles);
+            return Promise.mapSeries(lessonsTitles, async (lessonsTitle, index) => {
+                //click on link in the menu
+                // console.log('link', `div.lessons-list > div > div:nth-child(${index+2})`, lessonsTitle);
+                return await n
+                    .click(`div.lessons-list > div > div:nth-child(${lessonsTitle})`)
+                    .wait(1500)
+                    .then(async () => {
+                        // console.log('----------------------------------------------------------------> page is clicked');
+                        return await scrapePage(n, pageUrl, markdown, saveDir, nhm, images, ms, videoFormat);
+                    })
+            })
+        })
+    //[ '1. Building a Vue 3 app', '2. Create-Vue - creating the project' ]
+    // console.log('res', [lessons, ...res]);
+    return [lessons, ...res];
 };
 

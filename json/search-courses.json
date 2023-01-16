@@ -1,0 +1,142 @@
+[
+  {
+    "title": "Real World Vue 3 (Composition API)",
+    "value": "https://www.vuemastery.com/courses/real-world-vue-3-composition-api/building-a-vue-3-app-composition-api"
+  },
+  {
+    "title": "Vue for React Devs: Differences",
+    "value": "https://www.vuemastery.com/courses/vue-for-react-devs-differences/reacting-to-changes"
+  },
+  {
+    "title": "Firebase with Vue 3 and VueFire",
+    "value": "https://www.vuemastery.com/courses/firebase-with-vue3-and-vuefire/firebase-introduction"
+  },
+  {
+    "title": "Vue for React Devs: Similarities",
+    "value": "https://www.vuemastery.com/courses/vue-for-react-devs-similarities/intro-to-vue-for-react-devs"
+  },
+  {
+    "title": "Pinia Fundamentals",
+    "value": "https://www.vuemastery.com/courses/pinia-fundamentals/fundamentals-what-is-pinia"
+  },
+  {
+    "title": "Utility-First CSS with Tailwind",
+    "value": "https://www.vuemastery.com/courses/utility-first-css-with-tailwind/what-is-utility-first-css"
+  },
+  {
+    "title": "Build a Blog w/ Nuxt 3 Content",
+    "value": "https://www.vuemastery.com/courses/build-a-blog-nuxt3-content/nuxt3-blog-introduction"
+  },
+  {
+    "title": "Coding Better Composables",
+    "value": "https://www.vuemastery.com/courses/coding-better-composables/what-is-a-composable"
+  },
+  {
+    "title": "Pinia Q&A",
+    "value": "https://www.vuemastery.com/courses/pinia-qa/pinia-qa-preview"
+  },
+  {
+    "title": "Nuxt 3 Essentials",
+    "value": "https://www.vuemastery.com/courses/nuxt-3-essentials/nuxt-3-overview"
+  },
+  {
+    "title": "Vue 3 Composition API",
+    "value": "https://www.vuemastery.com/courses/vue-3-essentials/why-the-composition-api"
+  },
+  {
+    "title": "From Vue 2 to Vue 3",
+    "value": "https://www.vuemastery.com/courses/from-vue2-to-vue3/from-vue-2-to-vue-3"
+  },
+  {
+    "title": "Vue 3 Deep Dive with Evan You",
+    "value": "https://www.vuemastery.com/courses/vue3-deep-dive-with-evan-you/vue3-overview"
+  },
+  {
+    "title": "Vue 3 Reactivity",
+    "value": "https://www.vuemastery.com/courses/vue-3-reactivity/vue3-reactivity"
+  },
+  {
+    "title": "TypeScript Friendly Vue 3",
+    "value": "https://www.vuemastery.com/courses/typescript-friendly-vue3/introduction-to-the-script-setup-syntax"
+  },
+  {
+    "title": "Unit Testing Vue 3",
+    "value": "https://www.vuemastery.com/courses/unit-testing-vue-3/what-to-test-vue-3"
+  },
+  {
+    "title": "Intro to Vue 3",
+    "value": "https://www.vuemastery.com/courses/intro-to-vue-3/intro-to-vue3"
+  },
+  {
+    "title": "Real World Vue 3 (Options API)",
+    "value": "https://www.vuemastery.com/courses/real-world-vue3/rwv3-orientation"
+  },
+  {
+    "title": "Touring Vue Router",
+    "value": "https://www.vuemastery.com/courses/touring-vue-router/vue-router-introduction"
+  },
+  {
+    "title": "Vuex Fundamentals",
+    "value": "https://www.vuemastery.com/courses/vuex-fundamentals/vuex4-intro-to-vuex"
+  },
+  {
+    "title": "From Vuex to Pinia",
+    "value": "https://www.vuemastery.com/courses/from-vuex-to-pinia/what-is-pinia"
+  },
+  {
+    "title": "Scaling Vue with Nuxt.js",
+    "value": "https://www.vuemastery.com/courses/scaling-vue-with-nuxt-js/why-use-nuxt"
+  },
+  {
+    "title": "Lightning Fast Builds w/ Vite",
+    "value": "https://www.vuemastery.com/courses/lightning-fast-builds-with-vite/intro-to-vite"
+  },
+  {
+    "title": "Intro to Vue 3 + TypeScript",
+    "value": "https://www.vuemastery.com/courses/vue3-typescript/why-vue-%26-typescript"
+  },
+  {
+    "title": "Vue 3 Forms",
+    "value": "https://www.vuemastery.com/courses/vue3-forms/forms-introduction"
+  },
+  {
+    "title": "Validating Vue 3 Forms",
+    "value": "https://www.vuemastery.com/courses/validating-vue3-forms/why-vee-validate"
+  },
+  {
+    "title": "Component Design Patterns",
+    "value": "https://www.vuemastery.com/courses/component-design-patterns/introduction"
+  },
+  {
+    "title": "Advanced Components",
+    "value": "https://www.vuemastery.com/courses/advanced-components/the-introduction"
+  },
+  {
+    "title": "Unit Testing Vue 2",
+    "value": "https://www.vuemastery.com/courses/unit-testing/what-to-test"
+  },
+  {
+    "title": "Real World Testing",
+    "value": "https://www.vuemastery.com/courses/real-world-testing/getting-started"
+  },
+  {
+    "title": "Build a Gmail Clone with Vue 3",
+    "value": "https://www.vuemastery.com/courses/build-a-gmail-clone-with-vue3/tour-the-project"
+  },
+  {
+    "title": "Watch Us Build a Trello Clone",
+    "value": "https://www.vuemastery.com/courses/watch-us-build-trello-clone/tour-of-the-app"
+  },
+  {
+    "title": "Mastering Vuex",
+    "value": "https://www.vuemastery.com/courses/mastering-vuex/intro-to-vuex"
+  },
+  {
+    "title": "Querying with GraphQL",
+    "value": "https://www.vuemastery.com/courses/querying-with-graphql/intro-to-graphql"
+  },
+  {
+    "title": "Token-Based Authentication",
+    "value": "https://www.vuemastery.com/courses/token-based-authentication/intro-to-authentication"
+  }
+]

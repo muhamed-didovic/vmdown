@@ -10,15 +10,11 @@ const { orderBy } = require("lodash");
  * @param {String} selector
  */
 
-const waitDeffered = exports.waitDeffered = function(selector) {
-    var interval = 1000 * 5; // 30 seconds
+const waitDeffered = exports.waitDeffered = function (selector) {
+    var interval = 1000*5; // 30 seconds
     return nightmare => {
         nightmare
             .wait(() => {
-               /* var dom = document.querySelector(selector);
-                console.log('-------dom', dom);
-                return dom*/
-                //return pill ? pill.textContent.toLowerCase() : 'pending';
 
                 return {
                     title    : Array.from(document.body.querySelectorAll('h1.title'), txt => txt.textContent)[0],
@@ -60,6 +56,73 @@ const login = exports.login = async (n, email, password) => {
             })
     }, 6, 1e3, true)
 
+};
+
+exports.getCourses = async (n) => {
+    const ms = new Spinnies();
+    ms.add('login', { text: `Scraping courses...` });
+    return await retry(async () => {//return
+        return await n
+            .goto('https://www.vuemastery.com/courses')
+            .wait('#__layout > div > div > div > header > div > nav > div.navbar-secondary > a')
+            // .evaluate(() =>
+            .evaluate(() => {
+
+                // const lockedTitles = Array.from(document.body.querySelectorAll('.-locked h4'), txt => txt.textContent)
+                // const title = Array.from(document.body.querySelectorAll('h1.title'), txt => txt.textContent)[0]
+                // const locked = Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
+
+                return {
+                    text   : document.querySelector('#__layout > div > div > div > header > div > nav > div.navbar-secondary > button').innerText,
+                    courses: Array.from(document.body.querySelectorAll('.playlist-card:not(.nuxt-link-active)'), a =>
+                        ({
+                            title: a.querySelector('.playlist-card-content-title').innerText,
+                            url  : a.href
+                        }))
+                }
+            })
+            .then(({ text, courses }) => {
+                console.log('logged text', text);
+                console.log('course', courses);
+                if (text !== 'Sign Out') {
+                    ms.fail('login', { text: "Cannot login. Check your user credentials. \n WARNING: Just free videos will be downloaded" });
+                    throw new Error('Auth failed')
+                }
+                ms.succeed('login', { text: `User successfully logged in. and found: ${courses.length} courses` });
+                return courses;
+            })
+
+    }, 6, 1e3, true)
+
+};
+
+exports.extractDom = async n => {
+    const dom = await retry(async () => {//return
+        const a = await n
+            //.awaitSelectors( ['h1.title', 'body', '.video-wrapper iframe[src]'], '.locked-action', false, 1000 )
+            .evaluate(() => {
+
+                const lockedTitles = Array.from(document.body.querySelectorAll('.-locked h4'), txt => txt.textContent)
+                const title = Array.from(document.body.querySelectorAll('h1.title'), txt => txt.textContent)[0]
+                const locked = Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
+                // console.log('aaaaa', title, locked, lockedTitles.includes(title), '-->', locked ?? lockedTitles.includes(title));
+                return {
+                    title    : title,
+                    allTitles: Array.from(document.body.querySelectorAll('h4.list-item-title'), txt => txt.textContent),
+                    md       : Array.from(document.body.querySelectorAll('#lessonContent'), txt => txt.outerHTML)[0],
+                    iframeSrc: Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0],
+                    locked   : locked,//?? lockedTitles.includes(title)
+                    lockedTitles
+                }
+            })
+        console.log('----->page:', a?.locked, a?.iframeSrc);
+        if (!a?.locked && !a?.iframeSrc) {
+            // console.log('----->page:', pageUrl, a);
+            throw new Error('Check again')
+        }
+        return a;
+    }, 6, 1e3, true)
+    return dom;
 };
 
 /**
@@ -197,7 +260,7 @@ const findVideoUrl = (str, pageUrl) => {
     return null;
 }
 
-const extractVimeoUrl= exports.extractVimeoUrl = async (iframeSrc, n, quality, pageUrl) => {
+const extractVimeoUrl = exports.extractVimeoUrl = async (iframeSrc, n, quality, pageUrl) => {
     return await retry(async () => {//return
         return await n
             .goto(iframeSrc)

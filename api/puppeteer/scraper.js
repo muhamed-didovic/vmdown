@@ -11,7 +11,7 @@ const downOverYoutubeDL = require('../helpers/downOverYoutubeDL')
 const Spinnies = require('dreidels');
 const ms = new Spinnies();
 
-const sitemap = require("../../json/sitemap.json");
+const sitemap = require("../../json/search-courses.json");
 const Promise = require('bluebird')
 /*const Bluebird = require('bluebird')
 Bluebird.config({ longStackTraces: true });
@@ -30,7 +30,7 @@ const scraper = async ({
     overwrite,
     url = null
 }) => {
-    const courses = url ? sitemap.filter(course => course.includes(url)) : sitemap;
+    const courses = url ? sitemap.filter(course => course.value.includes(url)) : sitemap;
 
     if (!courses.length) {
         return console.log('No course(s) found for download')
@@ -49,16 +49,6 @@ const scraper = async ({
                 await auth(page, email, password);
                 await delay(5e3)
                 console.log("User successfully logged in.");
-                /*ms.add('login', { text: `Checking authentication...` });
-                await page.reload({ waitUntil: ["networkidle0", "domcontentloaded"] });
-
-                if (await getInnerText(page, 'a[href="/account/dashboard"]') === 'Dashboard') {
-                    console.log('tu smo');
-                    ms.succeed('login', { text: "User successfully logged in." });
-                } else {
-                    ms.fail('login', { text: "Cannot login. Check your user credentials. \n WARNING: Just free videos will be downloaded" });
-                    return;
-                }*/
                 //await delay(5e3)
             }, 6, 1e3, true)
         });
@@ -66,39 +56,35 @@ const scraper = async ({
         let cnt = 0;
         ms.add('capture', { text: `Start Puppeteer Capturing...` });
         return await Promise
-            .map(courses, async (link, index) => {
+            .map(courses, async ({value}, index) => {
                 return await withPage(browser)(async (page) => {
 
-                    /*await page.goto(he.decode(link), { waitUntil: ["networkidle2"], timeout: 61e3});
-                    //check if source is locked
-                    let locked = await page.evaluate(
-                        () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
-                    );
-                    if (locked) {
-                        return;
-                    }
+                    /*
                     await retry(async () => {//return
                         await page.waitForSelector('.video-wrapper iframe[src]')
                     }, 6, 1e3, true)*/
                     //await auth(page, email, password);
 
-                    ms.update('capture', { text: `Puppeteer Capturing... ${++cnt} of ${courses.length} ${link}` });
-                    const lesson = await createPageCapturer(browser, page, link, downDir, extension, quality, markdown, images)
+                    ms.update('capture', { text: `Puppeteer Capturing... ${++cnt} of ${courses.length} ${value}` });
+                    const lessons = await createPageCapturer(browser, page, value, downDir, extension, quality, markdown, images)
 
-                    if (lesson?.vimeoUrl) {
-                        await downOverYoutubeDL({
-                            ...lesson,
-                            overwrite,
-                            index,
-                            ms
-                        })
-                    }
+                    await Promise.map(lessons, async (lesson, index) => {
+                        if (lesson?.vimeoUrl) {
+                            await downOverYoutubeDL({
+                                ...lesson,
+                                overwrite,
+                                index,
+                                ms
+                            })
+                        }
+                    }, { concurrency: 10 })
 
-                    return lesson;
+                    return lessons;
 
                 });
             }, { concurrency: 7 })
             .then(async courses => {
+                courses = courses.flat()
                 ms.succeed('capture', { text: `Capturing done for ${cnt}...` });
                 await fs.ensureDir(path.resolve(process.cwd(), 'json'))
                 await fs.writeFile(`./json/first-course-puppeteer.json`, JSON.stringify(courses, null, 2), 'utf8')
