@@ -1,6 +1,6 @@
 {
     "name": "vmdown",
-    "version": "0.14.0",
+    "version": "0.14.1",
     "description": "Downloader and scraper for vuemastery.com",
     "main": "index.js",
     "scripts": {
@@ -35,8 +35,6 @@
         "VueMastery"
     ],
     "dependencies": {
-        "@byungi/p-delay": "^0.2.0",
-        "@byungi/p-retry": "^0.2.2",
         "@cypress/xvfb": "^1.2.4",
         "@nightwatch/selenium-server": "^4.5.0",
         "@vimeo/player": "^2.18.0",
