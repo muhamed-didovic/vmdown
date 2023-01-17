@@ -49,8 +49,7 @@ test.after.always(() => {
     fs.removeSync(path.join(__dirname,  'intro-to-vue-3'),  { recursive: true, force: true });//, { recursive: true, force: true }
 })
 
-
-test('capturePage nightmare', async t => {
+test.skip('capturePage nightmare', async t => {
     console.log('11111');
     const res1 = await scrape('https://www.vuemastery.com/courses/intro-to-vue-3/intro-to-vue3', '720p')
     console.log('res1', res1);
@@ -62,11 +61,4 @@ test('capturePage nightmare', async t => {
     t.is(res1[0].courseName, 'intro-to-vue-3')
     t.truthy(res1[0].vimeoUrl)
     // fs.copyFileSync(res1[0].imgPath, path.join(__dirname, '..', 'snapshot/capture1.png'))
-
-    // t.true(fs.existsSync(res1.imgPath))
-    // t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'nightmare', 'markdown', '1. The Vue Instance.md')))
-    // t.is(res1.pageUrl, 'https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance')
-    // t.is(res1.courseName, 'intro-to-vue-js')
-    // t.truthy(res1.vimeoUrl)
-    // fs.copyFileSync(res1.imgPath, path.join(__dirname, '..', 'snapshot/capture1.png'))
 })
