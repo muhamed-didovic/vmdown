@@ -294,7 +294,7 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
     const lessonsTitles = await page.evaluate(
         () => Array.from(document.body.querySelectorAll('div.lessons-list > div > div.list-item'), (txt, i) => [...txt.classList].includes('unlock') ? ++i : null).filter(Boolean)//.slice(1)
     );
-    console.log('lessonsTitles slice:', lessonsTitles);
+    // console.log('lessonsTitles slice:', lessonsTitles);
     const res =  await Promise.mapSeries(lessonsTitles.slice(1), async (lessonsTitle) => {
         //click on link in the menu
         // console.log('link', `div.lessons-list > div > div:nth-child(${index+2})`, lessonsTitle);

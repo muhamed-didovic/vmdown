@@ -44,7 +44,7 @@ const noop = () => {}
 
 test.after.always(() => {
     // imgs.forEach(imgPath => fs.unlink(imgPath, noop))
-    fs.removeSync(path.join(__dirname, 'intro-to-vue-js'),  { recursive: true, force: true });//, { recursive: true, force: true }
+    fs.removeSync(path.join(__dirname, 'intro-to-vue-3'),  { recursive: true, force: true });//, { recursive: true, force: true }
 })
 
 test('capturePage puppeteer', async t => {
@@ -53,33 +53,27 @@ test('capturePage puppeteer', async t => {
         return await getPageData(data, page);
     });
 
-    const res1  = await cluster.execute({ link: 'https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance', downDir: './test/puppeteer-cluster', extension: ".mp4", quality: '720p', markdown: true, images: true });
-    const res2  = await cluster.execute({ link: 'https://www.vuemastery.com/courses/intro-to-vue-js/attribute-binding', downDir: './test/puppeteer-cluster', extension: ".mp4", quality: '1080p', markdown: true, images: true });
-    const res3  = await cluster.execute({ link: 'https://www.vuemastery.com/courses/intro-to-vue-js/conditional-rendering', downDir: './test/puppeteer-cluster', extension: ".mp4", quality: '1080p', markdown: true, images: true });
+    const res1  = await cluster.execute({ link: 'https://www.vuemastery.com/courses/intro-to-vue-3/intro-to-vue3', downDir: './test/puppeteer-cluster', extension: ".mp4", quality: '720p', markdown: true, images: true });
+    // const res2  = await cluster.execute({ link: 'https://www.vuemastery.com/courses/intro-to-vue-js/attribute-binding', downDir: './test/puppeteer-cluster', extension: ".mp4", quality: '1080p', markdown: true, images: true });
+    // const res3  = await cluster.execute({ link: 'https://www.vuemastery.com/courses/intro-to-vue-js/conditional-rendering', downDir: './test/puppeteer-cluster', extension: ".mp4", quality: '1080p', markdown: true, images: true });
 
     await cluster.idle();
     await cluster.close();
 
-    // imgs.push(res1.imgPath)
-    // imgs.push(res2.imgPath)
-    // imgs.push(res3.imgPath)
+
+    // t.true(fs.existsSync(res1.imgPath))
+    // t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'cluster', 'markdown', '1. The Vue Instance.md')))
+    // t.is(res1.pageUrl, 'https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance')
+    // t.is(res1.courseName,  'intro-to-vue-js')
+    // t.truthy(res1.vimeoUrl)
+    // fs.copyFileSync(res1.imgPath, path.join(__dirname, '..', 'snapshot/capture1.png'))
+    t.is(res1.length, 11)
+    t.true(fs.existsSync(res1[0].imgPath))
+    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-3', 'cluster', 'markdown', '1. Intro to Vue 3.md')))
+    t.is(res1[0].pageUrl, 'https://www.vuemastery.com/courses/intro-to-vue-3/intro-to-vue3')
+    t.is(res1[0].courseName, 'intro-to-vue-3')
+    t.truthy(res1[0].vimeoUrl)
+    fs.copyFileSync(res1[0].imgPath, path.join(__dirname, '..', 'snapshot/capture1.png'))
 
 
-    t.true(fs.existsSync(res1.imgPath))
-    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'cluster', 'markdown', '1. The Vue Instance.md')))
-    t.is(res1.pageUrl, 'https://www.vuemastery.com/courses/intro-to-vue-js/vue-instance')
-    t.is(res1.courseName,  'intro-to-vue-js')
-    t.truthy(res1.vimeoUrl)
-    fs.copyFileSync(res1.imgPath, path.join(__dirname, '..', 'snapshot/capture1.png'))
-
-    t.true(fs.existsSync(res2.imgPath))
-    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'cluster', 'markdown', '2. Attribute Binding.md')))
-    t.is(res2.pageUrl, 'https://www.vuemastery.com/courses/intro-to-vue-js/attribute-binding')
-    // console.log('aaaaa', path.join(__dirname, 'snapshot/capture2.png'));
-    fs.copyFileSync(res2.imgPath, path.join(__dirname, '..', 'snapshot/capture2.png'))
-
-    t.true(fs.existsSync(res3.imgPath))
-    t.true(fs.existsSync(path.join(__dirname, 'intro-to-vue-js', 'cluster', 'markdown', '3. Conditional Rendering.md')))
-    t.is(res3.pageUrl, 'https://www.vuemastery.com/courses/intro-to-vue-js/conditional-rendering')
-    fs.copyFileSync(res3.imgPath, path.join(__dirname, '..', 'snapshot/capture3.png'))
 })

@@ -115,7 +115,6 @@ exports.extractDom = async n => {
                     lockedTitles
                 }
             })
-        console.log('----->page:', a?.locked, a?.iframeSrc);
         if (!a?.locked && !a?.iframeSrc) {
             // console.log('----->page:', pageUrl, a);
             throw new Error('Check again')

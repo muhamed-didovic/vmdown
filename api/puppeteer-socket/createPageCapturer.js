@@ -38,6 +38,7 @@ module.exports = async (page, link, opts) => {
         let courseName;
         let fileName;
         let lessonsTitles = []
+        let i = 0;
         createWebsocketMessageListener(page, client)
             .register(async (message) => {
                 const video = parseMessage(message);
@@ -47,10 +48,7 @@ module.exports = async (page, link, opts) => {
                     && !coursesArray.includes(video.downloadLink)) {
 
                     coursesArray.push(video.downloadLink)
-                    // lessonsTitles = await page.evaluate(
-                    //     () => Array.from(document.body.querySelectorAll('.unlock h4'), txt => txt.textContent)
-                    // );
-                    // console.log('lessonsTitles slice:', lessonsTitles);
+
                     const lesson = await scrapePage(courseName, page, fileName, link, downDir, extension, video, overwrite)
                     lessons.push(lesson);
                     // console.log('lessons', lessons);
@@ -72,21 +70,21 @@ module.exports = async (page, link, opts) => {
                 // page.waitForNavigation({ waitUntil: 'networkidle0' }),
             ])
             .then(async () => {
-                await page.waitForSelector('button[data-test="signOut"]')
-                /*lessonsTitles = await page.evaluate(
-                    () => Array.from(document.body.querySelectorAll('.unlock h4'), txt => txt.textContent)
-                );*/
+                // console.log('opts', opts);
+                if (!opts?.skipLoginCheck) {
+                    await page.waitForSelector('button[data-test="signOut"]')
+                }
                 lessonsTitles = await page.evaluate(
                     () => Array.from(document.body.querySelectorAll('div.lessons-list > div > div.list-item'), (txt, i) => [...txt.classList].includes('unlock') ? ++i : null).filter(Boolean)//.slice(1)
                 )
                 // console.log('aaaaaaaa', lessonsTitles);
             })
         //await page.goto(he.decode(link), { waitUntil: ["networkidle2"], timeout: 61e3 });
-        // const browserPage = await page.evaluate(() => location.href)
+        //const browserPage = await page.evaluate(() => location.href)
 
         const iframeSrc = await Promise.race([
             (async () => {
-                // check is 'Login' visible
+                // check is 'iframe' visible
                 try {
                     await page.waitForSelector('.video-wrapper iframe[src]')
                     // await page.waitForNavigation({ waitUntil: 'networkidle0' });
@@ -102,17 +100,10 @@ module.exports = async (page, link, opts) => {
 
             })(),
             (async () => {
-                //check if "Sign out" is visible
+                //check if "locked" is visible
                 try {
                     await delay(2e3)
                     await page.waitForSelector('.locked-action')
-                    //check if source is locked
-                    /*let locked = await page.evaluate(
-                        () => Array.from(document.body.querySelectorAll('.locked-action'), txt => txt.textContent)[0]
-                    );
-                    if (locked) {
-                        return;
-                    }*/
                     return false;
                 } catch (e) {
                     // console.log('22222', e);

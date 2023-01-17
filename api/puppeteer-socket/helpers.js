@@ -46,40 +46,6 @@ const v = {
     videoEmbedId            : '258707456'
 }
 const withBrowser = async (fn) => {
-    //const browser = await puppeteer.launch({/* ... */});
-    /*const getBrowser = createBrowserGetter(puppeteer, {
-        executablePath: findChrome(),
-        headless      : false, // Set to false while development
-        debounce      : 500,
-
-        defaultViewport: null,
-        args           : [
-            '--no-sandbox',
-            '--start-maximized', // Start in maximized state
-        ],
-    })
-    const browser = await getBrowser();*/
-    /*const browser = await puppeteer.launch(
-        {
-            headless       : true, //false for dev env
-            defaultViewport: { width: 1920, height: 1080 },
-            args             : [
-                '--disable-gpu',
-                '--disable-dev-shm-usage',
-                '--disable-web-security',
-                '-- Disable XSS auditor', // close XSS auditor
-                '--no-zygote',
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '-- allow running secure content', // allow unsafe content
-                '--disable-webgl',
-                '--disable-popup-blocking',
-                //'--proxy-server= http://127.0.0.1:8080 '// configure agent
-                '--blink-settings=mainFrameClipsContent=false'
-            ],
-            executablePath   : findChrome(),
-        }
-    );*/
     const getBrowser = createBrowserGetter(puppeteer, {
         headless         : true, //run false for dev
         Ignorehttpserrors: true, // ignore certificate error
