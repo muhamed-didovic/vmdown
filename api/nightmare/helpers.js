@@ -4,6 +4,7 @@ const path = require("path");
 const sharp = require("sharp");
 const Spinnies = require('dreidels');
 const { orderBy } = require("lodash");
+const findVideoUrl = require("../helpers/findVideoUrl");
 
 /**
  * Wait conditionally.
@@ -244,7 +245,7 @@ const makeScreenshots = exports.makeScreenshots = async (n, saveDir, courseName,
 
 };
 
-const findVideoUrl = (str, pageUrl) => {
+/*const findVideoUrl = (str, pageUrl) => {
     const regex = /(?:config = )(?:\{)(.*(\n.*?)*)(?:\"\})/gm;
     let res = regex.exec(str);
     if (res !== null) {
@@ -257,7 +258,7 @@ const findVideoUrl = (str, pageUrl) => {
         }
     }
     return null;
-}
+}*/
 
 const extractVimeoUrl = exports.extractVimeoUrl = async (iframeSrc, n, quality, pageUrl) => {
     return await retry(async () => {//return

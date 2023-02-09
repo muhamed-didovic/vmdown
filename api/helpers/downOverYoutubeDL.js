@@ -2,6 +2,7 @@
 const fileSize = require('./fileSize')
 const { formatBytes } = require('./writeWaitingInfo');
 const FileChecker = require('./fileChecker');
+const retries = require('./retrier');
 const path = require('path')
 const fs = require('fs-extra')
 const Promise = require('bluebird')
@@ -128,8 +129,9 @@ const newDownload = async (url, dest, {
         // console.log(`to be processed by youtube-dl... ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes} - ${url}`)
         // return Promise.resolve()
         // https://player.vimeo.com/texttrack/17477597.vtt?token=6321c441_0x383403d52f6fdaa619c98c88b50efbb63b6d0096
-        // const youtubeDlWrap = new youtubedl()
-        // return youtubeDlWrap
+
+        // yt-dlp -v --retries 'infinite' --fragment-retries 'infinite' --referer "https://vuemastery.com/" "https://player.vimeo.com/video/429439600?h=73c87a798c&autoplay=1&app_id=122963"
+
         const ytDlpWrap = new YTDlpWrap();
         let ytDlpEventEmitter = ytDlpWrap
             .exec([
@@ -140,10 +142,12 @@ const newDownload = async (url, dest, {
 
                 '--referer', 'https://vuemastery.com/',
                 "-o", path.resolve(dest),
-                '--socket-timeout', '5'
+                '--socket-timeout', '5',
 
-                // '--all-subs',
-                // '--referer', 'https://codecourse.com/',
+                // '-v',
+                '--retries', 'infinite',
+                '--fragment-retries', 'infinite'
+
                 // "-o", path.toNamespacedPath(dest),
                 // '--socket-timeout', '5',
                 //...(skipVimeoDownload ? ['--skip-download'] : []),
@@ -155,19 +159,23 @@ const newDownload = async (url, dest, {
             )
             // .on("youtubeDlEvent", (eventType, eventData) => console.log(eventType, eventData))
             .on("error", (error) => {
-                ms.remove(dest, { text: error })
-                console.log('URL:', url, 'dest:', dest, 'error--', error)
-                //ms.remove(dest);
+                // ms.remove(dest, { text: error })
+                if (!error.message.includes('Unable to extract info section')) {
+                    console.log('URL:', url, 'dest:', dest, 'error--', error)
+                }
+                console.log('------> tu smo');
                 /*fs.unlink(dest, (err) => {
                     reject(error);
                 });*/
                 //return Promise.reject(error)
+                //if (!error.message.includes('Unable to download video subtitles')) {
                 reject(error);
+                //}
 
             })
             .on("close", () => {
                 //ms.succeed(dest, { text: `${index}. End download yt-dlp: ${dest} Found:${localSizeInBytes}/${remoteSizeInBytes} - Size:${formatBytes(getFilesizeInBytes(dest))}` })//.split('/').pop()
-                ms.remove(dest);
+                // ms.remove(dest);
                 console.log(`${index}. End download yt-dlp: ${dest} Found:${localSizeInBytes}/${remoteSizeInBytes} - Size:${formatBytes(getFilesizeInBytes(dest))}`);
                 // videoLogger.write(`${dest} Size:${getFilesizeInBytes(dest)}\n`);
                 FileChecker.writeWithOutSize(downFolder, dest)
@@ -219,13 +227,15 @@ module.exports = async ({
     } else {
         ms.update(dest, { text: `${index} Start download video: ${dest.split('/').pop()} - ${localSizeInBytes}} ` });// /${formatBytes(remoteFileSize)
         // console.log(`${index} Start ytdl download: ${dest.split('/').pop()} - ${localSizeInBytes}/${formatBytes(remoteFileSize)} `);
-        return await newDownload(url, dest, {
-            localSizeInBytes,
-            remoteSizeInBytes: formatBytes(0),
-            downFolder,
-            index,
-            ms
-        });
+        await retrier(async () => await newDownload(url, dest, {
+                localSizeInBytes,
+                remoteSizeInBytes: formatBytes(0),
+                downFolder,
+                index,
+                ms
+            })
+        )
+        ms.remove(dest)
     }
 }
 

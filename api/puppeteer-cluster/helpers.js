@@ -11,6 +11,7 @@ const req = require('requestretry');
 const createHtmlPage = require("../helpers/createHtmlPage");
 const { extractResources, extractChallenges } = require("../helpers/extractors");
 const Promise = require("bluebird");
+const findVideoUrl = require("../helpers/findVideoUrl");
 const j = req.jar();
 const request = req.defaults({ jar: j, retryDelay: 500, fullResponse: true });
 
@@ -414,7 +415,7 @@ const getPageData = async (data, page) => {
     //return { ...options }
 };
 
-const findVideoUrl = (str, pageUrl) => {
+/*const findVideoUrl = (str, pageUrl) => {
     const regex = /(?:config = )(?:\{)(.*(\n.*?)*)(?:\"\})/gm;
     let res = regex.exec(str);
     if (res !== null) {
@@ -427,12 +428,12 @@ const findVideoUrl = (str, pageUrl) => {
 
             let video = orderBy(progressive, ['height'], ['desc'])[0];
             // console.log('url', pageUrl, video.quality);
-            /*if (!videoURL) {
+            /!*if (!videoURL) {
                 console.log('-----no 1080p video', progressive);
                 //can't find 1080p quality let's see if there is 720p video
                 videoURL = progressive.find(vid => vid.quality === '720p')?.url;
-            }*/
-            /*for (let item of progressive) {
+            }*!/
+            /!*for (let item of progressive) {
                 videoURL = item.url;
                 if (quality + 'p' === item.quality) {
                     //console.log('item 1440', item);
@@ -441,13 +442,13 @@ const findVideoUrl = (str, pageUrl) => {
                     //console.log('-----no item', item);
                 }
 
-            }*/
+            }*!/
             // console.log('videoURL', videoURL);
             return video.url;
         }
     }
     return null;
-}
+}*/
 const vimeoRequest = async (pageUrl, url) => {
     try {
         const { body, attempts } = await request({

@@ -56,7 +56,8 @@ Examples
     }
 })
 
-
+// https://player.vimeo.com/external/364140610.hd.mp4?s=427585ece1589ab3e99bd4f3348d9a51519b4152&profile_id=175&download=1
+// https://vod-progressive.akamaized.net/exp=1673964257~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F2828%2F14%2F364140610%2F1948098428.mp4~hmac=d33cfb14b8aeab2f4116214f750d51b2922da8b75a7ad7b3088bcda26a9188dc/vimeo-prod-skyfire-std-us/01/2828/14/364140610/1948098428.mp4
 // const errorHandler = err => (console.log('\u001B[1K'), logger.fail(String(err)), process.exit(1))
 // const errorHandler = err => (console.error(err), logger.fail(String(err)), process.exit(1))
 // const errorHandler = err => console.error('err:', err)
@@ -313,7 +314,7 @@ module.exports = async () => {
         input.push(await askOrExit({
             type    : 'text',
             message : 'Enter url for download.',
-            initial : 'https://www.vuemastery.com/courses/intro-to-vue-js',
+            initial : 'https://www.vuemastery.com/courses/intro-to-vue-3/intro-to-vue3', //'https://www.vuemastery.com/courses/intro-to-vue-js',
             validate: value => value.includes('vuemastery.com') ? true : 'Url is not valid'
         }))
     } else {
