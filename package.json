@@ -1,6 +1,6 @@
 {
     "name": "vmdown",
-    "version": "0.16.4",
+    "version": "0.16.5",
     "description": "Downloader and scraper for vuemastery.com",
     "main": "index.js",
     "scripts": {
@@ -60,7 +60,7 @@
         "node-html-markdown": "^1.3.0",
         "p-limit": "^3.1.0",
         "pdfkit": "^0.13.0",
-        "playwright": "^1.32.0",
+        "playwright": "^1.32.1",
         "process": "^0.11.10",
         "progress": "^2.0.3",
         "promisify-remote-file-size": "^0.1.1",

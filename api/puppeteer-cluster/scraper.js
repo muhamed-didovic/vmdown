@@ -110,10 +110,10 @@ const scraper = async (opts) => {
         return await getPageData(data, page);
     });
 
-    ms.add('capture', { text: `Start Puppeteer Capturing...` });
+    ms.add('capture', { text: `Start Puppeteer Cluster Capturing...` });
     await Promise
         .map(courses, async ({value}) => {
-            ms.update('capture', { text: `Puppeteer Capturing... ${++cnt} of ${courses.length} ${value}` });
+            ms.update('capture', { text: `Puppeteer Cluster Capturing... ${++cnt} of ${courses.length} ${value}` });
             //return await createPageCapturer(cluster, value, downDir, extension, quality, markdown, images)
             return await cluster.execute({ link:value, downDir, extension, quality, markdown, images });
         }, { concurrency: 7 })
