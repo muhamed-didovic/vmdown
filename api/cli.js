@@ -278,6 +278,9 @@ async function commonFlags(flags) {
 }
 
 module.exports = async () => {
+    console.log('__dirname ', __dirname );
+    console.log('__filename', __filename);
+    console.log('fs.realpathSync(__filename)', fs.realpathSync(__filename));
     const { flags, input } = cli
     let all = flags.all
     let fileChoices;

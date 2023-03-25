@@ -17,9 +17,6 @@ process.on('unhandledRejection', error => {
 });
 
 (async () => {
-    console.log('__dirname ', __dirname );
-    console.log('__filename', __filename);
-    console.log('fs.realpathSync(__filename)', fs.realpathSync(__filename));
     try {
         console.time();
         const options = await cli();
