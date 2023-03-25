@@ -91,9 +91,9 @@ const retry = async (fn, retriesLeft = 5, interval = 1000, exponential = false, 
             if (page) {
                 const browserPage = await page.evaluate(() => location.href)
                 console.log('----retrying err on url', browserPage)
-                await fs.ensureDir(path.resolve(process.cwd(), 'errors'))
+                await fs.ensureDir(path.resolve(__dirname, 'errors'))
                 await page.screenshot({
-                    path: path.resolve(process.cwd(), `errors/${new Date().toISOString()}.png`),
+                    path: path.resolve(__dirname, `errors/${new Date().toISOString()}.png`),
                     // path    : path.join(process., sanitize(`${String(position).padStart(2, '0')}-${title}-full.png`)),
                     fullPage: true
                 });

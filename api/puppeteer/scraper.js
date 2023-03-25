@@ -86,8 +86,8 @@ const scraper = async ({
             .then(async courses => {
                 courses = courses.flat()
                 ms.succeed('capture', { text: `Capturing done for ${cnt}...` });
-                await fs.ensureDir(path.resolve(process.cwd(), 'json'))
-                await fs.writeFile(`./json/first-course-puppeteer.json`, JSON.stringify(courses, null, 2), 'utf8')
+                await fs.ensureDir(path.resolve(__dirname, 'json'))
+                await fs.writeFile(path.resolve(__dirname, 'json/first-course-puppeteer.json'), JSON.stringify(courses, null, 2), 'utf8')
                 return courses;
             })
 
@@ -123,8 +123,8 @@ const scraper = async ({
             return lessons;
         })*/
         .then(async (lessons) => {
-            await fs.ensureDir(path.resolve(process.cwd(), 'json'))
-            await fs.writeFile(`./json/lessons.json`, JSON.stringify(lessons, null, 2), 'utf8')
+            await fs.ensureDir(path.resolve(__dirname, 'json'))
+            await fs.writeFile(path.resolve(__dirname, 'json/lessons.json'), JSON.stringify(lessons, null, 2), 'utf8')
             if (pdf && images) {
                 const groupedLessons = _(lessons)
                     .groupBy('courseName')

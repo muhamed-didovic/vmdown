@@ -95,8 +95,8 @@ const scraper = async ({
         .then(async courses => {
             courses = courses.flat()
             await browser.close()
-            await fs.ensureDir(path.resolve(process.cwd(), 'json'))
-            await fs.writeFile(`./json/first-course-playwright.json`, JSON.stringify(courses, null, 2), 'utf8')
+            await fs.ensureDir(path.resolve(__dirname, 'json'))
+            await fs.writeFile(path.resolve(__dirname, 'json/first-course-playwright.json'), JSON.stringify(courses, null, 2), 'utf8')
             ms.succeed('capture', { text: `Capturing done for ${cnt}...` });
             return courses.filter(c => c?.vimeoUrl)
         })
@@ -126,9 +126,8 @@ const scraper = async ({
         })
         .then(async (courses) => {
             if (!courses.length) return;
-
-            await fs.ensureDir(path.resolve(process.cwd(), 'json'))
-            await fs.writeFile(`./json/courses.json`, JSON.stringify(courses, null, 2), 'utf8')
+            await fs.ensureDir(path.resolve(__dirname, 'json'))
+            await fs.writeFile(path.resolve(__dirname, 'json/courses.json'), JSON.stringify(courses, null, 2), 'utf8')
             if (pdf && images) {
                 const groupedCourses = _(courses)
                     .groupBy('courseName')
