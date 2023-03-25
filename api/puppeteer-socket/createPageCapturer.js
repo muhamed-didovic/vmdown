@@ -42,7 +42,8 @@ module.exports = async (page, link, opts) => {
         createWebsocketMessageListener(page, client)
             .register(async (message) => {
                 const video = parseMessage(message);
-
+                // console.log('video', video);
+                // console.log('----------------->coursesArray', coursesArray);
                 if (video
                     && video?.videoEmbedId
                     && !coursesArray.includes(video.downloadLink)) {
@@ -74,8 +75,9 @@ module.exports = async (page, link, opts) => {
                 if (!opts?.skipLoginCheck) {
                     await page.waitForSelector('button[data-test="signOut"]')
                 }
+                //take courses which are not locked and not in draft state
                 lessonsTitles = await page.evaluate(
-                    () => Array.from(document.body.querySelectorAll('div.lessons-list > div > div.list-item'), (txt, i) => [...txt.classList].includes('unlock') ? ++i : null).filter(Boolean)//.slice(1)
+                    () => Array.from(document.body.querySelectorAll('div.lessons-list > div > div.list-item'), (txt, i) => ([...txt.classList].includes('unlock') & ![...txt.classList].includes('draft')) ? ++i : null).filter(Boolean)//.slice(1)
                 )
                 // console.log('aaaaaaaa', lessonsTitles);
             })

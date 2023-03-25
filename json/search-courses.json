@@ -1,5 +1,9 @@
 [
   {
+    "title": "5 Elegant ways to use Pinia",
+    "value": "https://www.vuemastery.com/courses/5-elegant-ways-to-use-pinia/elegant-pinia-intro"
+  },
+  {
     "title": "Real World Vue 3 (Composition API)",
     "value": "https://www.vuemastery.com/courses/real-world-vue-3-composition-api/building-a-vue-3-app-composition-api"
   },
@@ -16,6 +20,10 @@
     "value": "https://www.vuemastery.com/courses/vue-for-react-devs-similarities/intro-to-vue-for-react-devs"
   },
   {
+    "title": "Proven Pinia Patterns",
+    "value": "https://www.vuemastery.com/courses/proven-pinia-patterns/pinia-patterns-intro"
+  },
+  {
     "title": "Pinia Fundamentals",
     "value": "https://www.vuemastery.com/courses/pinia-fundamentals/fundamentals-what-is-pinia"
   },
@@ -30,14 +38,6 @@
   {
     "title": "Coding Better Composables",
     "value": "https://www.vuemastery.com/courses/coding-better-composables/what-is-a-composable"
-  },
-  {
-    "title": "Pinia Q&A",
-    "value": "https://www.vuemastery.com/courses/pinia-qa/pinia-qa-preview"
-  },
-  {
-    "title": "Nuxt 3 Essentials",
-    "value": "https://www.vuemastery.com/courses/nuxt-3-essentials/nuxt-3-overview"
   },
   {
     "title": "Vue 3 Composition API",
@@ -84,8 +84,16 @@
     "value": "https://www.vuemastery.com/courses/from-vuex-to-pinia/what-is-pinia"
   },
   {
+    "title": "Pinia Q&A",
+    "value": "https://www.vuemastery.com/courses/pinia-qa/pinia-qa-preview"
+  },
+  {
     "title": "Scaling Vue with Nuxt.js",
     "value": "https://www.vuemastery.com/courses/scaling-vue-with-nuxt-js/why-use-nuxt"
+  },
+  {
+    "title": "Nuxt 3 Essentials",
+    "value": "https://www.vuemastery.com/courses/nuxt-3-essentials/nuxt-3-overview"
   },
   {
     "title": "Lightning Fast Builds w/ Vite",

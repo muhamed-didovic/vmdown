@@ -63,9 +63,9 @@ Examples
 // const errorHandler = err => console.error('err:', err)
 
 const getCoursesForSearch = async (searchFromLocalFile) => {
-    if (searchFromLocalFile && await fs.exists(path.resolve(process.cwd(), 'json/search-courses.json'))) {
+    if (searchFromLocalFile && await fs.exists(path.resolve(__dirname, 'json/search-courses.json'))) {
         console.log('LOAD FROM LOCAL SEARCH FILE');
-        return require(path.resolve(process.cwd(), 'json/search-courses.json'))
+        return require(path.resolve(__dirname, 'json/search-courses.json'))
     }
 
     const { body } = await request(`https://www.vuemastery.com/courses/`)
@@ -289,13 +289,13 @@ module.exports = async () => {
         type: 'confirm', message: 'Do you want all courses?', initial: false
     }))) {
         const file = flags.file || await askOrExit({
-            type   : (fileChoices = await folderContents(path.resolve(process.cwd(), 'json'))).length ? 'confirm' : null,
+            type   : (fileChoices = await folderContents(path.resolve(__dirname, 'json'))).length ? 'confirm' : null,
             message: 'Do you want download from a file',
             initial: false
         })
         const filePath = flags.file || await askOrExit({
             type   : (file && fileChoices.length) ? 'autocomplete' : null,
-            message: `Enter a file path eg: ${path.resolve(process.cwd(), 'json/*.json')} `,
+            message: `Enter a file path eg: ${path.resolve(__dirname, 'json/*.json')} `,
             choices: fileChoices,
             //validate: isValidPath
         })
@@ -319,7 +319,7 @@ module.exports = async () => {
         }))
     } else {
         let searchCoursesFile = false;
-        if (await fs.exists(path.resolve(process.cwd(), 'json/search-courses.json'))) {
+        if (await fs.exists(path.resolve(__dirname, 'json/search-courses.json'))) {
             searchCoursesFile = true;
         }
         const foundSearchCoursesFile = await askOrExit({

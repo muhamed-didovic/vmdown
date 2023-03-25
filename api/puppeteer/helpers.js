@@ -132,7 +132,7 @@ const isLogged = async page => {
 const auth = async (page, email, password) => {
 
     const logged = await isLogged(page)
-    console.log('Logged:', logged === 'Sign Out', logged);
+    console.log('Logged:', logged);//logged === 'Sign Out'
     if (logged === 'Sign Out') {
         return;
     }

@@ -7,6 +7,7 @@
 ## Requirement
 - Node 18
 - yt-dlp (https://github.com/yt-dlp/yt-dlp)
+- If you have Apple silicon add: --arch=x64 when you want to install package
 
 ## Install
 ```sh
