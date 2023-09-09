@@ -1,4 +1,4 @@
-// const url = require('url')
+const sanitize = require("sanitize-filename")
 const path = require("path");
 const fs = require("fs-extra");
 const he = require('he')
@@ -135,7 +135,7 @@ module.exports = async (cluster, pageUrl, saveDir, videoFormat, quality, markdow
                                 await delay(5e3) //5e3
                                 await fs.ensureDir(path.join(saveDir, courseName, 'cluster', 'screenshots'))
                                 await $sec.screenshot({
-                                    path          : path.join(saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
+                                    path          : path.join(saveDir, courseName, 'cluster', 'screenshots', `${sanitize(newTitle)}.png`),
                                     type          : 'png',
                                     omitBackground: true,
                                     delay         : '500ms'
@@ -154,7 +154,7 @@ module.exports = async (cluster, pageUrl, saveDir, videoFormat, quality, markdow
                                         txt => txt.outerHTML)[0]
                                 );
                                 await fs.ensureDir(path.join(saveDir, courseName, 'markdown'))
-                                await fs.writeFile(path.join(saveDir, courseName, 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
+                                await fs.writeFile(path.join(saveDir, courseName, 'markdown', `${sanitize(newTitle)}.md`), nhm.translate(markdown), 'utf8')
                             }
                         })(),
                         /*(async () => {
@@ -204,8 +204,8 @@ module.exports = async (cluster, pageUrl, saveDir, videoFormat, quality, markdow
                 return {
                     pageUrl,
                     courseName,
-                    dest    : path.join(saveDir, courseName, `${newTitle}${videoFormat}`),
-                    imgPath : path.join(saveDir, courseName, 'cluster', 'screenshots', `${newTitle}.png`),
+                    dest    : path.join(saveDir, courseName, `${sanitize(newTitle)}${videoFormat}`),
+                    imgPath : path.join(saveDir, courseName, 'cluster', 'screenshots', `${sanitize(newTitle)}.png`),
                     downFolder: path.join(saveDir, courseName),
                     vimeoUrl: iframeSrc //selectedVideo.url
                 };

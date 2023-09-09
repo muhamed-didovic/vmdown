@@ -17,7 +17,7 @@ const Promise = require("bluebird");
 const sitemap = require("../../json/search-courses.json");
 let cnt = 0;
 const launchOptions = {
-    headless         : true, //run false for dev
+    headless         : 'new', //run false for dev
     Ignorehttpserrors: true, // ignore certificate error
     waitUntil        : 'networkidle2',
     defaultViewport  : {

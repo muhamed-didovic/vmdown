@@ -19,18 +19,19 @@ const Promise = require("bluebird");
 
 const scraper = async (opts) => {
     const {
-              email,
-              password,
-              downDir,
-              extension,
-              quality,
-              videos,
-              images,
-              markdown,
-              pdf,
-              overwrite,
-              url = null
-          } = opts
+        email,
+        password,
+        downDir,
+        extension,
+        quality,
+        videos,
+        images,
+        markdown,
+        pdf,
+        overwrite,
+        headless,
+        url = null
+    } = opts
     const courses = url ? sitemap.filter(course => course.value.includes(url)) : sitemap;
 
     if (!courses.length) {
@@ -59,21 +60,21 @@ const scraper = async (opts) => {
 
         ms.add('capture', { text: `Start Puppeteer Capturing...` });
         return await Promise
-            .map(courses, async ({value}) => {
+            .map(courses, async ({ value }) => {
                 return await withPage(browser)(async (page) => {
-                    ms.update('capture', { text: `Sockets Capturing... ${++cnt} of ${courses.length} ${he.decode(value)}` });
+                    ms.update('capture', { text: `Sockets Capturing... ${ ++cnt } of ${ courses.length } ${ he.decode(value) }` });
                     return await createPageCapturer(page, value, opts);
                 });
             }, { concurrency: 7 })
             .then(async (lessons) => {
                 lessons = lessons.flat()
                 console.log('--lessons length', lessons.length);
-                ms.succeed('capture', { text: `Capturing done for ${cnt}...` });
+                ms.succeed('capture', { text: `Capturing done for ${ cnt }...` });
                 await fs.ensureDir(path.resolve(__dirname, 'json'))
                 await fs.writeFile(path.resolve(__dirname, 'json/first-course-puppeteer-socket-raw.json'), JSON.stringify(lessons, null, 2), 'utf8')
                 return lessons;
             })
-    });
+    }, opts);
     console.log('Lessons length:', lessons.length);
 
     return Promise
@@ -130,7 +131,7 @@ const scraper = async (opts) => {
                         }) => await imgs2pdf(
                             images,
                             path.join(downDir, courseName, 'sockets', 'screenshots'),
-                            path.join(downDir, courseName, 'sockets', 'screenshots', `${courseName}.pdf`))
+                            path.join(downDir, courseName, 'sockets', 'screenshots', `${ courseName }.pdf`))
                     )
             }
         })

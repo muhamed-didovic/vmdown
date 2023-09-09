@@ -7,7 +7,7 @@ const puppeteer = require('puppeteer-core')
 const { NodeHtmlMarkdown } = require("node-html-markdown");
 const findChrome = require("chrome-finder");
 const getBrowser = createBrowserGetter(puppeteer, {
-    headless         : true, // Set to false while development
+    headless         : 'new', // Set to false while development
     Ignorehttpserrors: true, // ignore certificate error
     waitUntil        : 'networkidle2',
     defaultViewport  : {

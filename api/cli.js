@@ -28,12 +28,13 @@ Options
     --directory, -d     Directory to save (default: ./videos)
     --framework, -f     Framework to use between nightmare, puppeteer, puppeteer-cluster, puppeteer-socket and playwright (default: puppeteer) (Options available: 'p', 'n', 'pc', 'pw', 'ps)
     --overwrite, -o     Overwrite if resource exists (values: 'yes' or 'no'), default value is 'no'
+    --headless, -h      Enable headless (values: 'yes' or 'no'), default value is 'yes'
     --concurrency, -c
 
 Examples
     $ vmdown
     $ vmdown -a
-    $ vmdown [url] [-e user@gmail.com] [-p password] [-d dirname] [-v true/false] [-m true/false] [-i true/false] [--pdf true/false] [-o yes/no] [-c number]
+    $ vmdown [url] [-e user@gmail.com] [-p password] [-d dirname] [-v true/false] [-m true/false] [-i true/false] [--pdf true/false] [-o yes/no] [-h yes/no] [-c number]
 `, {
     hardRejection: false,
     flags        : {
@@ -51,7 +52,8 @@ Examples
         quality    : { type: 'string', alias: 'q', default: '1080p' },
         concurrency: { type: 'number', alias: 'c', default: 10 },
         framework  : { type: 'string', alias: 'f', default: 'p' },
-        overwrite  : { type: 'string', alias: 'o', default: 'no' }
+        overwrite  : { type: 'string', alias: 'o', default: 'no' },
+        headless  : { type: 'string', alias: 'h', default: 'yes' },
 
     }
 })
@@ -261,6 +263,24 @@ async function commonFlags(flags) {
             initial: 1
         }))
 
+    const headless = (['yes', 'no', 'y', 'n'].includes(flags.headless)
+        ? flags.headless
+        : await askOrExit({
+            type   : 'select',
+            message: 'Enable headless?',
+            choices: [
+                {
+                    title: 'Yes',
+                    value: 'yes'
+                },
+                {
+                    title: 'No',
+                    value: 'no'
+                }
+            ],
+            initial: 1
+        }))
+
     return {
         email,
         password,
@@ -273,7 +293,8 @@ async function commonFlags(flags) {
         quality,
         pdf,
         framework,
-        overwrite
+        overwrite,
+        headless
     };
 }
 

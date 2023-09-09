@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs-extra");
 const he = require('he')
 const colors = require('colors');
-// const delay = require("../delay");
+const sanitize = require("sanitize-filename")
 const Promise = require("bluebird");
 const { NodeHtmlMarkdown } = require('node-html-markdown');
 const { makeScreenshots, extractVimeoUrl, waitDeffered, extractDom } = require("./helpers");
@@ -43,18 +43,18 @@ const scrapePage = async (n, pageUrl, markdown, saveDir, nhm, images, ms, videoF
                     //create markdown
                     if (markdown) {
                         await fs.ensureDir(path.join(saveDir, courseName, 'nightmare', 'markdown'))
-                        await fs.writeFile(path.join(saveDir, courseName, 'nightmare', 'markdown', `${newTitle.replace('/', '\u2215')}.md`), nhm.translate(md), 'utf8')
+                        await fs.writeFile(path.join(saveDir, courseName, 'nightmare', 'markdown', `${sanitize(newTitle)}.md`), nhm.translate(md), 'utf8')
 
                         //save HTML of the page
-                        await createHtmlPage(n, path.join(saveDir, courseName, 'nightmare', 'html'), `${newTitle}`, 'nightmare');
-                        await extractResources(n, path.join(saveDir, courseName, 'nightmare', 'resources'), newTitle, nhm, 'nightmare');
-                        await extractChallenges(n, path.join(saveDir, courseName, 'nightmare', 'challenges'), newTitle, nhm, 'nightmare');
+                        await createHtmlPage(n, path.join(saveDir, courseName, 'nightmare', 'html'), `${sanitize(newTitle)}`, 'nightmare');
+                        await extractResources(n, path.join(saveDir, courseName, 'nightmare', 'resources'), sanitize(newTitle), nhm, 'nightmare');
+                        await extractChallenges(n, path.join(saveDir, courseName, 'nightmare', 'challenges'), sanitize(newTitle), nhm, 'nightmare');
                     }
                 })(),
                 (async () => {
                     //create image of course info
                     if (images) {
-                        await makeScreenshots(n, saveDir, courseName, newTitle.replace('/', '\u2215'), ms)
+                        await makeScreenshots(n, saveDir, courseName, sanitize(newTitle), ms)
                         //remove smaller images
                         await fs.remove(path.join(saveDir, courseName, 's'))
                     }
@@ -77,8 +77,8 @@ const scrapePage = async (n, pageUrl, markdown, saveDir, nhm, images, ms, videoF
             return {
                 pageUrl,
                 courseName,
-                dest      : path.join(saveDir, courseName, `${newTitle.replace('/', '\u2215')}${videoFormat}`),
-                imgPath   : path.join(saveDir, courseName, 'nightmare', 'screenshots', `${newTitle.replace('/', '\u2215')}.png`),
+                dest      : path.join(saveDir, courseName, `${sanitize(newTitle)}${videoFormat}`),
+                imgPath   : path.join(saveDir, courseName, 'nightmare', 'screenshots', `${sanitize(newTitle)}.png`),
                 downFolder: path.join(saveDir, courseName),
                 vimeoUrl  : iframeSrc//selectedVideo.url
             };
@@ -123,7 +123,7 @@ const scrapePage = async (n, pageUrl, markdown, saveDir, nhm, images, ms, videoF
                             //create markdown
                             if (markdown) {
                                 await fs.ensureDir(path.join(saveDir, courseName, 'nightmare', 'markdown'))
-                                await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'nightmare', 'markdown', `${newTitle.replace('/', '\u2215')}.md`), nhm.translate(md), 'utf8')
+                                await fs.writeFile(path.join(process.cwd(), saveDir, courseName, 'nightmare', 'markdown', `${sanitize(newTitle)}.md`), nhm.translate(md), 'utf8')
 
                                 //save HTML of the page
                                 await createHtmlPage(n, path.join(process.cwd(), saveDir, courseName, 'nightmare', 'html'), `${newTitle}`, 'nightmare');
@@ -134,7 +134,7 @@ const scrapePage = async (n, pageUrl, markdown, saveDir, nhm, images, ms, videoF
                         (async () => {
                             //create image of course info
                             if (images) {
-                                await makeScreenshots(n, saveDir, courseName, newTitle.replace('/', '\u2215'), ms)
+                                await makeScreenshots(n, saveDir, courseName, sanitize(newTitle), ms)
                                 //remove smaller images
                                 await fs.remove(path.join(process.cwd(), saveDir, courseName, 's'))
                             }
@@ -157,8 +157,8 @@ const scrapePage = async (n, pageUrl, markdown, saveDir, nhm, images, ms, videoF
                     return {
                         pageUrl,
                         courseName,
-                        dest      : path.join(process.cwd(), saveDir, courseName, `${newTitle.replace('/', '\u2215')}${videoFormat}`),
-                        imgPath   : path.join(process.cwd(), saveDir, courseName, 'nightmare', 'screenshots', `${newTitle.replace('/', '\u2215')}.png`),
+                        dest      : path.join(process.cwd(), saveDir, courseName, `${sanitize(newTitle)}${videoFormat}`),
+                        imgPath   : path.join(process.cwd(), saveDir, courseName, 'nightmare', 'screenshots', `${sanitize(newTitle)}.png`),
                         downFolder: path.join(process.cwd(), saveDir, courseName),
                         vimeoUrl  : iframeSrc//selectedVideo.url
                     };

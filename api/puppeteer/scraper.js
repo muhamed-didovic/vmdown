@@ -17,19 +17,21 @@ const Promise = require('bluebird')
 Bluebird.config({ longStackTraces: true });
 global.Promise = Bluebird*/
 
-const scraper = async ({
-    email,
-    password,
-    downDir,
-    extension,
-    quality,
-    videos,
-    images,
-    markdown,
-    pdf,
-    overwrite,
-    url = null
-}) => {
+const scraper = async (opts) => {
+    const {
+        email,
+        password,
+        downDir,
+        extension,
+        quality,
+        videos,
+        images,
+        markdown,
+        pdf,
+        overwrite,
+        headless,
+        url = null
+    } = opts;
     const courses = url ? sitemap.filter(course => course.value.includes(url)) : sitemap;
 
     if (!courses.length) {
@@ -51,7 +53,7 @@ const scraper = async ({
                 console.log("User successfully logged in.");
                 //await delay(5e3)
             }, 6, 1e3, true)
-        });
+        }, opts);
 
         let cnt = 0;
         ms.add('capture', { text: `Start Puppeteer Capturing...` });
@@ -91,7 +93,7 @@ const scraper = async ({
                 return courses;
             })
 
-    });
+    }, opts);
     console.log('Lessons length:', lessons.length);
     //let cnt = 0;
     return Promise

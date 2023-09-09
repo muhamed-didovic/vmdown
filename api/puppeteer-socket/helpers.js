@@ -4,9 +4,9 @@ const findChrome = require("chrome-finder");
 const fs = require("fs-extra");
 const delay = require("../helpers/delay");
 const path = require("path");
-// const { createDownloadManager } = require("./downloader");
+const sanitize = require("sanitize-filename")
 const remote = require("promisify-remote-file-size");
-const downOverYoutubeDL = require("../helpers/downOverYoutubeDL");
+// const downOverYoutubeDL = require("../helpers/downOverYoutubeDL");
 const { stripHtml } = require("string-strip-html");
 const { retry } = require("../helpers/retry");
 const { NodeHtmlMarkdown } = require('node-html-markdown')
@@ -45,9 +45,9 @@ const v = {
     uploadedToCloudStorage  : true,
     videoEmbedId            : '258707456'
 }
-const withBrowser = async (fn) => {
+const withBrowser = async (fn, opts) => {
     const getBrowser = createBrowserGetter(puppeteer, {
-        headless         : true, //run false for dev
+        headless: opts.headless === 'yes' ? 'new' : false, //run false for dev memo
         Ignorehttpserrors: true, // ignore certificate error
         waitUntil        : 'networkidle2',
         defaultViewport  : {
@@ -116,7 +116,7 @@ const getValidFileName = async (page) => {//fileName
     const newTitle = allTitles.filter(t => t.includes(title))[0]
     // console.log('newTitle', newTitle);
     //fileName.replace(/[<>"/\\|*\u0000-\u001F]/g, "-");
-    return newTitle.replace('/', '\u2215') ///[<>:"/\\|?*\u0000-\u001F]/g
+    return sanitize(newTitle)//.replace('/', '\u2215')) ///[<>:"/\\|?*\u0000-\u001F]/g
 
 }
 

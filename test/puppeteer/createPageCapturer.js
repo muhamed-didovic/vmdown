@@ -11,21 +11,12 @@ global.Promise = Bluebird;
 const createBrowserGetter = require('get-puppeteer-browser')
 const puppeteer = require('puppeteer-core')
 // const puppeteer = require("puppeteer");
-const findChrome = require('chrome-finder')
+// const { auth, withBrowser, withPage, retry } = require("../../api/puppeteer/helpers");
 
 //const getBrowser = createBrowserGetter(puppeteer, { executablePath: findChrome(), headless: true, slowMo: 0 })
+const findChrome = require('chrome-finder')
 const getBrowser = createBrowserGetter(puppeteer, {
-    /* executablePath: findChrome(),
-     headless      : true, // Set to false while development
-     debounce      : 500,
-     slowMo: 0,
-
-     defaultViewport: null,
-     args           : [
-         '--no-sandbox',
-         '--start-maximized', // Start in maximized state
-     ],*/
-    headless         : true, //run false for dev
+    headless         : 'new', //run false for dev
     Ignorehttpserrors: true, // ignore certificate error
     waitUntil        : 'networkidle2',
     defaultViewport  : {

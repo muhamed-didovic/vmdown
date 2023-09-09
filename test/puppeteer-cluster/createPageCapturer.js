@@ -4,7 +4,7 @@ const { getPageData } = require("../../api/puppeteer-cluster/helpers");
 const { Cluster } = require("puppeteer-cluster");
 const findChrome = require("chrome-finder");
 const launchOptions = {
-    headless         : true, //run false for dev
+    headless         : 'new', //run false for dev
     Ignorehttpserrors: true, // ignore certificate error
     waitUntil        : 'networkidle2',
     defaultViewport  : {

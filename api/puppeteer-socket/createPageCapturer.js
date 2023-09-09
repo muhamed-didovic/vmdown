@@ -60,7 +60,6 @@ module.exports = async (page, link, opts) => {
                     // console.log('click', `div.lessons-list > div > div:nth-child(${c})`);
                     await page.click(`div.lessons-list > div > div:nth-child(${c})`)
                     await delay(2e3)
-
                 }
             })
 

@@ -15,7 +15,7 @@ const path = require("path");
 const { formatBytes } = require("../helpers/writeWaitingInfo");
 const findVideoUrl = require("../helpers/findVideoUrl");
 
-const withBrowser = async (fn) => {
+const withBrowser = async (fn, opts) => {
     //const browser = await puppeteer.launch({/* ... */});
     const getBrowser = createBrowserGetter(puppeteer, {
         /*
@@ -25,7 +25,7 @@ const withBrowser = async (fn) => {
             '--start-maximized', // Start in maximized state
         ],*/
 
-        headless         : true, //run false for dev
+        headless: opts.headless === 'yes' ? 'new' : false, //run false for dev memo
         Ignorehttpserrors: true, // ignore certificate error
         waitUntil        : 'networkidle2',
         defaultViewport  : {

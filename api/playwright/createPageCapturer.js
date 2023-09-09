@@ -7,6 +7,7 @@ const retry = require("../helpers/retry")
 const { NodeHtmlMarkdown } = require('node-html-markdown');
 const createHtmlPage = require("../helpers/createHtmlPage");
 const { extractResources, extractChallenges } = require("../helpers/extractors");
+const sanitize = require("sanitize-filename")
 const Promise = require("bluebird");
 
 const getCourseName = pageUrl => {
@@ -93,7 +94,7 @@ async function scrapePage(page, pageUrl, images, saveDir, markdown, nhm, videoFo
     // console.log('title', title);
     const allTitles = await page.$$eval('h4.list-item-title', nodes => nodes.map(n => n.textContent))
     let newTitle = allTitles.filter(t => t.includes(title))[0]
-    newTitle = he.decode(newTitle.replace('/', '\u2215'))
+    newTitle = sanitize(newTitle)//he.decode(newTitle.replace('/', '\u2215'))
     // console.log('newTitle', newTitle);
 
     const [,] = await Promise //, selectedVideo
@@ -131,7 +132,7 @@ async function scrapePage(page, pageUrl, images, saveDir, markdown, nhm, videoFo
                     await retry(async () => {//return
                         // console.log('screenshot:', path.join(process.cwd(), saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`));
                         await $sec.screenshot({
-                            path          : path.join(saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
+                            path          : path.join(saveDir, courseName, 'playwright', 'screenshots', `${sanitize(newTitle)}.png`),
                             omitBackground: true,
                             timeout       : 30e3
                         })
@@ -157,11 +158,11 @@ async function scrapePage(page, pageUrl, images, saveDir, markdown, nhm, videoFo
                 if (markdown) {
                     let markdown = await page.$eval('#lessonContent', txt => txt.outerHTML)
                     await fs.ensureDir(path.join(saveDir, courseName, 'playwright', 'markdown'))
-                    await fs.writeFile(path.join(saveDir, courseName, 'playwright', 'markdown', `${newTitle}.md`), nhm.translate(markdown), 'utf8')
+                    await fs.writeFile(path.join(saveDir, courseName, 'playwright', 'markdown', `${sanitize(newTitle)}.md`), nhm.translate(markdown), 'utf8')
                     //save htmlw
-                    await createHtmlPage(page, path.join(saveDir, courseName, 'playwright', 'html'), `${newTitle}`);
-                    await extractResources(page, path.join(saveDir, courseName, 'playwright', 'resources'), newTitle, nhm);
-                    await extractChallenges(page, path.join(saveDir, courseName, 'playwright', 'challenges'), newTitle, nhm);
+                    await createHtmlPage(page, path.join(saveDir, courseName, 'playwright', 'html'), `${sanitize(newTitle)}`);
+                    await extractResources(page, path.join(saveDir, courseName, 'playwright', 'resources'), sanitize(newTitle), nhm);
+                    await extractChallenges(page, path.join(saveDir, courseName, 'playwright', 'challenges'), sanitize(newTitle), nhm);
                 }
             })(),
             /*(async () => {
@@ -217,8 +218,8 @@ async function scrapePage(page, pageUrl, images, saveDir, markdown, nhm, videoFo
     return {
         pageUrl,
         courseName,
-        dest      : path.join(saveDir, courseName, `${newTitle}${videoFormat}`),
-        imgPath   : path.join(saveDir, courseName, 'playwright', 'screenshots', `${newTitle}.png`),
+        dest      : path.join(saveDir, courseName, `${sanitize(newTitle)}${videoFormat}`),
+        imgPath   : path.join(saveDir, courseName, 'playwright', 'screenshots', `${sanitize(newTitle)}.png`),
         downFolder: path.join(saveDir, courseName),
         vimeoUrl  : iframeSrc//selectedVideo.url
     };
