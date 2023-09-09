@@ -27,6 +27,7 @@ const scraper = async ({
     markdown,
     pdf,
     overwrite,
+    headless,
     url = null
 }) => {
     const courses = url ? sitemap.filter(course => course.value.includes(url)) : sitemap;
@@ -38,7 +39,7 @@ const scraper = async ({
 
     const browser = await playwright.chromium.launch({
         // devtools: true
-        headless: true, // Set to false while development
+        headless: (headless === 'yes' ? true : false), // Set to false while development
         Ignorehttpserrors: true, // ignore certificate error
         waitUntil        : 'networkidle2',
         defaultViewport  : {
@@ -72,7 +73,9 @@ const scraper = async ({
     await retry(async () => {//return
         await page.goto("https://www.vuemastery.com", { waitUntil: 'networkidle', timeout: 30e3 })// wait until page load
         await delay(1e3)
+        console.log('retry login');
         await auth(page, email, password);//const a =
+        console.log('retry login done');
 
     }, 6, 1e3, true)
 
@@ -80,11 +83,12 @@ const scraper = async ({
     let cnt = 0;
     await Promise
         .map(courses, async ({value}) => {//.slice(0, 10)
-            //check is logged and if not logs user
+            console.log('check is logged and if not logs user');
             await auth(page, email, password);
-
+            console.log('check is logged is done');
             //check is logged user
-            await page.waitForSelector('#__layout > div > div > div > header > div > nav > div.navbar-secondary > a', { timeout: 15e3 })
+            //#__layout img.navbar-profile
+            await page.waitForSelector('#__layout img.navbar-profile', { timeout: 15e3 })
 
             ms.update('capture', { text: `Playwright Capturing... ${++cnt} of ${courses.length} ${he.decode(value)}` });
             return await createPageCapturer(context, value, downDir, extension, quality, markdown, images)

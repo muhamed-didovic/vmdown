@@ -6,39 +6,52 @@ const ms = new Spinnies();
 
 const isLogged = async page => {
     try {
-        const [notLogged, logged] = await Promise.all([
-            (async () => {
-                // check is 'Login' visible
-                try {
-                    let text = await page.$eval('#__layout > div > div > div > header > div > nav > div.navbar-secondary.notlogged > button.button.primary', txt => txt.textContent);
-                    return text === 'Login'
-                } catch (e) {
-                    //console.log('1111', e);
-                    return false;
-                }
-
-            })(),
+        const [logged ] = await Promise.all([//notLogged,
+            // (async () => {
+            //     // check is 'Login' visible
+            //     try {
+            //         let text = await page.$eval('#__layout > div > div > div.l-header > header > div > nav > div.navbar-secondary > button.button.primary.-small', txt => txt.textContent);
+            //         console.log('111', text);
+            //         return text === 'Login'
+            //     } catch (e) {
+            //         //console.log('1111', e);
+            //         return false;
+            //     }
+            //
+            // })(),
+            // (async () => {
+            //     //check if "Sign out" is visible
+            //     try {
+            //         const text = await page.$eval('#__layout > div > div > div.l-header > header > div > nav > div.navbar-secondary > button.button.primary.-small', elem => elem.innerText)
+            //         console.log('222', text);
+            //         return text === 'Sign out'
+            //     } catch (e) {
+            //         //console.log('22222', e);
+            //         return false;
+            //     }
+            // })(),
             (async () => {
                 //check if "Sign out" is visible
                 try {
-                    const text = await page.$eval('#__layout > div > div > div > header > div > nav > div.navbar-secondary > button', elem => elem.innerText)
-                    return text === 'Sign Out'
+                    const text = await page.$eval(' #__layout > div > nav > div:nth-child(2) > div > span', elem => elem.innerText)
+                    return text === 'Sign out'
                 } catch (e) {
                     //console.log('22222', e);
                     return false;
                 }
             })(),
+
         ])
 
-        // console.log('text', { notLogged, logged });
+        // console.log('--->text', logged);//{ logged, notLogged }
 
         /*if (notLogged === 'Login') {
             return true
         }
         return false*/
-        return logged && !notLogged;
+        return logged //&& !notLogged;
     } catch (e) {
-        //console.log('-----', e);
+        // console.log('-----', e);
         return false;
     }
 };
@@ -51,24 +64,27 @@ const auth = async (page, email, password) => {
     }
 
     const logged = await isLogged(page)
+    console.log('auth isLogged:', logged);
     if (logged) {
         return;
     }
     const name = `login_${Math.random().toString().replace(/\./,'')}`
     ms.add(name, { text: `Checking authentication...` });
     // ms.update(name, { text: "User is not logged in, trying login...." });
-    await page.waitForSelector('text=Login')
-    await page.click('text=Login')
+    //#__layout > div > div > div.l-header > header > div > nav > div.navbar-secondary > button.button.primary.-small
+    await page.waitForSelector('div.navbar-secondary > button.button.primary.-small')
+    await page.click('div.navbar-secondary > button.button.primary.-small')
 
     await page.fill('form > div:nth-child(3) > input', email)
     await page.fill('form > div.form-group.-inline > input', password)
     await page.click('form > div.form-actions > button')
-    await page.waitForSelector('#__layout > div > div > div > header > div > nav > div.navbar-secondary > a')
-    const text = await page.$eval('#__layout > div > div > div > header > div > nav > div.navbar-secondary > button', elem => {
+    await page.waitForSelector('#__layout img.navbar-profile')
+    //
+    const text = await page.$eval('#__layout > div > nav > div:nth-child(2) > div > span', elem => {
         return elem.innerText;
     })
-    // console.log('text', text);
-    if (text !== 'Sign Out') {
+    console.log('auth text:', text);
+    if (text !== 'Sign out') {
         // ms.fail(name, { text: "Cannot login. Check your user credentials. \n WARNING: Just free videos will be downloaded" });
         ms.remove(name)
         throw new Error('Auth failed')
