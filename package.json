@@ -1,6 +1,6 @@
 {
     "name": "vmdown",
-    "version": "0.17.1",
+    "version": "0.17.2",
     "description": "Downloader and scraper for vuemastery.com",
     "main": "index.js",
     "scripts": {
@@ -91,5 +91,8 @@
         "type": "git",
         "url": "git://github.com/muhamed-didovic/vmdown.git"
     },
-    "license": "MIT"
+    "license": "MIT",
+    "ava": {
+        "timeout": "5m"
+    }
 }

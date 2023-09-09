@@ -1,43 +1,43 @@
 [
   {
-    "title": "5 Elegant ways to use Pinia",
-    "value": "https://www.vuemastery.com/courses/5-elegant-ways-to-use-pinia/elegant-pinia-intro"
+    "title": "Programming an AI-Powered App",
+    "value": "https://www.vuemastery.com/courses/programming-an-ai-powered-app/ai-powered-app-introduction"
+  },
+  {
+    "title": "Quick Tests with Vitest",
+    "value": "https://www.vuemastery.com/courses/quick-tests-with-vitest/intro-to-vitest"
+  },
+  {
+    "title": "Touring Vue Router (Options API)",
+    "value": "https://www.vuemastery.com/courses/touring-vue-router/vue-router-introduction"
+  },
+  {
+    "title": "Touring Vue Router (Composition API)",
+    "value": "https://www.vuemastery.com/courses/touring-vue-router-composition-api/introduction-composition-api"
+  },
+  {
+    "title": "Q&A with Evan You",
+    "value": "https://www.vuemastery.com/courses/qa-with-evan-you/what-is-your-daily-routine"
   },
   {
     "title": "Real World Vue 3 (Composition API)",
     "value": "https://www.vuemastery.com/courses/real-world-vue-3-composition-api/building-a-vue-3-app-composition-api"
   },
   {
-    "title": "Vue for React Devs: Differences",
-    "value": "https://www.vuemastery.com/courses/vue-for-react-devs-differences/reacting-to-changes"
-  },
-  {
-    "title": "Firebase with Vue 3 and VueFire",
-    "value": "https://www.vuemastery.com/courses/firebase-with-vue3-and-vuefire/firebase-introduction"
-  },
-  {
-    "title": "Vue for React Devs: Similarities",
-    "value": "https://www.vuemastery.com/courses/vue-for-react-devs-similarities/intro-to-vue-for-react-devs"
-  },
-  {
-    "title": "Proven Pinia Patterns",
-    "value": "https://www.vuemastery.com/courses/proven-pinia-patterns/pinia-patterns-intro"
-  },
-  {
-    "title": "Pinia Fundamentals",
-    "value": "https://www.vuemastery.com/courses/pinia-fundamentals/fundamentals-what-is-pinia"
-  },
-  {
-    "title": "Utility-First CSS with Tailwind",
-    "value": "https://www.vuemastery.com/courses/utility-first-css-with-tailwind/what-is-utility-first-css"
-  },
-  {
-    "title": "Build a Blog w/ Nuxt 3 Content",
-    "value": "https://www.vuemastery.com/courses/build-a-blog-nuxt3-content/nuxt3-blog-introduction"
+    "title": "Real World Vue 3 (Options API)",
+    "value": "https://www.vuemastery.com/courses/real-world-vue3/rwv3-orientation"
   },
   {
     "title": "Coding Better Composables",
     "value": "https://www.vuemastery.com/courses/coding-better-composables/what-is-a-composable"
+  },
+  {
+    "title": "From Vuex to Pinia",
+    "value": "https://www.vuemastery.com/courses/from-vuex-to-pinia/what-is-pinia"
+  },
+  {
+    "title": "Lightning Fast Builds w/ Vite",
+    "value": "https://www.vuemastery.com/courses/lightning-fast-builds-with-vite/intro-to-vite"
   },
   {
     "title": "Vue 3 Composition API",
@@ -64,28 +64,40 @@
     "value": "https://www.vuemastery.com/courses/unit-testing-vue-3/what-to-test-vue-3"
   },
   {
+    "title": "Firebase with Vue 3 and VueFire",
+    "value": "https://www.vuemastery.com/courses/firebase-with-vue3-and-vuefire/firebase-introduction"
+  },
+  {
     "title": "Intro to Vue 3",
     "value": "https://www.vuemastery.com/courses/intro-to-vue-3/intro-to-vue3"
   },
   {
-    "title": "Real World Vue 3 (Options API)",
-    "value": "https://www.vuemastery.com/courses/real-world-vue3/rwv3-orientation"
-  },
-  {
-    "title": "Touring Vue Router",
-    "value": "https://www.vuemastery.com/courses/touring-vue-router/vue-router-introduction"
+    "title": "Pinia Fundamentals",
+    "value": "https://www.vuemastery.com/courses/pinia-fundamentals/fundamentals-what-is-pinia"
   },
   {
     "title": "Vuex Fundamentals",
     "value": "https://www.vuemastery.com/courses/vuex-fundamentals/vuex4-intro-to-vuex"
   },
   {
-    "title": "From Vuex to Pinia",
-    "value": "https://www.vuemastery.com/courses/from-vuex-to-pinia/what-is-pinia"
+    "title": "Vue for React Devs: Similarities",
+    "value": "https://www.vuemastery.com/courses/vue-for-react-devs-similarities/intro-to-vue-for-react-devs"
+  },
+  {
+    "title": "Vue for React Devs: Differences",
+    "value": "https://www.vuemastery.com/courses/vue-for-react-devs-differences/reacting-to-changes"
   },
   {
     "title": "Pinia Q&A",
     "value": "https://www.vuemastery.com/courses/pinia-qa/pinia-qa-preview"
+  },
+  {
+    "title": "Proven Pinia Patterns",
+    "value": "https://www.vuemastery.com/courses/proven-pinia-patterns/pinia-patterns-intro"
+  },
+  {
+    "title": "5 Elegant ways to use Pinia",
+    "value": "https://www.vuemastery.com/courses/5-elegant-ways-to-use-pinia/elegant-pinia-intro"
   },
   {
     "title": "Scaling Vue with Nuxt.js",
@@ -96,8 +108,12 @@
     "value": "https://www.vuemastery.com/courses/nuxt-3-essentials/nuxt-3-overview"
   },
   {
-    "title": "Lightning Fast Builds w/ Vite",
-    "value": "https://www.vuemastery.com/courses/lightning-fast-builds-with-vite/intro-to-vite"
+    "title": "Build a Blog w/ Nuxt 3 Content",
+    "value": "https://www.vuemastery.com/courses/build-a-blog-nuxt3-content/nuxt3-blog-introduction"
+  },
+  {
+    "title": "Nuxt 3 Middleware",
+    "value": "https://www.vuemastery.com/courses/nuxt-3-middleware/middleware-introduction"
   },
   {
     "title": "Intro to Vue 3 + TypeScript",
@@ -146,5 +162,17 @@
   {
     "title": "Token-Based Authentication",
     "value": "https://www.vuemastery.com/courses/token-based-authentication/intro-to-authentication"
+  },
+  {
+    "title": "Animating Vue",
+    "value": "https://www.vuemastery.com/courses/animating-vue/why-animate"
+  },
+  {
+    "title": "Progressive Web Apps w/ Vue 3",
+    "value": "https://www.vuemastery.com/courses/progressive-web-apps-vue-3/what-are-progressive-web-apps"
+  },
+  {
+    "title": "Beautify with Vuetify",
+    "value": "https://www.vuemastery.com/courses/beautify-with-vuetify/getting-started-with-vuetify"
   }
 ]
