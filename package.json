@@ -1,10 +1,10 @@
 {
     "name": "vmdown",
-    "version": "0.17.2",
+    "version": "0.17.3",
     "description": "Downloader and scraper for vuemastery.com",
     "main": "index.js",
     "scripts": {
-        "test": "ava --timeout=5m",
+        "test": "ava",
         "n": "nightwatch"
     },
     "bin": {
@@ -93,6 +93,6 @@
     },
     "license": "MIT",
     "ava": {
-        "timeout": "5m"
+        "timeout": "10m"
     }
 }

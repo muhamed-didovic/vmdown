@@ -48,6 +48,7 @@ test.after.always(() => {
 })
 
 test('capturePage puppeteer', async t => {
+    // t.timeout(100e3);
     cluster = await Cluster.launch(clusterLanuchOptions)
     await cluster.task(async ({ page, data }) => {
         return await getPageData(data, page);
