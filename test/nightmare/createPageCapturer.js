@@ -49,10 +49,10 @@ test.after.always(() => {
     fs.removeSync(path.join(__dirname,  'intro-to-vue-3'),  { recursive: true, force: true });//, { recursive: true, force: true }
 })
 
-test.skip('capturePage nightmare', async t => {
-    console.log('11111');
+test('capturePage nightmare', async t => {
+
     const res1 = await scrape('https://www.vuemastery.com/courses/intro-to-vue-3/intro-to-vue3', '720p')
-    console.log('res1', res1);
+    console.log('nigtmare res1:', res1);
 
     t.is(res1.length, 11)
     t.true(fs.existsSync(res1[0].imgPath))

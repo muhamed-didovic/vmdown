@@ -367,6 +367,7 @@ async function scrapePage(page, pageUrl, markdown, saveDir, nhm, images, videoFo
 	await extractChallenges(page, path.join(saveDir, courseName, 'cluster', 'challenges'), sanitize(newTitle), nhm);
 
 	return {
+		allTitles,
 		pageUrl,
 		courseName,
 		dest: path.join(saveDir, courseName, `${ sanitize(newTitle) }${ videoFormat }`),
@@ -489,5 +490,6 @@ module.exports = {
 	retry,
 	getPageData,
 	extractVimeoUrl,
-	vimeoRequest
+	vimeoRequest,
+	scrapePage
 };
