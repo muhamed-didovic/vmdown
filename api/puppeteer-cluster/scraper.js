@@ -24,7 +24,8 @@ const launchOptions = {
 		width: 1920,
 		height: 1080
 	},
-	// timeout          : 63e3,
+	timeout: 180000e3,
+	protocolTimeout: 180000e3,
 	args: [
 		'--no-sandbox',
 		'--start-maximized',
