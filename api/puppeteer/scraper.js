@@ -70,7 +70,7 @@ const scraper = async (opts) => {
                     ms.update('capture', { text: `Puppeteer Capturing... ${++cnt} of ${courses.length} ${value}` });
                     const lessons = await createPageCapturer(browser, page, value, downDir, extension, quality, markdown, images)
 
-                    await Promise.map(lessons, async (lesson, index) => {
+                    videos && await Promise.map(lessons, async (lesson, index) => {
                         if (lesson?.vimeoUrl) {
                             await downOverYoutubeDL({
                                 ...lesson,
