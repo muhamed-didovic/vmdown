@@ -1,98 +1,98 @@
 {
-    "name": "vmdown",
-    "version": "0.17.8",
-    "description": "Downloader and scraper for vuemastery.com",
-    "main": "index.js",
-    "scripts": {
-        "test": "ava --timeout=3m",
-        "n": "nightwatch"
-    },
-    "bin": {
-        "vmdown": "index.js"
-    },
-    "directories": {
-        "api": "api",
-        "test": "test"
-    },
-    "files": [
-        "api",
-        "index.js",
-        "json/search-courses.json"
-    ],
-    "engines": {
-        "node": ">= 11"
-    },
-    "keywords": [
-        "VueMastery-download",
-        "VueMastery-scrape",
-        "VueMastery-downloader",
-        "VueMastery-scraper",
-        "VueMastery.com-download",
-        "VueMastery.com-scrape",
-        "VueMastery.com-downloader",
-        "VueMastery.com-scraper",
-        "VueMastery"
-    ],
-    "dependencies": {
-        "@byungi/p-delay": "^0.2.0",
-        "@byungi/p-retry": "^0.2.2",
-        "axios": "^1.5.0",
-        "bluebird": "^3.7.2",
-        "cheerio": "^1.0.0-rc.12",
-        "chrome-finder": "^1.0.7",
-        "chromedriver": "^116.0.0",
-        "cli-progress": "^3.12.0",
-        "colors": "^1.4.0",
-        "dreidels": "^0.5.2",
-        "filenamify": "^5.1.1",
-        "filesize": "^10.0.12",
-        "fs-extra": "^11.1.1",
-        "fuse.js": "^6.6.2",
-        "geckodriver": "^3.2.0",
-        "get-puppeteer-browser": "^1.1.1",
-        "he": "^1.2.0",
-        "image-size": "^1.0.2",
-        "is-valid-path": "^0.1.1",
-        "lodash": "^4.17.21",
-        "meow": "^9.0.0",
-        "nightmare": "^3.0.2",
-        "nightmare-wait-for-url": "^1.0.0",
-        "node-html-markdown": "^1.3.0",
-        "p-limit": "^3.1.0",
-        "pdfkit": "^0.13.0",
-        "playwright": "^1.37.1",
-        "process": "^0.11.10",
-        "progress": "^2.0.3",
-        "promisify-remote-file-size": "^0.1.1",
-        "prompts": "^2.4.2",
-        "puppeteer": "^21.1.1",
-        "puppeteer-cluster": "^0.23.0",
-        "puppeteer-core": "^21.1.1",
-        "request": "^2.88.2",
-        "request-progress": "^3.0.0",
-        "requestretry": "^7.1.0",
-        "sanitize-filename": "^1.6.3",
-        "sharp": "^0.32.0",
-        "string-strip-html": "^8.4.0",
-        "tempy": "^1.0.1",
-        "turndown": "^7.1.2",
-        "util-is-email": "^1.0.0",
-        "vo": "^4.0.2",
-        "youtube-dl-wrap": "^2.1.1",
-        "yt-dlp-wrap": "^2.3.11",
-        "yt-dlp-wrap-extended": "^2.3.15",
-        "ytdl-core": "^4.11.5"
-    },
-    "devDependencies": {
-        "ava": "^5.3.1"
-    },
-    "author": "Muhamed Didovic (github.com/muhamed-didovic)",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/muhamed-didovic/vmdown.git"
-    },
-    "license": "MIT",
-    "ava": {
-        "timeout": "3m"
-    }
+  "name": "vmdown",
+  "version": "0.18.0",
+  "description": "Downloader and scraper for vuemastery.com",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava --timeout=3m",
+    "n": "nightwatch"
+  },
+  "bin": {
+    "vmdown": "index.js"
+  },
+  "directories": {
+    "api": "api",
+    "test": "test"
+  },
+  "files": [
+    "api",
+    "index.js",
+    "json/search-courses.json"
+  ],
+  "engines": {
+    "node": ">= 11"
+  },
+  "keywords": [
+    "VueMastery-download",
+    "VueMastery-scrape",
+    "VueMastery-downloader",
+    "VueMastery-scraper",
+    "VueMastery.com-download",
+    "VueMastery.com-scrape",
+    "VueMastery.com-downloader",
+    "VueMastery.com-scraper",
+    "VueMastery"
+  ],
+  "dependencies": {
+    "@byungi/p-delay": "^0.2.0",
+    "@byungi/p-retry": "^0.2.2",
+    "axios": "^1.6.1",
+    "bluebird": "^3.7.2",
+    "cheerio": "^1.0.0-rc.12",
+    "chrome-finder": "^1.0.7",
+    "chromedriver": "^116.0.0",
+    "cli-progress": "^3.12.0",
+    "colors": "^1.4.0",
+    "dreidels": "^0.5.2",
+    "filenamify": "^5.1.1",
+    "filesize": "^10.1.0",
+    "fs-extra": "^11.1.1",
+    "fuse.js": "^6.6.2",
+    "geckodriver": "^3.2.0",
+    "get-puppeteer-browser": "^1.1.1",
+    "he": "^1.2.0",
+    "image-size": "^1.0.2",
+    "is-valid-path": "^0.1.1",
+    "lodash": "^4.17.21",
+    "meow": "^9.0.0",
+    "nightmare": "^3.0.2",
+    "nightmare-wait-for-url": "^1.0.0",
+    "node-html-markdown": "^1.3.0",
+    "p-limit": "^3.1.0",
+    "pdfkit": "^0.13.0",
+    "playwright": "^1.37.1",
+    "process": "^0.11.10",
+    "progress": "^2.0.3",
+    "promisify-remote-file-size": "^0.1.1",
+    "prompts": "^2.4.2",
+    "puppeteer": "^21.5.1",
+    "puppeteer-cluster": "^0.23.0",
+    "puppeteer-core": "^21.5.1",
+    "request": "^2.88.2",
+    "request-progress": "^3.0.0",
+    "requestretry": "^7.1.0",
+    "sanitize-filename": "^1.6.3",
+    "sharp": "^0.32.0",
+    "string-strip-html": "^8.4.0",
+    "tempy": "^1.0.1",
+    "turndown": "^7.1.2",
+    "util-is-email": "^1.0.0",
+    "vo": "^4.0.2",
+    "youtube-dl-wrap": "^2.1.1",
+    "yt-dlp-wrap": "^2.3.12",
+    "yt-dlp-wrap-extended": "^2.3.15",
+    "ytdl-core": "^4.11.5"
+  },
+  "devDependencies": {
+    "ava": "^5.3.1"
+  },
+  "author": "Muhamed Didovic (github.com/muhamed-didovic)",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/muhamed-didovic/vmdown.git"
+  },
+  "license": "MIT",
+  "ava": {
+    "timeout": "3m"
+  }
 }

@@ -19,10 +19,12 @@ async function extractResources(page, dest, title, nhm, scraper) {
         );
     }
     //console.log('html', html);
-    if (html) {
-        await fs.ensureDir(dest);
-        await fs.writeFile(path.join(dest, `${title}.md`), nhm.translate(html), 'utf8')
-    }
+    // if (html) {
+    //     await fs.ensureDir(dest);
+    //     await fs.writeFile(path.join(dest, `${title}.md`), nhm.translate(html), 'utf8')
+    // }
+
+    return html;
 }
 
 async function extractChallenges(page, dest, title, nhm, scraper) {
@@ -41,10 +43,12 @@ async function extractChallenges(page, dest, title, nhm, scraper) {
     }
 
     // console.log('html', html);
-    if (html) {
-        await fs.ensureDir(dest);
-        await fs.writeFile(path.join(dest, `${title}.md`), nhm.translate(html), 'utf8')
-    }
+    // if (html) {
+    //     await fs.ensureDir(dest);
+    //     await fs.writeFile(path.join(dest, `${title}.md`), nhm.translate(html), 'utf8')
+    // }
+
+    return html;
 }
 
 module.exports = {

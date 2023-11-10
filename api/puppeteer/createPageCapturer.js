@@ -110,6 +110,7 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
             }*/
 
             const newTitle = allTitles.filter(t => t.includes(title))[0]
+            console.log(`parsing page: ${newTitle} URL: ${pageUrl}`);
 
             if (images) {
                 await page.waitForSelector('#lessonContent')
@@ -126,20 +127,21 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
                 await delay(1e3) //5e3
                 await page.waitForTimeout(1e3)
                 await fs.ensureDir(path.join(saveDir, courseName, 'puppeteer', 'screenshots'))
-                await $sec.screenshot({
+               /* await $sec.screenshot({
                     path                 : path.join(saveDir, courseName, 'puppeteer', 'screenshots', `${sanitize(newTitle)}.png`),
                     type                 : 'png',
                     omitBackground       : true,
                     delay                : '500ms',
                     captureBeyondViewport: false
-                })
-                /* await delay(2e3) //5e3
+                })*/
+                 await delay(1e3) //5e3
                  await page.screenshot({
-                     path: path.join(saveDir, courseName, 'puppeteer', 'screenshots', `${newTitle}-full.png`),
-                     fullPage: true,
-                     delay: '500ms', // just wait between the fullPage resize and the actual screenshot creation
-                     captureBeyondViewport: false
-                 });*/
+                     path                 : path.join(saveDir, courseName, 'puppeteer', 'screenshots', `${sanitize(newTitle)}.png`),
+                     type          : 'png',
+                     // omitBackground: true,
+                     // delay         : '500ms',
+                     fullPage      : true,
+                 });
                 await delay(1e3) //5e3
                 await page.waitForTimeout(1e3)
                 //return Promise.resolve();
@@ -155,7 +157,11 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
                         txt => txt.outerHTML)[0]
                 );
                 await fs.ensureDir(path.join(saveDir, courseName, 'puppeteer', 'markdown'))
-                await fs.writeFile(path.join(saveDir, courseName, 'puppeteer', 'markdown', `${sanitize(newTitle)}.md`), nhm.translate(markdown), 'utf8')
+
+                const resources = await extractResources(page, path.join(saveDir, courseName, 'puppeteer', 'resources'), sanitize(newTitle), nhm);
+                const challenges = await extractChallenges(page, path.join(saveDir, courseName, 'puppeteer', 'challenges'), sanitize(newTitle), nhm);
+
+                await fs.writeFile(path.join(saveDir, courseName, 'puppeteer', 'markdown', `${sanitize(newTitle)}.md`), nhm.translate(resources + challenges + markdown), 'utf8')
                 await delay(1e3) //5e3
                 //return Promise.resolve();
             }
@@ -169,8 +175,8 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
             );*/
 
             await createHtmlPage(page, path.join(saveDir, courseName, 'puppeteer', 'html'), `${sanitize(newTitle)}`);
-            await extractResources(page, path.join(saveDir, courseName, 'puppeteer', 'resources'), sanitize(newTitle), nhm);
-            await extractChallenges(page, path.join(saveDir, courseName, 'puppeteer', 'challenges'), sanitize(newTitle), nhm);
+            // await extractResources(page, path.join(saveDir, courseName, 'puppeteer', 'resources'), sanitize(newTitle), nhm);
+            // await extractChallenges(page, path.join(saveDir, courseName, 'puppeteer', 'challenges'), sanitize(newTitle), nhm);
             //const selectedVideo = await vimeoRequest(pageUrl, iframeSrc)
 
             /*const [, , selectedVideo] = await Promise.all([
@@ -290,12 +296,15 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
     await page.goto(pageUrl, { waitUntil: ["networkidle2"], timeout: 61e3 });
 
     const lessons = await scrapePage(page, pageUrl, images, saveDir, markdown, nhm, videoFormat);
+
     // console.log('lessons', lessons);
     const lessonsTitles = await page.evaluate(
         () => Array.from(document.body.querySelectorAll('div.lessons-list > div > div.list-item'), (txt, i) => [...txt.classList].includes('unlock') ? ++i : null).filter(Boolean)//.slice(1)
     );
     // console.log('lessonsTitles slice:', lessonsTitles);
     const res =  await Promise.mapSeries(lessonsTitles.slice(1), async (lessonsTitle) => {
+
+        // ms.update('capture', { text: `[Puppeteer] parsing page number: ${lessonsTitle}`});
         //click on link in the menu
         // console.log('link', `div.lessons-list > div > div:nth-child(${index+2})`, lessonsTitle);
         await page.click(`div.lessons-list > div > div:nth-child(${lessonsTitle})`)

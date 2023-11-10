@@ -91,7 +91,7 @@ const getCoursesForSearch = async (searchFromLocalFile) => {
 }
 const askOrExit = question => prompts({ name: 'value', ...question }, { onCancel: () => process.exit(0) }).then(r => r.value);
 
-const folderContents = async (folder) => {
+/*const folderContents = async (folder) => {
     const options = [];
     await fs.readdir(folder, function (err, files) {
         //handling error
@@ -107,6 +107,18 @@ const folderContents = async (folder) => {
         });
     });
     return options;
+}*/
+const folderContents = async (folder) => {
+    const files = await fs.readdir(folder)
+    if (!files.length) {
+        console.warn('No files found for download by file')
+        return;
+    }
+    console.log(`found some files: ${files.length} in folder: ${folder}`);
+    return files.map(file => ({
+        title: file,
+        value: path.join(folder, file)
+    }))
 }
 
 async function commonFlags(flags) {
@@ -299,9 +311,10 @@ async function commonFlags(flags) {
 }
 
 module.exports = async () => {
-    console.log('__dirname ', __dirname );
-    console.log('__filename', __filename);
-    console.log('fs.realpathSync(__filename)', fs.realpathSync(__filename));
+    // console.log('__dirname ', __dirname );
+    // console.log('__filename', __filename);
+    // console.log('fs.realpathSync(__filename)', fs.realpathSync(__filename));
+    // console.log('path', path.resolve(__dirname, 'json'));
     const { flags, input } = cli
     let all = flags.all
     let fileChoices;
@@ -312,8 +325,12 @@ module.exports = async () => {
     if (all || (input.length === 0 && await askOrExit({
         type: 'confirm', message: 'Do you want all courses?', initial: false
     }))) {
+        // let searchCoursesFile = false;
+        // if (await fs.exists(path.resolve(__dirname, 'json/search-courses.json'))) {
+        //     searchCoursesFile = true;
+        // }
         const file = flags.file || await askOrExit({
-            type   : (fileChoices = await folderContents(path.resolve(__dirname, 'json'))).length ? 'confirm' : null,
+            type   : (fileChoices = await folderContents(path.resolve(__dirname, '../json'))).length ? 'confirm' : null,
             message: 'Do you want download from a file',
             initial: false
         })

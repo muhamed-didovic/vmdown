@@ -1,7 +1,19 @@
 [
   {
+    "title": "Fullstack w/ Nuxt Nitro",
+    "value": "https://www.vuemastery.com/courses/nuxt-3-server/nuxt-3-server-introduction"
+  },
+  {
     "title": "Programming an AI-Powered App",
     "value": "https://www.vuemastery.com/courses/programming-an-ai-powered-app/ai-powered-app-introduction"
+  },
+  {
+    "title": "Watch Us Build a Trello Clone",
+    "value": "https://www.vuemastery.com/courses/watch-us-build-trello-clone/tour-of-the-app"
+  },
+  {
+    "title": "Touring Vue Router (Composition API)",
+    "value": "https://www.vuemastery.com/courses/touring-vue-router-composition-api/introduction-composition-api"
   },
   {
     "title": "Quick Tests with Vitest",
@@ -10,10 +22,6 @@
   {
     "title": "Touring Vue Router (Options API)",
     "value": "https://www.vuemastery.com/courses/touring-vue-router/vue-router-introduction"
-  },
-  {
-    "title": "Touring Vue Router (Composition API)",
-    "value": "https://www.vuemastery.com/courses/touring-vue-router-composition-api/introduction-composition-api"
   },
   {
     "title": "Q&A with Evan You",
@@ -30,14 +38,6 @@
   {
     "title": "Coding Better Composables",
     "value": "https://www.vuemastery.com/courses/coding-better-composables/what-is-a-composable"
-  },
-  {
-    "title": "From Vuex to Pinia",
-    "value": "https://www.vuemastery.com/courses/from-vuex-to-pinia/what-is-pinia"
-  },
-  {
-    "title": "Lightning Fast Builds w/ Vite",
-    "value": "https://www.vuemastery.com/courses/lightning-fast-builds-with-vite/intro-to-vite"
   },
   {
     "title": "Vue 3 Composition API",
@@ -88,6 +88,10 @@
     "value": "https://www.vuemastery.com/courses/vue-for-react-devs-differences/reacting-to-changes"
   },
   {
+    "title": "From Vuex to Pinia",
+    "value": "https://www.vuemastery.com/courses/from-vuex-to-pinia/what-is-pinia"
+  },
+  {
     "title": "Pinia Q&A",
     "value": "https://www.vuemastery.com/courses/pinia-qa/pinia-qa-preview"
   },
@@ -114,6 +118,10 @@
   {
     "title": "Nuxt 3 Middleware",
     "value": "https://www.vuemastery.com/courses/nuxt-3-middleware/middleware-introduction"
+  },
+  {
+    "title": "Lightning Fast Builds w/ Vite",
+    "value": "https://www.vuemastery.com/courses/lightning-fast-builds-with-vite/intro-to-vite"
   },
   {
     "title": "Intro to Vue 3 + TypeScript",
@@ -148,12 +156,20 @@
     "value": "https://www.vuemastery.com/courses/build-a-gmail-clone-with-vue3/tour-the-project"
   },
   {
-    "title": "Watch Us Build a Trello Clone",
-    "value": "https://www.vuemastery.com/courses/watch-us-build-trello-clone/tour-of-the-app"
-  },
-  {
     "title": "Mastering Vuex",
     "value": "https://www.vuemastery.com/courses/mastering-vuex/intro-to-vuex"
+  },
+  {
+    "title": "Utility-First CSS with Tailwind",
+    "value": "https://www.vuemastery.com/courses/utility-first-css-with-tailwind/what-is-utility-first-css"
+  },
+  {
+    "title": "Progressive Web Apps w/ Vue 3",
+    "value": "https://www.vuemastery.com/courses/progressive-web-apps-vue-3/what-are-progressive-web-apps"
+  },
+  {
+    "title": "Animating Vue",
+    "value": "https://www.vuemastery.com/courses/animating-vue/why-animate"
   },
   {
     "title": "Querying with GraphQL",
@@ -162,14 +178,6 @@
   {
     "title": "Token-Based Authentication",
     "value": "https://www.vuemastery.com/courses/token-based-authentication/intro-to-authentication"
-  },
-  {
-    "title": "Animating Vue",
-    "value": "https://www.vuemastery.com/courses/animating-vue/why-animate"
-  },
-  {
-    "title": "Progressive Web Apps w/ Vue 3",
-    "value": "https://www.vuemastery.com/courses/progressive-web-apps-vue-3/what-are-progressive-web-apps"
   },
   {
     "title": "Beautify with Vuetify",

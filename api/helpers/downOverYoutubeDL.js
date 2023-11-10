@@ -155,7 +155,7 @@ const newDownload = async (url, dest, {
             .on('ytDlpEvent', (eventType, eventData) =>
                 // console.log(eventType, eventData)
                 //65.0% of   24.60MiB at    6.14MiB/s ETA 00:01
-                ms.update(dest, { text: `${eventType}: ${eventData} | ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}` })
+                ms.update(dest, { text: `${ eventType }: ${ eventData } | ${ dest.split('/').pop() } Found:${ localSizeInBytes }/${ remoteSizeInBytes }` })
             )
             // .on("youtubeDlEvent", (eventType, eventData) => console.log(eventType, eventData))
             .on("error", (error) => {
@@ -176,13 +176,13 @@ const newDownload = async (url, dest, {
             .on("close", () => {
                 //ms.succeed(dest, { text: `${index}. End download yt-dlp: ${dest} Found:${localSizeInBytes}/${remoteSizeInBytes} - Size:${formatBytes(getFilesizeInBytes(dest))}` })//.split('/').pop()
                 // ms.remove(dest);
-                console.log(`${index}. End download yt-dlp: ${dest} Found:${localSizeInBytes}/${remoteSizeInBytes} - Size:${formatBytes(getFilesizeInBytes(dest))}`);
+                console.log(`${ index }. End download yt-dlp: ${ dest } Found:${ localSizeInBytes }/${ remoteSizeInBytes } - Size:${ formatBytes(getFilesizeInBytes(dest)) }`);
                 // videoLogger.write(`${dest} Size:${getFilesizeInBytes(dest)}\n`);
                 FileChecker.writeWithOutSize(downFolder, dest)
                 // videoLogger.write(`${dest} Size:${getFilesizeInBytes(dest)}\n`);
                 // return Promise.resolve()
                 resolve()
-            })
+            });
     })
 }
 
