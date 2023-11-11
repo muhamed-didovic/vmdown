@@ -122,7 +122,7 @@ const newDownload = async (url, dest, {
         // const videoLogger = createLogger(downFolder);
         // await fs.remove(dest) // not supports overwrite..
         //let name = dest + index;
-        ms.update(dest, {
+        ms.update(dest + index, {
             text : `to be processed by yt-dlp... ${dest.split('/').pop()} Found:${localSizeInBytes}/${remoteSizeInBytes}`,
             color: 'blue'
         });
@@ -131,7 +131,7 @@ const newDownload = async (url, dest, {
         // https://player.vimeo.com/texttrack/17477597.vtt?token=6321c441_0x383403d52f6fdaa619c98c88b50efbb63b6d0096
 
         // yt-dlp -v --retries 'infinite' --fragment-retries 'infinite' --referer "https://vuemastery.com/" "https://player.vimeo.com/video/429439600?h=73c87a798c&autoplay=1&app_id=122963"
-
+        await fs.ensureDir(path.resolve(downFolder))
         const ytDlpWrap = new YTDlpWrap();
         let ytDlpEventEmitter = ytDlpWrap
             .exec([
@@ -155,7 +155,7 @@ const newDownload = async (url, dest, {
             .on('ytDlpEvent', (eventType, eventData) =>
                 // console.log(eventType, eventData)
                 //65.0% of   24.60MiB at    6.14MiB/s ETA 00:01
-                ms.update(dest, { text: `${ eventType }: ${ eventData } | ${ dest.split('/').pop() } Found:${ localSizeInBytes }/${ remoteSizeInBytes }` })
+                ms.update(dest + index, { text: `${ eventType }: ${ eventData } | ${ dest.split('/').pop() } Found:${ localSizeInBytes }/${ remoteSizeInBytes }` })
             )
             // .on("youtubeDlEvent", (eventType, eventData) => console.log(eventType, eventData))
             .on("error", (error) => {
@@ -206,7 +206,7 @@ module.exports = async ({
     //const url = file.url;
     //let remoteFileSize = file.size;
     // const name = dest + index;
-    ms.add(dest, { text: `Checking if video is downloaded: ${dest.split('/').pop()}` });
+    ms.add(dest + index, { text: `Checking if video is downloaded: ${dest.split('/').pop()}` });
     // console.log(`Checking if video is downloaded: ${dest.split('/').pop()}`);
 
     //check if mpd is returned instead of mp4, so we need to check if we have video in videos.txt
@@ -219,13 +219,13 @@ module.exports = async ({
 
     if (isDownloaded && overwrite === 'no') {
         //ms.succeed(dest, { text: `${index}. Video already downloaded: ${dest.split('/').pop()} - ${localSizeInBytes}/${formatBytes(remoteFileSize)}` });
-        ms.remove(dest);
+        ms.remove(dest + index);
         console.log(`${index}. Video already downloaded: ${dest.split('/').pop()} - ${localSizeInBytes}}`);// /${formatBytes(remoteFileSize)
         // console.log(`${index}. Video already downloaded: ${dest.split('/').pop()} - ${localSizeInBytes}/${formatBytes(remoteFileSize)}`.blue);
         // downloadBars.create(100, 100, { eta: 0, filename: dest })
         return;
     } else {
-        ms.update(dest, { text: `${index} Start download video: ${dest.split('/').pop()} - ${localSizeInBytes}} ` });// /${formatBytes(remoteFileSize)
+        ms.update(dest + index, { text: `${index} Start download video: ${dest.split('/').pop()} - ${localSizeInBytes}} ` });// /${formatBytes(remoteFileSize)
         // console.log(`${index} Start ytdl download: ${dest.split('/').pop()} - ${localSizeInBytes}/${formatBytes(remoteFileSize)} `);
         await retrier(async () => await newDownload(url, dest, {
                 localSizeInBytes,
@@ -235,7 +235,7 @@ module.exports = async ({
                 ms
             })
         )
-        ms.remove(dest)
+        ms.remove(dest + index)
     }
 }
 

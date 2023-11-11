@@ -49,3 +49,6 @@ Examples
 
 ## License
 MIT
+
+## Need help
+If you require assistance with an existing scraper/crawler, need to develop a new one, or have any other programming-related inquiries, please don't hesitate to reach out to me: [muhamed.didovic@gmail.com](mailto:muhamed.didovic@gmail.com)
