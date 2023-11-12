@@ -12,7 +12,9 @@ const Spinnies = require('dreidels');
 const ms = new Spinnies();
 
 const sitemap = require("../../json/search-courses.json");
+const downloaded = require("../../json/downloaded-courses.json");
 const Promise = require('bluebird')
+const { differenceBy } = require("lodash");
 /*const Bluebird = require('bluebird')
 Bluebird.config({ longStackTraces: true });
 global.Promise = Bluebird*/
@@ -32,12 +34,20 @@ const scraper = async (opts) => {
         headless,
         url = null
     } = opts;
-    const courses = url ? sitemap.filter(course => course.value.includes(url)) : sitemap;
 
+    //courses to download
+    let courses = url ? sitemap.filter(course => course.value.includes(url)) : sitemap;
     if (!courses.length) {
         return console.log('No course(s) found for download')
     }
     console.log('Courses found:', courses.length);
+
+    //remove downloaded courses
+    if (await fs.exists(path.join(__dirname, '../../json/downloaded-courses.json'))) {
+        const downloadedCourses = downloaded;//await require(path.join(__dirname, '../json/downloaded-courses.json'))
+        courses = differenceBy(courses, downloadedCourses, 'value')
+        console.warn('Remaining courses to be downloaded:', courses.length);
+    }
 
     //start puppeteer and login
     const lessons = await withBrowser(async (browser) => {
@@ -58,7 +68,8 @@ const scraper = async (opts) => {
         let cnt = 0;
         ms.add('capture', { text: `Start Puppeteer Capturing...` });
         return await Promise
-            .map(courses, async ({value}, index) => {
+            .map(courses, async (course, index) => {
+                const { value } = course;
                 return await withPage(browser)(async (page) => {
 
                     /*
@@ -79,12 +90,25 @@ const scraper = async (opts) => {
                                 ms
                             })
                         }
-                    }, { concurrency: 10 })
+                    }, { concurrency: 4 })
+
+                    if (await fs.exists(path.join(__dirname, '../../json/downloaded-courses.json'))) {
+                        console.debug('add course as downloaded', course);
+                        const downloadedCourses = downloaded;//require(path.join(__dirname, '../json/downloaded-courses.json'))
+                        const foundCourse = downloadedCourses.find(({ value }) => course.value.includes(value))
+                        console.debug('course is found:', foundCourse);
+                        if (!foundCourse) {
+                            downloadedCourses.push(course);
+                            await fs.writeFile(path.join(__dirname, `../../json/downloaded-courses.json`), JSON.stringify(downloadedCourses, null, 2), 'utf8')
+                        }
+                    } else {
+                        await fs.writeFile(path.join(__dirname, '../../json/downloaded-courses.json'), JSON.stringify([course], null, 2), 'utf8')
+                    }
 
                     return lessons;
 
                 });
-            }, { concurrency: 7 })
+            }, { concurrency: 1 })
             .then(async courses => {
                 courses = courses.flat()
                 ms.succeed('capture', { text: `Capturing done for ${cnt}...` });

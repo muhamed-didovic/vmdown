@@ -14,25 +14,21 @@ const youtubedl = require("youtube-dl-wrap");
 const path = require("path");
 const { formatBytes } = require("../helpers/writeWaitingInfo");
 const findVideoUrl = require("../helpers/findVideoUrl");
+const fs = require("fs-extra");
 
 const withBrowser = async (fn, opts) => {
     //const browser = await puppeteer.launch({/* ... */});
     const getBrowser = createBrowserGetter(puppeteer, {
-        /*
-        defaultViewport: null,
-        args           : [
-            '--no-sandbox',
-            '--start-maximized', // Start in maximized state
-        ],*/
-
+        // devtools: true,
         headless: opts.headless === 'yes' ? 'new' : false, //run false for dev memo
-        Ignorehttpserrors: true, // ignore certificate error
+        ignoreHTTPSErrors: true, // ignore certificate error
         waitUntil        : 'networkidle2',
         defaultViewport  : {
             width : 1920,
             height: 1080
         },
-        timeout          : 60e3,
+        timeout: 180000e3,
+        protocolTimeout: 180000e3,
         args             : [
             '--disable-gpu',
             '--disable-dev-shm-usage',
@@ -49,6 +45,12 @@ const withBrowser = async (fn, opts) => {
             //'--proxy-server= http://127.0.0.1:8080 '// configure agent
         ],
         executablePath   : findChrome(),
+
+        // executablePath: puppeteer
+        //     .executablePath()
+        //     .match(/google-chrome/) != null
+        //     ? puppeteer.executablePath()
+        //     : undefined
     })
     const browser = await getBrowser();
     try {
@@ -188,7 +190,7 @@ const auth = async (page, email, password) => {
  * @param {Boolean} exponential - Flag for exponential back-off mode
  * @return {Promise<*>}
  */
-async function retry(fn, retriesLeft = 5, interval = 1000, exponential = false) {
+async function retry(fn, retriesLeft = 5, interval = 1000, exponential = false, page = null) {
     try {
         const val = await fn();
         return val;
@@ -196,10 +198,19 @@ async function retry(fn, retriesLeft = 5, interval = 1000, exponential = false) 
         if (retriesLeft) {
             console.log('....puppeteer retrying left (' + retriesLeft + ')');
             console.log('e:', error);
+            if (page) {
+                await fs.ensureDir(path.resolve(process.cwd(), 'errors'))
+                await page.screenshot({
+                    path: path.resolve(process.cwd(), `errors/${ new Date().toISOString() }.png`),
+                    // path    : path.join(process., sanitize(`${String(position).padStart(2, '0')}-${title}-full.png`)),
+                    fullPage: true
+                });
+            }
+
             await new Promise(r => setTimeout(r, interval));
-            return retry(fn, retriesLeft - 1, exponential ? interval*2 : interval, exponential);
+            return retry(fn, retriesLeft - 1, exponential ? interval*2 : interval, exponential, page);
         } else {
-            console.log('Max retries reached');
+            console.log('Max retries reached:', error);
             throw error
             //throw new Error('Max retries reached');
         }
@@ -277,10 +288,40 @@ const vimeoRequest = async (pageUrl, url) => {
     }
 };
 
+const scrollToBottomBrowser = async (timeout, viewportN) => {
+    // console.log('scrollToBottomBrowser', timeout, viewportN);
+    await new Promise((resolve) => {
+        let totalHeight = 0, distance = 200, duration = 0, maxHeight = window.innerHeight * viewportN;
+        // console.log('maxHeight', maxHeight, 'totalHeight', totalHeight, 'window.innerHeight', window.innerHeight);
+        const timer = setInterval(() => {
+            // console.log('setInterval', totalHeight, document.querySelector('.l-content').scrollHeight, duration, timeout, maxHeight);
+            duration += 200;
+            // window.scrollBy(0, distance);
+            document.querySelector('.l-content').scrollBy(0, distance)
+            totalHeight += distance;
+            // console.log('totalHeight >= document.scrollHeight', totalHeight,  document.querySelector('.l-content').scrollHeight, totalHeight >= document.querySelector('.l-content').scrollHeight);
+            // console.log('duration >= timeout', duration, timeout, duration >= timeout);
+            // console.log('totalHeight >= maxHeight', totalHeight, maxHeight, totalHeight >= maxHeight);
+            if (totalHeight >= document.querySelector('.l-content').scrollHeight || duration >= timeout || totalHeight >= maxHeight) {
+                clearInterval(timer);
+                resolve();
+            }
+        }, 200);
+    });
+};
+
+const scrollToBottom = async (page, timeout, viewportN) => {
+    // console.log('scrollToBottom', timeout, viewportN);
+    // logger.info(`scroll puppeteer page to bottom ${viewportN} times with timeout = ${timeout}`);
+    // const scrollToBottomBrowser =  {timeout: 10000, viewportN: 10}
+    await page.evaluate(scrollToBottomBrowser, timeout, viewportN);
+};
+
 module.exports = {
     withBrowser,
     withPage,
     auth,
     retry,
-    vimeoRequest
+    vimeoRequest,
+    scrollToBottom
 };

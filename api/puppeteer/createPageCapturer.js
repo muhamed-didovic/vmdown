@@ -8,6 +8,7 @@ const delay = require("../helpers/delay")
 const { retry, vimeoRequest } = require("../puppeteer/helpers")
 const createHtmlPage = require("../helpers/createHtmlPage");
 const { extractResources, extractChallenges } = require("../helpers/extractors");
+const { scrollToBottom } = require("./helpers");
 
 const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFormat) => {
     const options = await Promise
@@ -97,7 +98,7 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
                 () => Array.from(document.body.querySelectorAll('h4.list-item-title'),
                     txt => txt.textContent)
             );
-
+            // console.log('allTitles:', allTitles, 'title:', title);
             //lesson is locked
             /*locked = await page.evaluate(
                 () => Array.from(document.body.querySelector('.list-item.active').classList, txt => txt)//contains('-locked')
@@ -110,7 +111,7 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
             }*/
 
             const newTitle = allTitles.filter(t => t.includes(title))[0]
-            console.log(`parsing page: ${newTitle} URL: ${pageUrl}`);
+            console.log(`Found lessons: ${ allTitles.length } TITLE: ${ newTitle } URL: ${ pageUrl }`);
 
             if (images) {
                 await page.waitForSelector('#lessonContent')
@@ -122,28 +123,73 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
                 // const bodyHeight = await page.evaluate(() => document.querySelector('.main-body').scrollHeight);
                 // await page.setViewport({ width: 1920, height: bodyHeight })
 
-                const $sec = await page.$('.lesson-wrapper')
+                const $sec = await page.$('.l-content')//.lesson-wrapper
                 if (!$sec) throw new Error(`Parsing failed!`)
                 await delay(1e3) //5e3
-                await page.waitForTimeout(1e3)
                 await fs.ensureDir(path.join(saveDir, courseName, 'puppeteer', 'screenshots'))
-               /* await $sec.screenshot({
-                    path                 : path.join(saveDir, courseName, 'puppeteer', 'screenshots', `${sanitize(newTitle)}.png`),
-                    type                 : 'png',
-                    omitBackground       : true,
-                    delay                : '500ms',
-                    captureBeyondViewport: false
-                })*/
-                 await delay(1e3) //5e3
-                 await page.screenshot({
-                     path                 : path.join(saveDir, courseName, 'puppeteer', 'screenshots', `${sanitize(newTitle)}.png`),
-                     type          : 'png',
-                     // omitBackground: true,
-                     // delay         : '500ms',
-                     fullPage      : true,
-                 });
+
+                await page.waitForTimeout(1e3)
+
+                // console.log('scrolling to bottom', newTitle);
+                const scrollToBottomOptions = { timeout: 10000, viewportN: 10 }
+                // if (scrollToBottomOptions) {
+                //     console.log('scrollToBottomOptions', scrollToBottomOptions);
+                //     await scrollToBottom(page, scrollToBottomOptions.timeout, scrollToBottomOptions.viewportN);
+                // }
+
+                // Scroll the div to the bottom of the page
+                // await page.evaluate(() => {
+                //     const div = document.querySelector(".l-content");
+                //     div.scrollTop = div.scrollHeight;
+                // });
+
+
+                await page.evaluate(() => {
+                    const div = document.querySelector('.l-content');
+                    div.scrollTo(0, div.scrollHeight);
+                });
+
+                const divHeight = await page.evaluate(() => {
+                    const div = document.querySelector('.l-content'); // Replace with your div selector
+                    return div.scrollHeight;
+                });
+
+                await page.setViewport({
+                    width: 1920, // Replace with your desired width
+                    height: divHeight, // Set the height to match the div height
+                });
+
+
+                // await fs.ensureDir(path.join(saveDir, courseName, 'puppeteer', 'screenshots'))
+                // await $sec.screenshot({
+                //     path                 : path.join(saveDir, courseName, 'puppeteer', 'screenshots', `${sanitize(newTitle)}-body.png`),
+                //     type                 : 'png',
+                //     // omitBackground       : true,
+                //     // delay                : '500ms',
+                //     // captureBeyondViewport: false
+                // })
+                await delay(1e3) //5e3
+                await page.screenshot({
+                    path: path.join(saveDir, courseName, 'puppeteer', 'screenshots', `${ sanitize(newTitle) }.png`),
+                    type: 'png',
+                    // omitBackground: true,
+                    // delay         : '500ms',
+                    fullPage: true,
+                });
                 await delay(1e3) //5e3
                 await page.waitForTimeout(1e3)
+
+                await page.setViewport({
+                    width: 1920, // Replace with your desired width
+                    height: 1080
+                });
+
+                await page.evaluate(selector => {
+                    const element = document.querySelector(selector);
+                    if (element) {
+                        element.scrollTop = 0; // Scrolls to the top of the specific element
+                    }
+                }, '.l-content');
                 //return Promise.resolve();
             }
 
@@ -161,7 +207,7 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
                 const resources = await extractResources(page, path.join(saveDir, courseName, 'puppeteer', 'resources'), sanitize(newTitle), nhm);
                 const challenges = await extractChallenges(page, path.join(saveDir, courseName, 'puppeteer', 'challenges'), sanitize(newTitle), nhm);
 
-                await fs.writeFile(path.join(saveDir, courseName, 'puppeteer', 'markdown', `${sanitize(newTitle)}.md`), nhm.translate(resources + challenges + markdown), 'utf8')
+                await fs.writeFile(path.join(saveDir, courseName, 'puppeteer', 'markdown', `${ sanitize(newTitle) }.md`), nhm.translate(resources + challenges + markdown), 'utf8')
                 await delay(1e3) //5e3
                 //return Promise.resolve();
             }
@@ -174,7 +220,7 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
                 () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
             );*/
 
-            await createHtmlPage(page, path.join(saveDir, courseName, 'puppeteer', 'html'), `${sanitize(newTitle)}`);
+            await createHtmlPage(page, path.join(saveDir, courseName, 'puppeteer', 'html'), `${ sanitize(newTitle) }`);
             // await extractResources(page, path.join(saveDir, courseName, 'puppeteer', 'resources'), sanitize(newTitle), nhm);
             // await extractChallenges(page, path.join(saveDir, courseName, 'puppeteer', 'challenges'), sanitize(newTitle), nhm);
             //const selectedVideo = await vimeoRequest(pageUrl, iframeSrc)
@@ -273,10 +319,10 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
             return {
                 pageUrl,
                 courseName,
-                dest      : path.join(saveDir, courseName, `${sanitize(newTitle)}${videoFormat}`),
-                imgPath   : path.join(saveDir, courseName, 'puppeteer', 'screenshots', `${sanitize(newTitle)}.png`),
+                dest: path.join(saveDir, courseName, `${ sanitize(newTitle) }${ videoFormat }`),
+                imgPath: path.join(saveDir, courseName, 'puppeteer', 'screenshots', `${ sanitize(newTitle) }.png`),
                 downFolder: path.join(saveDir, courseName),
-                vimeoUrl  : iframeSrc//selectedVideo.url
+                vimeoUrl: iframeSrc//selectedVideo.url
             };
         })
 
@@ -298,18 +344,49 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
     const lessons = await scrapePage(page, pageUrl, images, saveDir, markdown, nhm, videoFormat);
 
     // console.log('lessons', lessons);
-    const lessonsTitles = await page.evaluate(
+    const lessonNumbers = await page.evaluate(
         () => Array.from(document.body.querySelectorAll('div.lessons-list > div > div.list-item'), (txt, i) => [...txt.classList].includes('unlock') ? ++i : null).filter(Boolean)//.slice(1)
     );
-    // console.log('lessonsTitles slice:', lessonsTitles);
-    const res =  await Promise.mapSeries(lessonsTitles.slice(1), async (lessonsTitle) => {
+    // console.log('lesson numbers:', lessonNumbers);
+    // console.log('slice:', lessonNumbers.slice(1));
+    const res = await Promise.mapSeries(lessonNumbers.slice(1), async (number) => {
 
-        // ms.update('capture', { text: `[Puppeteer] parsing page number: ${lessonsTitle}`});
+        // ms.update('capture', { text: `[Puppeteer] parsing page number: ${number}`});
+        console.log('link to click with number', `div.lessons-list > div > div:nth-child(${ number })`, number);
+
+        let linkTitle = await page.evaluate(
+            (number) => Array.from(document.body.querySelectorAll(`div.lessons-list > div > div:nth-child(${ number }) .list-item-title`), txt => txt.textContent)[0]
+            , number);
+        // console.log('BEFORE: title of link clicked:', linkTitle);
+
         //click on link in the menu
-        // console.log('link', `div.lessons-list > div > div:nth-child(${index+2})`, lessonsTitle);
-        await page.click(`div.lessons-list > div > div:nth-child(${lessonsTitle})`)
+        await page.click(`div.lessons-list > div > div:nth-child(${ number })`)
         await delay(2e3)
-        return await scrapePage(page, pageUrl, images, saveDir, markdown, nhm, videoFormat);
+        await page.waitForSelector('.lesson-wrapper')
+        await page.waitForSelector('h1.title')
+
+        return await retry(async () => {//return
+
+            linkTitle = await page.evaluate(
+                (number) => Array.from(document.body.querySelectorAll(`div.lessons-list > div > div:nth-child(${ number }) .list-item-title`), txt => txt.textContent)[0]
+                , number);
+
+            let title = await page.evaluate(
+                () => Array.from(document.body.querySelectorAll('h1.title'), txt => txt.textContent)[0]
+            );
+
+            if (!linkTitle.includes(title)) {
+                console.error('Titles are different', linkTitle, '------', title);
+                throw new Error(`Title is not equal to linkTitle`)
+            }
+
+            // console.log('AFTER: title of link clicked:', linkTitle);
+            // console.log('AAAAAAAtitle:::', title);
+            return await scrapePage(page, pageUrl, images, saveDir, markdown, nhm, videoFormat);
+        }, 6, 2000, true, page)
+
+
+
     })
     // console.log('----->res:', res);
     return [lessons, ...res];
