@@ -21,12 +21,21 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
                 (async () => {
                     // check is 'Login' visible
                     try {
-                        await page.waitForSelector('.video-wrapper iframe[src]')
-                        // await page.waitForNavigation({ waitUntil: 'networkidle0' });
+                        await page.waitForSelector('meta[itemprop="embedURL"]')
                         const iframeSrc = await page.evaluate(
-                            () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
+                            () => Array.from(document.querySelectorAll('meta[itemprop="embedURL"]'), (el) => el.content)[0]
                         );
-                        return iframeSrc
+                        // console.log('pageUrl:::', pageUrl, ' --- iframeSrc"', iframeSrc);
+                        return `${iframeSrc}?app_id=122963`
+                        // await page.waitForSelector('.video-wrapper iframe[src]')
+                        // // await page.waitForNavigation({ waitUntil: 'networkidle0' });
+                        // const iframeSrc = await page.evaluate(
+                        //     () => Array.from(document.body.querySelectorAll('.video-wrapper iframe[src]'), ({ src }) => src)[0]
+                        // );
+                        // console.log('pageUrl:::', pageUrl, ' --- iframeSrc"', iframeSrc);
+                        // return iframeSrc
+
+
 
                     } catch (e) {
                         // console.log('1111', e);
@@ -159,6 +168,12 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
                     height: divHeight, // Set the height to match the div height
                 });
 
+                await page.evaluate(selector => {
+                    const element = document.querySelector(selector);
+                    if (element) {
+                        element.scrollTop = 0; // Scrolls to the top of the specific element
+                    }
+                }, '.l-content');
 
                 // await fs.ensureDir(path.join(saveDir, courseName, 'puppeteer', 'screenshots'))
                 // await $sec.screenshot({
@@ -184,12 +199,6 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
                     height: 1080
                 });
 
-                await page.evaluate(selector => {
-                    const element = document.querySelector(selector);
-                    if (element) {
-                        element.scrollTop = 0; // Scrolls to the top of the specific element
-                    }
-                }, '.l-content');
                 //return Promise.resolve();
             }
 
@@ -207,7 +216,7 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
                 const resources = await extractResources(page, path.join(saveDir, courseName, 'puppeteer', 'resources'), sanitize(newTitle), nhm);
                 const challenges = await extractChallenges(page, path.join(saveDir, courseName, 'puppeteer', 'challenges'), sanitize(newTitle), nhm);
 
-                await fs.writeFile(path.join(saveDir, courseName, 'puppeteer', 'markdown', `${ sanitize(newTitle) }.md`), nhm.translate(resources + challenges + markdown), 'utf8')
+                await fs.writeFile(path.join(saveDir, courseName, 'puppeteer', 'markdown', `${ sanitize(newTitle) }.md`), nhm.translate((resources ?? '') + (challenges ?? '') + markdown), 'utf8')
                 await delay(1e3) //5e3
                 //return Promise.resolve();
             }

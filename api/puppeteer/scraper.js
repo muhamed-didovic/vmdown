@@ -43,7 +43,7 @@ const scraper = async (opts) => {
     console.log('Courses found:', courses.length);
 
     //remove downloaded courses
-    if (await fs.exists(path.join(__dirname, '../../json/downloaded-courses.json'))) {
+    if (overwrite === 'no' && await fs.exists(path.join(__dirname, '../../json/downloaded-courses.json'))) {
         const downloadedCourses = downloaded;//await require(path.join(__dirname, '../json/downloaded-courses.json'))
         courses = differenceBy(courses, downloadedCourses, 'value')
         console.warn('Remaining courses to be downloaded:', courses.length);

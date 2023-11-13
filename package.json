@@ -1,6 +1,6 @@
 {
   "name": "vmdown",
-  "version": "0.18.2",
+  "version": "0.18.3",
   "description": "Downloader and scraper for vuemastery.com",
   "main": "index.js",
   "scripts": {
