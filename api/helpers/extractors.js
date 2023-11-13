@@ -3,9 +3,6 @@ const fs = require("fs-extra");
 const sanitize = require("sanitize-filename");
 const downloadCode = require("./downloadCode");
 const cheerio = require("cheerio");
-// const sanitize = require("sanitize-filename");
-// const retry = require("./retry");
-
 function getGitHubZipUrl(githubUrl) {
     const urlParts = new URL(githubUrl);
     const pathParts = urlParts.pathname.split('/');
@@ -22,7 +19,6 @@ function getGitHubZipUrl(githubUrl) {
         return 'Invalid GitHub URL';
     }
 }
-
 
 async function extractResources(page, dest, title, nhm, scraper) {
     let html;
