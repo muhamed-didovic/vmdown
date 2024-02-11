@@ -15,12 +15,12 @@ const path = require("path");
 const { formatBytes } = require("../helpers/writeWaitingInfo");
 const findVideoUrl = require("../helpers/findVideoUrl");
 const fs = require("fs-extra");
-
+//await new Promise(function(resolve) {setTimeout(resolve, 2000)});
 const withBrowser = async (fn, opts) => {
     //const browser = await puppeteer.launch({/* ... */});
     const getBrowser = createBrowserGetter(puppeteer, {
-        // devtools: true,
         headless: opts.headless === 'yes' ? 'new' : false, //run false for dev memo
+        // devtools: true,
         ignoreHTTPSErrors: true, // ignore certificate error
         waitUntil        : 'networkidle2',
         defaultViewport  : {

@@ -154,8 +154,7 @@ const makeScreenshot = async (page, downDir) => {
     await page.waitForSelector('#lessonContent .body > .title')
     await page.waitForSelector('#lessonContent .lesson-body')
     await page.waitForSelector('.video-wrapper iframe[src]')
-    await delay(1e3) //5e3
-    await page.waitForTimeout(1e3)
+    await delay(2e3) //5e3
 
     //save screenshot
     const $sec = await page.$('#lessonContent')

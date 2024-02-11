@@ -10,6 +10,17 @@ const createHtmlPage = require("../helpers/createHtmlPage");
 const { extractResources, extractChallenges } = require("../helpers/extractors");
 const { scrollToBottom } = require("./helpers");
 
+/**
+ *
+ * @param page: Puppeteer.page
+ * @param pageUrl
+ * @param images
+ * @param saveDir
+ * @param markdown
+ * @param nhm
+ * @param videoFormat
+ * @returns {Promise<{[p: string]: *}>}
+ */
 const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFormat) => {
     const options = await Promise
         .resolve()
@@ -127,8 +138,7 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
                 await page.waitForSelector('#lessonContent .body > .title')
                 await page.waitForSelector('#lessonContent .lesson-body')
                 await page.waitForSelector('.video-wrapper iframe[src]')
-                await delay(1e3) //5e3
-                await page.waitForTimeout(1e3)
+                await delay(2e3) //5e3
                 // const bodyHeight = await page.evaluate(() => document.querySelector('.main-body').scrollHeight);
                 // await page.setViewport({ width: 1920, height: bodyHeight })
 
@@ -136,8 +146,7 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
                 if (!$sec) throw new Error(`Parsing failed!`)
                 await delay(1e3) //5e3
                 await fs.ensureDir(path.join(saveDir, courseName, 'puppeteer', 'screenshots'))
-
-                await page.waitForTimeout(1e3)
+                await delay(1e3) //5e3
 
                 // console.log('scrolling to bottom', newTitle);
                 const scrollToBottomOptions = { timeout: 10000, viewportN: 10 }
@@ -191,8 +200,7 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
                     // delay         : '500ms',
                     fullPage: true,
                 });
-                await delay(1e3) //5e3
-                await page.waitForTimeout(1e3)
+                await delay(2e3) //5e3
 
                 await page.setViewport({
                     width: 1920, // Replace with your desired width
