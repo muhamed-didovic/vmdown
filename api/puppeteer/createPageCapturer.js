@@ -45,9 +45,6 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
                         // );
                         // console.log('pageUrl:::', pageUrl, ' --- iframeSrc"', iframeSrc);
                         // return iframeSrc
-
-
-
                     } catch (e) {
                         // console.log('1111', e);
                         return false;
@@ -105,20 +102,16 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
                 try {
                     courseName = courseName.split("/")[0];
                 } catch (e) {
-                    console.log('Issue with course name:', courseName, e);
+                    console.log('[capturer] Issue with course name:', courseName, e);
                     return;
                 }
             }
 
-            let title = await page.evaluate(
-                () => Array.from(document.body.querySelectorAll('h1.title'), txt => txt.textContent)[0]
-            );
+            let title = await page.evaluate(() => Array.from(document.body.querySelectorAll('h1.title'), txt => txt.textContent)[0]);
+            console.log('[capturer] title:', title);
+            const allTitles = await page.evaluate(() => Array.from(document.body.querySelectorAll('h4.list-item-title'), txt => txt.textContent));
 
-            const allTitles = await page.evaluate(
-                () => Array.from(document.body.querySelectorAll('h4.list-item-title'),
-                    txt => txt.textContent)
-            );
-            // console.log('allTitles:', allTitles, 'title:', title);
+            console.log('[capturer] allTitles:', allTitles, 'title:', title);
             //lesson is locked
             /*locked = await page.evaluate(
                 () => Array.from(document.body.querySelector('.list-item.active').classList, txt => txt)//contains('-locked')
@@ -130,12 +123,15 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
                 return;
             }*/
 
-            const newTitle = allTitles.filter(t => t.includes(title))[0]
-            console.log(`Found lessons: ${ allTitles.length } TITLE: ${ newTitle } URL: ${ pageUrl }`);
+            const newTitle = allTitles.filter(t => {
+                // console.log('[capturer] filtering t:', t.toLowerCase().replace(/^\d+\.\s*/, ''), 'title:', title.toLowerCase(), t.toLowerCase().replace(/^\d+\.\s*/, '') === title.toLowerCase());
+                return t.toLowerCase().replace(/^\d+\.\s*/, '') === title.toLowerCase()
+            })[0]//t.includes(title)
+            console.log(`[capturer] Found lessons: ${ allTitles.length } scraping now NEW TITLE: ${ newTitle } URL: ${ pageUrl }`);
 
             if (images) {
                 await page.waitForSelector('#lessonContent')
-                await page.waitForSelector('#lessonContent .body > .title')
+                await page.waitForSelector('#lessonContent .body > h1.title')
                 await page.waitForSelector('#lessonContent .lesson-body')
                 await page.waitForSelector('.video-wrapper iframe[src]')
                 await delay(2e3) //5e3
@@ -149,7 +145,7 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
                 await delay(1e3) //5e3
 
                 // console.log('scrolling to bottom', newTitle);
-                const scrollToBottomOptions = { timeout: 10000, viewportN: 10 }
+                // const scrollToBottomOptions = { timeout: 10000, viewportN: 10 }
                 // if (scrollToBottomOptions) {
                 //     console.log('scrollToBottomOptions', scrollToBottomOptions);
                 //     await scrollToBottom(page, scrollToBottomOptions.timeout, scrollToBottomOptions.viewportN);
@@ -343,7 +339,7 @@ const scrapePage = async (page, pageUrl, images, saveDir, markdown, nhm, videoFo
             };
         })
 
-    //console.log('{ ...options }', { ...options });
+    // console.log('{ ...options }', { ...options });
     return { ...options }
 };
 
@@ -356,26 +352,29 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
     //await page.setViewport({ width: 0, height: 0, deviceScaleFactor: 1.5 })
 
     // await delay(10e3)
+    console.log('[capturer] entering pageUrl:', pageUrl);
     await page.goto(pageUrl, { waitUntil: ["networkidle2"], timeout: 61e3 });
 
     const lessons = await scrapePage(page, pageUrl, images, saveDir, markdown, nhm, videoFormat);
-
+    console.log('[capturer] return lesson ::::', lessons);
     // console.log('lessons', lessons);
     const lessonNumbers = await page.evaluate(
         () => Array.from(document.body.querySelectorAll('div.lessons-list > div > div.list-item'), (txt, i) => [...txt.classList].includes('unlock') ? ++i : null).filter(Boolean)//.slice(1)
     );
-    // console.log('lesson numbers:', lessonNumbers);
-    // console.log('slice:', lessonNumbers.slice(1));
+    console.log('[capturer] lesson numbers:', lessonNumbers);
+    console.log('[capturer] slice:', lessonNumbers.slice(1));
     const res = await Promise.mapSeries(lessonNumbers.slice(1), async (number) => {
 
         // ms.update('capture', { text: `[Puppeteer] parsing page number: ${number}`});
-        console.log('link to click with number', `div.lessons-list > div > div:nth-child(${ number })`, number);
+        console.log('[capturer] link to click with number', `div.lessons-list > div > div:nth-child(${ number })`, number);
 
         let linkTitle = await page.evaluate(
             (number) => Array.from(document.body.querySelectorAll(`div.lessons-list > div > div:nth-child(${ number }) .list-item-title`), txt => txt.textContent)[0]
             , number);
-        // console.log('BEFORE: title of link clicked:', linkTitle);
+        console.log('[capturer] BEFORE: title of link clicked:', linkTitle);
 
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        // await delay(32e3)
         //click on link in the menu
         await page.click(`div.lessons-list > div > div:nth-child(${ number })`)
         await delay(2e3)
@@ -393,7 +392,7 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
             );
 
             if (!linkTitle.includes(title)) {
-                console.error('Titles are different', linkTitle, '------', title);
+                console.error('[capturer] Titles are different', linkTitle, '------', title);
                 throw new Error(`Title is not equal to linkTitle`)
             }
 
@@ -401,8 +400,6 @@ module.exports = async (browser, page, pageUrl, saveDir, videoFormat, quality, m
             // console.log('AAAAAAAtitle:::', title);
             return await scrapePage(page, pageUrl, images, saveDir, markdown, nhm, videoFormat);
         }, 6, 2000, true, page)
-
-
 
     })
     // console.log('----->res:', res);

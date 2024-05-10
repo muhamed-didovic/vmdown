@@ -1,43 +1,43 @@
 [
   {
-    "title": "Fullstack w/ Nuxt Nitro",
-    "value": "https://www.vuemastery.com/courses/nuxt-3-server/nuxt-3-server-introduction"
+    "title": "Rendering Revealed",
+    "value": "https://www.vuemastery.com/courses/rendering-revealed/rendering-revealed-preview"
+  },
+  {
+    "title": "Real World Nuxt 3",
+    "value": "https://www.vuemastery.com/courses/real-world-nuxt-3/intro"
+  },
+  {
+    "title": "Build a Trello Clone w/ Nuxt 3",
+    "value": "https://www.vuemastery.com/courses/build-a-trello-clone-w-nuxt-3/trello-clone-nuxt-introduction"
+  },
+  {
+    "title": "Easy Interfaces with Vuetify",
+    "value": "https://www.vuemastery.com/courses/easy-interfaces-with-vuetify/intro-to-vuetify"
   },
   {
     "title": "Programming an AI-Powered App",
     "value": "https://www.vuemastery.com/courses/programming-an-ai-powered-app/ai-powered-app-introduction"
   },
   {
-    "title": "Watch Us Build a Trello Clone",
-    "value": "https://www.vuemastery.com/courses/watch-us-build-trello-clone/tour-of-the-app"
+    "title": "Q&A with Evan You",
+    "value": "https://www.vuemastery.com/courses/qa-with-evan-you/what-is-your-daily-routine"
   },
   {
     "title": "Touring Vue Router (Composition API)",
     "value": "https://www.vuemastery.com/courses/touring-vue-router-composition-api/introduction-composition-api"
   },
   {
-    "title": "Quick Tests with Vitest",
-    "value": "https://www.vuemastery.com/courses/quick-tests-with-vitest/intro-to-vitest"
+    "title": "Fullstack w/ Nuxt Nitro",
+    "value": "https://www.vuemastery.com/courses/nuxt-3-server/nuxt-3-server-introduction"
   },
   {
-    "title": "Touring Vue Router (Options API)",
-    "value": "https://www.vuemastery.com/courses/touring-vue-router/vue-router-introduction"
+    "title": "Nuxt 3 Middleware",
+    "value": "https://www.vuemastery.com/courses/nuxt-3-middleware/middleware-introduction"
   },
   {
-    "title": "Q&A with Evan You",
-    "value": "https://www.vuemastery.com/courses/qa-with-evan-you/what-is-your-daily-routine"
-  },
-  {
-    "title": "Real World Vue 3 (Composition API)",
-    "value": "https://www.vuemastery.com/courses/real-world-vue-3-composition-api/building-a-vue-3-app-composition-api"
-  },
-  {
-    "title": "Real World Vue 3 (Options API)",
-    "value": "https://www.vuemastery.com/courses/real-world-vue3/rwv3-orientation"
-  },
-  {
-    "title": "Coding Better Composables",
-    "value": "https://www.vuemastery.com/courses/coding-better-composables/what-is-a-composable"
+    "title": "5 Elegant ways to use Pinia",
+    "value": "https://www.vuemastery.com/courses/5-elegant-ways-to-use-pinia/elegant-pinia-intro"
   },
   {
     "title": "Vue 3 Composition API",
@@ -72,6 +72,18 @@
     "value": "https://www.vuemastery.com/courses/intro-to-vue-3/intro-to-vue3"
   },
   {
+    "title": "Real World Vue 3 (Composition API)",
+    "value": "https://www.vuemastery.com/courses/real-world-vue-3-composition-api/building-a-vue-3-app-composition-api"
+  },
+  {
+    "title": "Real World Vue 3 (Options API)",
+    "value": "https://www.vuemastery.com/courses/real-world-vue3/rwv3-orientation"
+  },
+  {
+    "title": "Touring Vue Router (Options API)",
+    "value": "https://www.vuemastery.com/courses/touring-vue-router/vue-router-introduction"
+  },
+  {
     "title": "Pinia Fundamentals",
     "value": "https://www.vuemastery.com/courses/pinia-fundamentals/fundamentals-what-is-pinia"
   },
@@ -100,14 +112,6 @@
     "value": "https://www.vuemastery.com/courses/proven-pinia-patterns/pinia-patterns-intro"
   },
   {
-    "title": "5 Elegant ways to use Pinia",
-    "value": "https://www.vuemastery.com/courses/5-elegant-ways-to-use-pinia/elegant-pinia-intro"
-  },
-  {
-    "title": "Scaling Vue with Nuxt.js",
-    "value": "https://www.vuemastery.com/courses/scaling-vue-with-nuxt-js/why-use-nuxt"
-  },
-  {
     "title": "Nuxt 3 Essentials",
     "value": "https://www.vuemastery.com/courses/nuxt-3-essentials/nuxt-3-overview"
   },
@@ -116,16 +120,20 @@
     "value": "https://www.vuemastery.com/courses/build-a-blog-nuxt3-content/nuxt3-blog-introduction"
   },
   {
-    "title": "Nuxt 3 Middleware",
-    "value": "https://www.vuemastery.com/courses/nuxt-3-middleware/middleware-introduction"
+    "title": "Scaling Vue with Nuxt.js",
+    "value": "https://www.vuemastery.com/courses/scaling-vue-with-nuxt-js/why-use-nuxt"
   },
   {
     "title": "Lightning Fast Builds w/ Vite",
     "value": "https://www.vuemastery.com/courses/lightning-fast-builds-with-vite/intro-to-vite"
   },
   {
+    "title": "Quick Tests with Vitest",
+    "value": "https://www.vuemastery.com/courses/quick-tests-with-vitest/intro-to-vitest"
+  },
+  {
     "title": "Intro to Vue 3 + TypeScript",
-    "value": "https://www.vuemastery.com/courses/vue3-typescript/why-vue-%26-typescript"
+    "value": "https://www.vuemastery.com/courses/vue3-typescript/why-vue-and-typescript"
   },
   {
     "title": "Vue 3 Forms",
@@ -138,6 +146,10 @@
   {
     "title": "Component Design Patterns",
     "value": "https://www.vuemastery.com/courses/component-design-patterns/introduction"
+  },
+  {
+    "title": "Coding Better Composables",
+    "value": "https://www.vuemastery.com/courses/coding-better-composables/what-is-a-composable"
   },
   {
     "title": "Advanced Components",
@@ -154,6 +166,10 @@
   {
     "title": "Build a Gmail Clone with Vue 3",
     "value": "https://www.vuemastery.com/courses/build-a-gmail-clone-with-vue3/tour-the-project"
+  },
+  {
+    "title": "Watch us Build a Trello Clone w/ Vue 2",
+    "value": "https://www.vuemastery.com/courses/watch-us-build-trello-clone/tour-of-the-app"
   },
   {
     "title": "Mastering Vuex",

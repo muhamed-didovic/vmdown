@@ -81,11 +81,12 @@ const getCoursesForSearch = async (searchFromLocalFile) => {
                 title: $(elem).find('.playlist-card-content-title').text(),
                 value: `https://www.vuemastery.com${$(elem).attr('href')}`,
                 //url  : $(elem).attr('href'),
-
             }
         })
         .get();
+    console.log('courses length:', courses.length);//courses,
     courses = uniqBy(courses, 'title')
+    console.log('unique courses length:', courses.length);
     await fs.writeFile(`./json/search-courses.json`, JSON.stringify(courses, null, 2), 'utf8')
     return courses
 }

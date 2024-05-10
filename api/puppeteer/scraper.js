@@ -38,15 +38,15 @@ const scraper = async (opts) => {
     //courses to download
     let courses = url ? sitemap.filter(course => course.value.includes(url)) : sitemap;
     if (!courses.length) {
-        return console.log('No course(s) found for download')
+        return console.log('[scraper] No course(s) found for download')
     }
-    console.log('Courses found:', courses.length);
+    console.log('[scraper] Courses found:', courses.length);
 
     //remove downloaded courses
     if (overwrite === 'no' && await fs.exists(path.join(__dirname, '../../json/downloaded-courses.json'))) {
         const downloadedCourses = downloaded;//await require(path.join(__dirname, '../json/downloaded-courses.json'))
         courses = differenceBy(courses, downloadedCourses, 'value')
-        console.warn('Remaining courses to be downloaded:', courses.length);
+        console.warn('[scraper] Remaining courses to be downloaded:', courses.length);
     }
 
     //start puppeteer and login
@@ -57,10 +57,10 @@ const scraper = async (opts) => {
                 await page.goto("https://www.vuemastery.com", { waitUntil: "networkidle0" }); // wait until page load
                 await page.setViewport({ width: 1920, height: 1080 });
                 await delay(1)
-                console.log(`Checking authentication...`);
+                console.log(`[scraper] Checking authentication...`);
                 await auth(page, email, password);
                 await delay(5e3)
-                console.log("User successfully logged in.");
+                console.log("[scraper] User successfully logged in.");
                 //await delay(5e3)
             }, 6, 1e3, true)
         }, opts);
@@ -80,6 +80,7 @@ const scraper = async (opts) => {
 
                     ms.update('capture', { text: `Puppeteer Capturing... ${++cnt} of ${courses.length} ${value}` });
                     const lessons = await createPageCapturer(browser, page, value, downDir, extension, quality, markdown, images)
+                    console.log('[scraper] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Lessons found:', lessons, lessons.length);
 
                     videos && await Promise.map(lessons, async (lesson, index) => {
                         if (lesson?.vimeoUrl) {
@@ -93,10 +94,10 @@ const scraper = async (opts) => {
                     }, { concurrency: 4 })
 
                     if (await fs.exists(path.join(__dirname, '../../json/downloaded-courses.json'))) {
-                        console.debug('add course as downloaded', course);
+                        console.debug('[scraper] add course as downloaded', course);
                         const downloadedCourses = downloaded;//require(path.join(__dirname, '../json/downloaded-courses.json'))
                         const foundCourse = downloadedCourses.find(({ value }) => course.value.includes(value))
-                        console.debug('course is found:', foundCourse);
+                        console.debug('[scraper] course is found:', foundCourse);
                         if (!foundCourse) {
                             downloadedCourses.push(course);
                             await fs.writeFile(path.join(__dirname, `../../json/downloaded-courses.json`), JSON.stringify(downloadedCourses, null, 2), 'utf8')
@@ -118,7 +119,7 @@ const scraper = async (opts) => {
             })
 
     }, opts);
-    console.log('Lessons length:', lessons.length);
+    console.log('[scraper] Lessons length:', lessons.length);
     //let cnt = 0;
     return Promise
         .resolve(lessons)
@@ -149,6 +150,7 @@ const scraper = async (opts) => {
             return lessons;
         })*/
         .then(async (lessons) => {
+            console.log('[scraper] Lessons length after filtering:', lessons.length);
             await fs.ensureDir(path.resolve(__dirname, 'json'))
             await fs.writeFile(path.resolve(__dirname, 'json/lessons.json'), JSON.stringify(lessons, null, 2), 'utf8')
             if (pdf && images) {
@@ -175,7 +177,7 @@ const scraper = async (opts) => {
         })
         .catch(console.error)
         .finally(() => {
-            console.log('>>>>DONE');
+            console.log('[scraper] >>>>DONE');
             ms.stopAll()
             // browser.close()
         })
